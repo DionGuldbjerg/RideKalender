@@ -865,7 +865,8 @@ html&gt;body{padding:0}&lt;/style&gt;
       seed.filter(item =&gt; item.id.startsWith(&#x27;shd&#x27;) || item.id.startsWith(&#x27;morten-&#x27;)).forEach(item =&gt; {
         if (!events.some(existing =&gt; existing.id === item.id)) events.push(item);
       });
-      let view = new Date(2026, 4, 1);
+      let view = new Date();
+      view.setDate(1);
       const month = root.querySelector(&#x27;#vc-month&#x27;);
       const grid = root.querySelector(&#x27;#vc-grid&#x27;);
       const list = root.querySelector(&#x27;#vc-list&#x27;);
