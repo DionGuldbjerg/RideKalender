@@ -756,11 +756,16 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-title h2 { margin:0; }
     #victoria-calendar .vc-mark { width:34px; height:34px; display:grid; place-items:center; border-radius:50%; background:color-mix(in srgb, var(--viz-series-1) 18%, transparent); color:var(--foreground); }
     #victoria-calendar .vc-nav { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-    #victoria-calendar .vc-filters { margin-bottom:14px; }
+    #victoria-calendar .vc-filters { margin-bottom:10px; }
+    #victoria-calendar .vc-pony-filters { margin-bottom:14px; }
     #victoria-calendar .vc-filter-dot, #victoria-calendar .vc-dot { width:9px; height:9px; border-radius:50%; display:inline-block; flex:none; }
     #victoria-calendar .competition { background:var(--viz-series-1); }
     #victoria-calendar .training { background:var(--viz-series-2); }
     #victoria-calendar .off { background:var(--viz-series-4); }
+    #victoria-calendar .care { background:var(--viz-series-6); }
+    #victoria-calendar .rumle { background:var(--viz-series-3); }
+    #victoria-calendar .dobby { background:var(--viz-series-5); }
+    #victoria-calendar .both { background:var(--viz-series-6); }
     #victoria-calendar .vc-month { font-weight:500; min-width:148px; text-align:center; }
     #victoria-calendar .vc-grid { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); border-top:1px solid var(--border); border-left:1px solid var(--border); }
     #victoria-calendar .vc-weekday { padding:8px 5px; text-align:center; color:var(--muted-foreground); border-right:1px solid var(--border); border-bottom:1px solid var(--border); }
@@ -768,10 +773,20 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-day.is-other { color:var(--muted-foreground); background:color-mix(in srgb, var(--muted) 34%, transparent); }
     #victoria-calendar .vc-day.is-today .vc-number { background:var(--primary); color:var(--primary-foreground); }
     #victoria-calendar .vc-number { width:25px; height:25px; display:grid; place-items:center; border-radius:50%; margin-bottom:5px; }
-    #victoria-calendar .vc-event { width:100%; display:flex; align-items:flex-start; gap:5px; padding:4px 5px; margin-top:3px; border:0; border-radius:6px; background:color-mix(in srgb, var(--muted) 55%, transparent); color:var(--foreground); text-align:left; cursor:pointer; }
+    #victoria-calendar .vc-event { width:100%; display:flex; align-items:flex-start; gap:6px; padding:5px 6px; margin-top:3px; border:0; border-radius:6px; background:color-mix(in srgb, var(--muted) 55%, transparent); color:var(--foreground); text-align:left; cursor:pointer; }
     #victoria-calendar .vc-event:hover { background:var(--accent); color:var(--accent-foreground); }
-    #victoria-calendar .vc-event span:last-child { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-    #victoria-calendar .vc-list { display:none; }
+    #victoria-calendar .vc-event-copy { min-width:0; display:grid; gap:1px; }
+    #victoria-calendar .vc-event-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    #victoria-calendar .vc-event-meta { color:var(--muted-foreground); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    #victoria-calendar .vc-list { display:block; margin-top:18px; }
+    #victoria-calendar .vc-list h3 { margin:0 0 6px; }
+    #victoria-calendar .vc-list-day { display:grid; grid-template-columns:62px 1fr; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
+    #victoria-calendar .vc-list-date { text-align:center; }
+    #victoria-calendar .vc-list-date strong { display:block; }
+    #victoria-calendar .vc-list-events { display:grid; gap:6px; }
+    #victoria-calendar .vc-list .vc-event { padding:8px; margin:0; }
+    #victoria-calendar .vc-list .vc-event-name { white-space:normal; }
+    #victoria-calendar .vc-list .vc-event-meta { white-space:normal; }
     #victoria-calendar .vc-empty { color:var(--muted-foreground); padding:30px 0; text-align:center; }
     #victoria-calendar dialog { color:var(--popover-foreground); background:var(--popover); border:1px solid var(--border); border-radius:12px; width:min(430px,calc(100% - 28px)); padding:20px; }
     #victoria-calendar dialog::backdrop { background:color-mix(in srgb, var(--foreground) 32%, transparent); }
@@ -782,12 +797,8 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-hint { margin:0; color:var(--muted-foreground); }
     @media (max-width:600px) {
       #victoria-calendar .vc-grid { display:none; }
-      #victoria-calendar .vc-list { display:block; }
-      #victoria-calendar .vc-list-day { display:grid; grid-template-columns:54px 1fr; gap:10px; padding:12px 0; border-bottom:1px solid var(--border); }
-      #victoria-calendar .vc-list-date { text-align:center; }
-      #victoria-calendar .vc-list-date strong { display:block; }
-      #victoria-calendar .vc-list-events { display:grid; gap:7px; }
-      #victoria-calendar .vc-list-events .vc-event { padding:8px; margin:0; }
+      #victoria-calendar .vc-list-day { grid-template-columns:54px 1fr; gap:10px; padding:12px 0; }
+      #victoria-calendar .vc-list-events { gap:7px; }
       #victoria-calendar .vc-header { align-items:flex-start; }
       #victoria-calendar .vc-nav { width:100%; justify-content:space-between; }
     }
@@ -807,18 +818,25 @@ html&gt;body{padding:0}&lt;/style&gt;
     &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-filter&quot; type=&quot;checkbox&quot; value=&quot;competition&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-filter-dot competition&quot;&gt;&lt;/span&gt; Stævner&lt;/span&gt;&lt;/label&gt;
     &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-filter&quot; type=&quot;checkbox&quot; value=&quot;training&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-filter-dot training&quot;&gt;&lt;/span&gt; Træning&lt;/span&gt;&lt;/label&gt;
     &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-filter&quot; type=&quot;checkbox&quot; value=&quot;off&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-filter-dot off&quot;&gt;&lt;/span&gt; Fri&lt;/span&gt;&lt;/label&gt;
+    &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-filter&quot; type=&quot;checkbox&quot; value=&quot;care&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-filter-dot care&quot;&gt;&lt;/span&gt; Pasning&lt;/span&gt;&lt;/label&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;viz-controls vc-pony-filters&quot; aria-label=&quot;Filtrer ponyer&quot;&gt;
+    &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-pony-filter&quot; type=&quot;checkbox&quot; value=&quot;rumle&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-filter-dot rumle&quot;&gt;&lt;/span&gt; Rumle&lt;/span&gt;&lt;/label&gt;
+    &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-pony-filter&quot; type=&quot;checkbox&quot; value=&quot;dobby&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-filter-dot dobby&quot;&gt;&lt;/span&gt; Dobby / Double&lt;/span&gt;&lt;/label&gt;
   &lt;/div&gt;
   &lt;div class=&quot;vc-grid&quot; id=&quot;vc-grid&quot; role=&quot;grid&quot; aria-label=&quot;Månedskalender&quot;&gt;&lt;/div&gt;
-  &lt;div class=&quot;vc-list&quot; id=&quot;vc-list&quot; aria-label=&quot;Aktiviteter denne måned&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;vc-list&quot; aria-label=&quot;Aktiviteter denne måned&quot;&gt;&lt;h3&gt;Månedens aktiviteter&lt;/h3&gt;&lt;div id=&quot;vc-list&quot;&gt;&lt;/div&gt;&lt;/div&gt;
 
   &lt;dialog id=&quot;vc-dialog&quot;&gt;
     &lt;form class=&quot;vc-form&quot; id=&quot;vc-form&quot;&gt;
       &lt;h3 id=&quot;vc-dialog-title&quot;&gt;Ny aktivitet&lt;/h3&gt;
-      &lt;p class=&quot;vc-hint text-small&quot;&gt;Tilføj stævne, træning eller en fridag.&lt;/p&gt;
+      &lt;p class=&quot;vc-hint text-small&quot;&gt;Tilføj en aktivitet for Rumle, Dobby eller begge.&lt;/p&gt;
       &lt;input type=&quot;hidden&quot; id=&quot;vc-id&quot;&gt;
       &lt;label class=&quot;form-label&quot;&gt;Aktivitet&lt;input class=&quot;form-control&quot; id=&quot;vc-name&quot; required placeholder=&quot;Fx dressurtræning&quot;&gt;&lt;/label&gt;
-      &lt;label class=&quot;form-label&quot;&gt;Type&lt;select class=&quot;form-select&quot; id=&quot;vc-type&quot;&gt;&lt;option value=&quot;training&quot;&gt;Træning&lt;/option&gt;&lt;option value=&quot;competition&quot;&gt;Stævne&lt;/option&gt;&lt;option value=&quot;off&quot;&gt;Fri&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
+      &lt;label class=&quot;form-label&quot;&gt;Pony&lt;select class=&quot;form-select&quot; id=&quot;vc-pony&quot;&gt;&lt;option value=&quot;dobby&quot;&gt;Dobby / Double&lt;/option&gt;&lt;option value=&quot;rumle&quot;&gt;Rumle&lt;/option&gt;&lt;option value=&quot;both&quot;&gt;Begge ponyer&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
+      &lt;label class=&quot;form-label&quot;&gt;Type&lt;select class=&quot;form-select&quot; id=&quot;vc-type&quot;&gt;&lt;option value=&quot;training&quot;&gt;Træning&lt;/option&gt;&lt;option value=&quot;competition&quot;&gt;Stævne&lt;/option&gt;&lt;option value=&quot;care&quot;&gt;Pasning / ophold&lt;/option&gt;&lt;option value=&quot;off&quot;&gt;Ferie / fri&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Dato&lt;input class=&quot;form-control&quot; id=&quot;vc-date&quot; type=&quot;date&quot; required&gt;&lt;/label&gt;
+      &lt;label class=&quot;form-label&quot;&gt;Slutdato &lt;span class=&quot;text-muted&quot;&gt;(valgfri)&lt;/span&gt;&lt;input class=&quot;form-control&quot; id=&quot;vc-end-date&quot; type=&quot;date&quot;&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Tid&lt;input class=&quot;form-control&quot; id=&quot;vc-time&quot; type=&quot;time&quot;&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Sted&lt;input class=&quot;form-control&quot; id=&quot;vc-place&quot; placeholder=&quot;Fx Ballerup Rideklub&quot;&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Note&lt;textarea class=&quot;form-control&quot; id=&quot;vc-note&quot; rows=&quot;2&quot; placeholder=&quot;Klasse, træner eller huskeliste&quot;&gt;&lt;/textarea&gt;&lt;/label&gt;
@@ -853,16 +871,25 @@ html&gt;body{padding:0}&lt;/style&gt;
         {id:&#x27;shd2&#x27;,date:&#x27;2026-09-05&#x27;,name:&#x27;Store Hestedag Dressur&#x27;,type:&#x27;competition&#x27;,place:&#x27;Store Hestedag&#x27;,note:&#x27;Klasse 23 · Guld Cup LA6-PRM A Pony · Indledende&#x27;},
         {id:&#x27;shd3&#x27;,date:&#x27;2026-09-06&#x27;,name:&#x27;Store Hestedag Dressur&#x27;,type:&#x27;competition&#x27;,place:&#x27;Store Hestedag&#x27;,note:&#x27;Klasse 42 · Guld Cup LA6-PRM A Pony · Finale&#x27;}
       ];
+      seed.forEach(item =&gt; item.pony = &#x27;dobby&#x27;);
+      seed.push(
+        {id:&#x27;summer-transport&#x27;,date:&#x27;2026-07-09&#x27;,name:&#x27;Ponyerne køres til Morten&#x27;,type:&#x27;care&#x27;,pony:&#x27;both&#x27;,place:&#x27;Mortens Place&#x27;,note:&#x27;Rumle og Dobby. Husk eventuelt indkøb af foder m.m.&#x27;},
+        {id:&#x27;summer-ride&#x27;,date:&#x27;2026-07-10&#x27;,name:&#x27;Ridning hos Morten&#x27;,type:&#x27;training&#x27;,pony:&#x27;both&#x27;,place:&#x27;Mortens Place&#x27;,note:&#x27;Alicia er med. Tøm bokse på Lykkesholm og tag foder med til Morten bagefter.&#x27;},
+        {id:&#x27;summer-stay&#x27;,date:&#x27;2026-07-11&#x27;,endDate:&#x27;2026-08-09&#x27;,name:&#x27;Ponyerne hos Mortens Place&#x27;,type:&#x27;care&#x27;,pony:&#x27;both&#x27;,place:&#x27;Mortens Place&#x27;,note:&#x27;Rumle og Dobby opholder sig hos Morten i hele perioden.&#x27;},
+        {id:&#x27;summer-vacation&#x27;,date:&#x27;2026-07-13&#x27;,endDate:&#x27;2026-07-26&#x27;,name:&#x27;Victoria på ferie · uge 29–30&#x27;,type:&#x27;off&#x27;,pony:&#x27;both&#x27;,place:&#x27;Mortens Place&#x27;,note:&#x27;Alicia passer Rumle og Dobby.&#x27;},
+        {id:&#x27;summer-camp&#x27;,date:&#x27;2026-07-27&#x27;,endDate:&#x27;2026-08-09&#x27;,name:&#x27;Træningslejr hos Morten · uge 31–32&#x27;,type:&#x27;training&#x27;,pony:&#x27;both&#x27;,place:&#x27;Mortens Place&#x27;,note:&#x27;Victoria er på træningslejr. Begge ponyer bliver hos Morten.&#x27;}
+      );
       const mortenTimes = {0:&#x27;17:00&#x27;,2:&#x27;17:30&#x27;,5:&#x27;18:30&#x27;};
       for (let d = new Date(2026,7,1); d &lt;= new Date(2026,11,31); d.setDate(d.getDate()+1)) {
         if (mortenTimes[d.getDay()]) {
           const date = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,&#x27;0&#x27;)}-${String(d.getDate()).padStart(2,&#x27;0&#x27;)}`;
-          seed.push({id:`morten-${date}`,date,name:&#x27;Træning med Morten&#x27;,type:&#x27;training&#x27;,time:mortenTimes[d.getDay()],place:&#x27;&#x27;,note:&#x27;45 min.&#x27;});
+          seed.push({id:`morten-${date}`,date,name:&#x27;Træning med Morten&#x27;,type:&#x27;training&#x27;,pony:&#x27;dobby&#x27;,time:mortenTimes[d.getDay()],place:&#x27;Mortens Place&#x27;,note:&#x27;45 min.&#x27;});
         }
       }
       let events;
       try { events = JSON.parse(localStorage.getItem(key)) || seed; } catch (_) { events = seed; }
-      seed.filter(item =&gt; item.id.startsWith(&#x27;shd&#x27;) || item.id.startsWith(&#x27;morten-&#x27;)).forEach(item =&gt; {
+      events = events.map(item =&gt; ({...item,pony:item.pony || &#x27;dobby&#x27;}));
+      seed.filter(item =&gt; item.id.startsWith(&#x27;shd&#x27;) || item.id.startsWith(&#x27;morten-&#x27;) || item.id.startsWith(&#x27;summer-&#x27;)).forEach(item =&gt; {
         if (!events.some(existing =&gt; existing.id === item.id)) events.push(item);
       });
       let view = new Date();
@@ -871,32 +898,40 @@ html&gt;body{padding:0}&lt;/style&gt;
       const grid = root.querySelector(&#x27;#vc-grid&#x27;);
       const list = root.querySelector(&#x27;#vc-list&#x27;);
       const dialog = root.querySelector(&#x27;#vc-dialog&#x27;);
-      const fields = { id:root.querySelector(&#x27;#vc-id&#x27;), name:root.querySelector(&#x27;#vc-name&#x27;), type:root.querySelector(&#x27;#vc-type&#x27;), date:root.querySelector(&#x27;#vc-date&#x27;), time:root.querySelector(&#x27;#vc-time&#x27;), place:root.querySelector(&#x27;#vc-place&#x27;), note:root.querySelector(&#x27;#vc-note&#x27;) };
+      const fields = { id:root.querySelector(&#x27;#vc-id&#x27;), name:root.querySelector(&#x27;#vc-name&#x27;), pony:root.querySelector(&#x27;#vc-pony&#x27;), type:root.querySelector(&#x27;#vc-type&#x27;), date:root.querySelector(&#x27;#vc-date&#x27;), endDate:root.querySelector(&#x27;#vc-end-date&#x27;), time:root.querySelector(&#x27;#vc-time&#x27;), place:root.querySelector(&#x27;#vc-place&#x27;), note:root.querySelector(&#x27;#vc-note&#x27;) };
       const iso = d =&gt; `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,&#x27;0&#x27;)}-${String(d.getDate()).padStart(2,&#x27;0&#x27;)}`;
-      const labels = {competition:&#x27;Stævne&#x27;,training:&#x27;Træning&#x27;,off:&#x27;Fri&#x27;};
+      const ponyLabels = {rumle:&#x27;Rumle&#x27;,dobby:&#x27;Dobby&#x27;,both:&#x27;Begge&#x27;};
       const activeTypes = () =&gt; new Set([...root.querySelectorAll(&#x27;.vc-filter:checked&#x27;)].map(x=&gt;x.value));
+      const activePonies = () =&gt; new Set([...root.querySelectorAll(&#x27;.vc-pony-filter:checked&#x27;)].map(x=&gt;x.value));
+      const matchesPony = (e,ponies) =&gt; e.pony === &#x27;both&#x27; ? ponies.size &gt; 0 : ponies.has(e.pony);
+      const occursOn = (e,date) =&gt; e.date &lt;= date &amp;&amp; (e.endDate || e.date) &gt;= date;
       const save = () =&gt; { try { localStorage.setItem(key,JSON.stringify(events)); } catch (_) {} };
-      const eventButton = e =&gt; `&lt;button type=&quot;button&quot; class=&quot;vc-event&quot; data-id=&quot;${e.id}&quot; aria-label=&quot;Rediger ${e.name}&quot;&gt;&lt;span class=&quot;vc-dot ${e.type}&quot;&gt;&lt;/span&gt;&lt;span&gt;${e.time ? e.time+&#x27; · &#x27; : &#x27;&#x27;}${e.name}&lt;/span&gt;&lt;/button&gt;`;
+      const esc = value =&gt; String(value || &#x27;&#x27;).replace(/[&amp;&lt;&gt;&quot;&#x27;]/g,ch=&gt;({&#x27;&amp;&#x27;:&#x27;&amp;amp;&#x27;,&#x27;&lt;&#x27;:&#x27;&amp;lt;&#x27;,&#x27;&gt;&#x27;:&#x27;&amp;gt;&#x27;,&#x27;&quot;&#x27;:&#x27;&amp;quot;&#x27;,&quot;&#x27;&quot;:&#x27;&amp;#39;&#x27;}[ch]));
+      const eventButton = (e,detail=false) =&gt; {
+        const meta = [ponyLabels[e.pony],e.time,e.place,detail ? e.note : &#x27;&#x27;].filter(Boolean).join(&#x27; · &#x27;);
+        return `&lt;button type=&quot;button&quot; class=&quot;vc-event&quot; data-id=&quot;${esc(e.id)}&quot; aria-label=&quot;Rediger ${esc(e.name)}&quot;&gt;&lt;span class=&quot;vc-dot ${esc(e.type)}&quot;&gt;&lt;/span&gt;&lt;span class=&quot;vc-event-copy&quot;&gt;&lt;span class=&quot;vc-event-name&quot;&gt;${esc(e.name)}&lt;/span&gt;&lt;span class=&quot;vc-event-meta text-small&quot;&gt;${esc(meta)}&lt;/span&gt;&lt;/span&gt;&lt;/button&gt;`;
+      };
       function render() {
         month.textContent = new Intl.DateTimeFormat(&#x27;da-DK&#x27;,{month:&#x27;long&#x27;,year:&#x27;numeric&#x27;}).format(view);
         const first = new Date(view.getFullYear(),view.getMonth(),1);
         const start = new Date(first); start.setDate(1-((first.getDay()+6)%7));
         const types = activeTypes();
+        const ponies = activePonies();
         let html = [&#x27;man&#x27;,&#x27;tir&#x27;,&#x27;ons&#x27;,&#x27;tor&#x27;,&#x27;fre&#x27;,&#x27;lør&#x27;,&#x27;søn&#x27;].map(d=&gt;`&lt;div class=&quot;vc-weekday text-small&quot; role=&quot;columnheader&quot;&gt;${d}&lt;/div&gt;`).join(&#x27;&#x27;);
         const today = iso(new Date());
         for(let i=0;i&lt;42;i++) {
           const d=new Date(start); d.setDate(start.getDate()+i); const ds=iso(d);
-          const dayEvents=events.filter(e=&gt;e.date===ds&amp;&amp;types.has(e.type)).sort((a,b)=&gt;(a.time||&#x27;&#x27;).localeCompare(b.time||&#x27;&#x27;));
-          html += `&lt;div class=&quot;vc-day${d.getMonth()!==view.getMonth()?&#x27; is-other&#x27;:&#x27;&#x27;}${ds===today?&#x27; is-today&#x27;:&#x27;&#x27;}&quot; role=&quot;gridcell&quot; data-date=&quot;${ds}&quot;&gt;&lt;div class=&quot;vc-number&quot;&gt;${d.getDate()}&lt;/div&gt;${dayEvents.map(eventButton).join(&#x27;&#x27;)}&lt;/div&gt;`;
+          const dayEvents=events.filter(e=&gt;occursOn(e,ds)&amp;&amp;types.has(e.type)&amp;&amp;matchesPony(e,ponies)).sort((a,b)=&gt;(a.time||&#x27;&#x27;).localeCompare(b.time||&#x27;&#x27;));
+          html += `&lt;div class=&quot;vc-day${d.getMonth()!==view.getMonth()?&#x27; is-other&#x27;:&#x27;&#x27;}${ds===today?&#x27; is-today&#x27;:&#x27;&#x27;}&quot; role=&quot;gridcell&quot; data-date=&quot;${ds}&quot;&gt;&lt;div class=&quot;vc-number&quot;&gt;${d.getDate()}&lt;/div&gt;${dayEvents.map(e=&gt;eventButton(e)).join(&#x27;&#x27;)}&lt;/div&gt;`;
         }
         grid.innerHTML=html;
-        const inMonth=events.filter(e=&gt;e.date.startsWith(`${view.getFullYear()}-${String(view.getMonth()+1).padStart(2,&#x27;0&#x27;)}`)&amp;&amp;types.has(e.type)).sort((a,b)=&gt;(a.date+a.time).localeCompare(b.date+b.time));
-        const groups={}; inMonth.forEach(e=&gt;(groups[e.date] ||= []).push(e));
-        list.innerHTML=Object.keys(groups).length?Object.entries(groups).map(([date,es])=&gt;{const d=new Date(date+&#x27;T12:00:00&#x27;);return `&lt;div class=&quot;vc-list-day&quot;&gt;&lt;div class=&quot;vc-list-date&quot;&gt;&lt;strong&gt;${d.getDate()}&lt;/strong&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;${new Intl.DateTimeFormat(&#x27;da-DK&#x27;,{weekday:&#x27;short&#x27;}).format(d)}&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;vc-list-events&quot;&gt;${es.map(eventButton).join(&#x27;&#x27;)}&lt;/div&gt;&lt;/div&gt;`}).join(&#x27;&#x27;):&#x27;&lt;div class=&quot;vc-empty&quot;&gt;Ingen aktiviteter denne måned&lt;/div&gt;&#x27;;
+        const monthStart=iso(first), monthEnd=iso(new Date(view.getFullYear(),view.getMonth()+1,0));
+        const inMonth=events.filter(e=&gt;e.date&lt;=monthEnd&amp;&amp;(e.endDate||e.date)&gt;=monthStart&amp;&amp;types.has(e.type)&amp;&amp;matchesPony(e,ponies)).sort((a,b)=&gt;(a.date+(a.time||&#x27;&#x27;)).localeCompare(b.date+(b.time||&#x27;&#x27;)));
+        list.innerHTML=inMonth.length?inMonth.map(e=&gt;{const startDate=new Date(e.date+&#x27;T12:00:00&#x27;);const end=e.endDate?new Date(e.endDate+&#x27;T12:00:00&#x27;):null;const range=end?`${startDate.getDate()}/${startDate.getMonth()+1}–${end.getDate()}/${end.getMonth()+1}`:`${startDate.getDate()}/${startDate.getMonth()+1}`;return `&lt;div class=&quot;vc-list-day&quot;&gt;&lt;div class=&quot;vc-list-date&quot;&gt;&lt;strong&gt;${range}&lt;/strong&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;${new Intl.DateTimeFormat(&#x27;da-DK&#x27;,{weekday:&#x27;short&#x27;}).format(startDate)}&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;vc-list-events&quot;&gt;${eventButton(e,true)}&lt;/div&gt;&lt;/div&gt;`}).join(&#x27;&#x27;):&#x27;&lt;div class=&quot;vc-empty&quot;&gt;Ingen aktiviteter denne måned&lt;/div&gt;&#x27;;
       }
       function openEditor(e) {
         root.querySelector(&#x27;#vc-form&#x27;).reset();
-        const item=e||{id:&#x27;&#x27;,name:&#x27;&#x27;,type:&#x27;training&#x27;,date:iso(new Date(view.getFullYear(),view.getMonth(),1)),time:&#x27;&#x27;,place:&#x27;&#x27;,note:&#x27;&#x27;};
+        const item=e||{id:&#x27;&#x27;,name:&#x27;&#x27;,pony:&#x27;dobby&#x27;,type:&#x27;training&#x27;,date:iso(new Date(view.getFullYear(),view.getMonth(),1)),endDate:&#x27;&#x27;,time:&#x27;&#x27;,place:&#x27;&#x27;,note:&#x27;&#x27;};
         Object.keys(fields).forEach(k=&gt;fields[k].value=item[k]||&#x27;&#x27;);
         root.querySelector(&#x27;#vc-dialog-title&#x27;).textContent=e?&#x27;Rediger aktivitet&#x27;:&#x27;Ny aktivitet&#x27;;
         root.querySelector(&#x27;#vc-delete&#x27;).style.visibility=e?&#x27;visible&#x27;:&#x27;hidden&#x27;;
@@ -907,11 +942,12 @@ html&gt;body{padding:0}&lt;/style&gt;
       root.querySelector(&#x27;#vc-today&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{view=new Date();view.setDate(1);render();});
       root.querySelector(&#x27;#vc-add&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;openEditor());
       root.querySelectorAll(&#x27;.vc-filter&#x27;).forEach(x=&gt;x.addEventListener(&#x27;change&#x27;,render));
+      root.querySelectorAll(&#x27;.vc-pony-filter&#x27;).forEach(x=&gt;x.addEventListener(&#x27;change&#x27;,render));
       root.addEventListener(&#x27;dblclick&#x27;,ev=&gt;{const day=ev.target.closest(&#x27;.vc-day&#x27;);if(day){openEditor();fields.date.value=day.dataset.date;}});
       root.addEventListener(&#x27;click&#x27;,ev=&gt;{const b=ev.target.closest(&#x27;.vc-event&#x27;);if(b)openEditor(events.find(e=&gt;e.id===b.dataset.id));});
       root.querySelector(&#x27;#vc-cancel&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;dialog.close());
       root.querySelector(&#x27;#vc-delete&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{events=events.filter(e=&gt;e.id!==fields.id.value);save();dialog.close();render();});
-      root.querySelector(&#x27;#vc-form&#x27;).addEventListener(&#x27;submit&#x27;,ev=&gt;{ev.preventDefault();const item={};Object.keys(fields).forEach(k=&gt;item[k]=fields[k].value.trim());if(item.id){events=events.map(e=&gt;e.id===item.id?item:e);}else{item.id=&#x27;e&#x27;+Date.now();events.push(item);}save();dialog.close();view=new Date(item.date+&#x27;T12:00:00&#x27;);view.setDate(1);render();});
+      root.querySelector(&#x27;#vc-form&#x27;).addEventListener(&#x27;submit&#x27;,ev=&gt;{ev.preventDefault();const item={};Object.keys(fields).forEach(k=&gt;item[k]=fields[k].value.trim());if(item.endDate&amp;&amp;item.endDate&lt;item.date){fields.endDate.setCustomValidity(&#x27;Slutdato skal være efter startdato&#x27;);fields.endDate.reportValidity();return;}fields.endDate.setCustomValidity(&#x27;&#x27;);if(item.id){events=events.map(e=&gt;e.id===item.id?item:e);}else{item.id=&#x27;e&#x27;+Date.now();events.push(item);}save();dialog.close();view=new Date(item.date+&#x27;T12:00:00&#x27;);view.setDate(1);render();});
       render();
     })();
   &lt;/script&gt;
