@@ -754,6 +754,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px; flex-wrap:wrap; }
     #victoria-calendar .vc-title { display:flex; align-items:center; gap:10px; }
     #victoria-calendar .vc-title h2 { margin:0; }
+    #victoria-calendar .vc-header-actions { display:flex; gap:8px; flex-wrap:wrap; }
     #victoria-calendar .vc-mark { width:34px; height:34px; display:grid; place-items:center; border-radius:50%; background:color-mix(in srgb, var(--viz-series-1) 18%, transparent); color:var(--foreground); }
     #victoria-calendar .vc-nav { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
     #victoria-calendar .vc-filters { margin-bottom:10px; }
@@ -776,7 +777,9 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-event { width:100%; display:flex; align-items:flex-start; gap:6px; padding:5px 6px; margin-top:3px; border:0; border-radius:6px; background:color-mix(in srgb, var(--muted) 55%, transparent); color:var(--foreground); text-align:left; cursor:pointer; }
     #victoria-calendar .vc-event:hover { background:var(--accent); color:var(--accent-foreground); }
     #victoria-calendar .vc-event-copy { min-width:0; display:grid; gap:1px; }
+    #victoria-calendar .vc-event-top { min-width:0; display:flex; align-items:center; gap:5px; }
     #victoria-calendar .vc-event-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    #victoria-calendar .vc-event-top .viz-badge { flex:none; }
     #victoria-calendar .vc-event-meta { color:var(--muted-foreground); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     #victoria-calendar .vc-list { display:block; margin-top:18px; }
     #victoria-calendar .vc-list h3 { margin:0 0 6px; }
@@ -795,6 +798,8 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-actions { display:flex; justify-content:flex-end; gap:8px; flex-wrap:wrap; margin-top:5px; }
     #victoria-calendar .vc-delete { margin-right:auto; }
     #victoria-calendar .vc-hint { margin:0; color:var(--muted-foreground); }
+    #victoria-calendar .vc-goals { display:grid; gap:9px; padding-left:22px; margin:12px 0 18px; }
+    #victoria-calendar .vc-goal-footer { display:flex; justify-content:flex-end; }
     @media (max-width:600px) {
       #victoria-calendar .vc-grid { display:none; }
       #victoria-calendar .vc-list-day { grid-template-columns:54px 1fr; gap:10px; padding:12px 0; }
@@ -806,7 +811,10 @@ html&gt;body{padding:0}&lt;/style&gt;
 
   &lt;div class=&quot;vc-header&quot;&gt;
     &lt;div class=&quot;vc-title&quot;&gt;&lt;span class=&quot;vc-mark&quot;&gt;&lt;i data-lucide=&quot;calendar-days&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;h2&gt;Victoria ride- og stævnekalender&lt;/h2&gt;&lt;/div&gt;
-    &lt;button class=&quot;btn btn-primary&quot; id=&quot;vc-add&quot; type=&quot;button&quot;&gt;&lt;i data-lucide=&quot;plus&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; Ny aktivitet&lt;/button&gt;
+    &lt;div class=&quot;vc-header-actions&quot;&gt;
+      &lt;button class=&quot;btn&quot; id=&quot;vc-goals-open&quot; type=&quot;button&quot;&gt;&lt;i data-lucide=&quot;target&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; Målsætning&lt;/button&gt;
+      &lt;button class=&quot;btn btn-primary&quot; id=&quot;vc-add&quot; type=&quot;button&quot;&gt;&lt;i data-lucide=&quot;plus&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; Ny aktivitet&lt;/button&gt;
+    &lt;/div&gt;
   &lt;/div&gt;
   &lt;div class=&quot;vc-nav&quot;&gt;
     &lt;button class=&quot;btn btn-ghost&quot; id=&quot;vc-prev&quot; type=&quot;button&quot; aria-label=&quot;Forrige måned&quot;&gt;&lt;i data-lucide=&quot;chevron-left&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/button&gt;
@@ -827,6 +835,21 @@ html&gt;body{padding:0}&lt;/style&gt;
   &lt;div class=&quot;vc-grid&quot; id=&quot;vc-grid&quot; role=&quot;grid&quot; aria-label=&quot;Månedskalender&quot;&gt;&lt;/div&gt;
   &lt;div class=&quot;vc-list&quot; aria-label=&quot;Aktiviteter denne måned&quot;&gt;&lt;h3&gt;Månedens aktiviteter&lt;/h3&gt;&lt;div id=&quot;vc-list&quot;&gt;&lt;/div&gt;&lt;/div&gt;
 
+  &lt;dialog id=&quot;vc-goals-dialog&quot;&gt;
+    &lt;h3&gt;Målsætning for Victoria &amp;amp; Double&lt;/h3&gt;
+    &lt;p class=&quot;vc-hint&quot;&gt;Strategien for resten af 2026:&lt;/p&gt;
+    &lt;ol class=&quot;vc-goals&quot;&gt;
+      &lt;li&gt;&lt;strong&gt;PRI 69 %+&lt;/strong&gt; · opnå B-kvalifikation med to forsøg i august&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;Store Hestedag&lt;/strong&gt; · skifte fokus fra PRI til et sikkert PRT-ridt&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;Karlslunde&lt;/strong&gt; · stabil PRT-start efter Store Hestedag&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;ECCO Cup, Solrød ⭐&lt;/strong&gt; · efterårets hovedmål, flot PRT og helst videre til Kür&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;Midtsjælland&lt;/strong&gt; · overgang fra PRT mod PRM&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;B-stævner + PRM&lt;/strong&gt; · videre mod A-ekvipage 🎯&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;p class=&quot;text-small text-muted&quot;&gt;Åbent punkt: stævne nr. 2 i august skal helst findes på Sjælland.&lt;/p&gt;
+    &lt;div class=&quot;vc-goal-footer&quot;&gt;&lt;button class=&quot;btn btn-primary&quot; id=&quot;vc-goals-close&quot; type=&quot;button&quot;&gt;Luk&lt;/button&gt;&lt;/div&gt;
+  &lt;/dialog&gt;
+
   &lt;dialog id=&quot;vc-dialog&quot;&gt;
     &lt;form class=&quot;vc-form&quot; id=&quot;vc-form&quot;&gt;
       &lt;h3 id=&quot;vc-dialog-title&quot;&gt;Ny aktivitet&lt;/h3&gt;
@@ -835,6 +858,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       &lt;label class=&quot;form-label&quot;&gt;Aktivitet&lt;input class=&quot;form-control&quot; id=&quot;vc-name&quot; required placeholder=&quot;Fx dressurtræning&quot;&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Pony&lt;select class=&quot;form-select&quot; id=&quot;vc-pony&quot;&gt;&lt;option value=&quot;dobby&quot;&gt;Dobby / Double&lt;/option&gt;&lt;option value=&quot;rumle&quot;&gt;Rumle&lt;/option&gt;&lt;option value=&quot;both&quot;&gt;Begge ponyer&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Type&lt;select class=&quot;form-select&quot; id=&quot;vc-type&quot;&gt;&lt;option value=&quot;training&quot;&gt;Træning&lt;/option&gt;&lt;option value=&quot;competition&quot;&gt;Stævne&lt;/option&gt;&lt;option value=&quot;care&quot;&gt;Pasning / ophold&lt;/option&gt;&lt;option value=&quot;off&quot;&gt;Ferie / fri&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
+      &lt;label class=&quot;form-label&quot;&gt;Status&lt;select class=&quot;form-select&quot; id=&quot;vc-status&quot;&gt;&lt;option value=&quot;&quot;&gt;Ingen status&lt;/option&gt;&lt;option value=&quot;prebooked&quot;&gt;PRE-BOOKET&lt;/option&gt;&lt;option value=&quot;confirmed&quot;&gt;Bekræftet&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Dato&lt;input class=&quot;form-control&quot; id=&quot;vc-date&quot; type=&quot;date&quot; required&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Slutdato &lt;span class=&quot;text-muted&quot;&gt;(valgfri)&lt;/span&gt;&lt;input class=&quot;form-control&quot; id=&quot;vc-end-date&quot; type=&quot;date&quot;&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Tid&lt;input class=&quot;form-control&quot; id=&quot;vc-time&quot; type=&quot;time&quot;&gt;&lt;/label&gt;
@@ -867,12 +891,18 @@ html&gt;body{padding:0}&lt;/style&gt;
         {id:&#x27;s12&#x27;,date:&#x27;2026-06-21&#x27;,name:&#x27;Stævne&#x27;,type:&#x27;competition&#x27;,place:&#x27;&#x27;,note:&#x27;&#x27;},
         {id:&#x27;s13&#x27;,date:&#x27;2026-06-27&#x27;,name:&#x27;Stævne&#x27;,type:&#x27;competition&#x27;,place:&#x27;&#x27;,note:&#x27;&#x27;},
         {id:&#x27;s14&#x27;,date:&#x27;2026-06-28&#x27;,name:&#x27;Stævne&#x27;,type:&#x27;competition&#x27;,place:&#x27;&#x27;,note:&#x27;&#x27;},
-        {id:&#x27;shd1&#x27;,date:&#x27;2026-09-04&#x27;,name:&#x27;Store Hestedag Dressur&#x27;,type:&#x27;competition&#x27;,place:&#x27;Store Hestedag&#x27;,note:&#x27;Klasse 7 · LA6-PRM A Pony&#x27;},
-        {id:&#x27;shd2&#x27;,date:&#x27;2026-09-05&#x27;,name:&#x27;Store Hestedag Dressur&#x27;,type:&#x27;competition&#x27;,place:&#x27;Store Hestedag&#x27;,note:&#x27;Klasse 23 · Guld Cup LA6-PRM A Pony · Indledende&#x27;},
-        {id:&#x27;shd3&#x27;,date:&#x27;2026-09-06&#x27;,name:&#x27;Store Hestedag Dressur&#x27;,type:&#x27;competition&#x27;,place:&#x27;Store Hestedag&#x27;,note:&#x27;Klasse 42 · Guld Cup LA6-PRM A Pony · Finale&#x27;}
+        {id:&#x27;shd1&#x27;,date:&#x27;2026-09-04&#x27;,name:&#x27;Store Hestedag · PRT&#x27;,type:&#x27;competition&#x27;,status:&#x27;prebooked&#x27;,place:&#x27;Dyrskuepladsen, Roskilde&#x27;,note:&#x27;C/D/R · PRT fredag · Første store pejlemærke&#x27;},
+        {id:&#x27;shd2&#x27;,date:&#x27;2026-09-05&#x27;,name:&#x27;Store Hestedag · Guld Cup&#x27;,type:&#x27;competition&#x27;,status:&#x27;prebooked&#x27;,place:&#x27;Dyrskuepladsen, Roskilde&#x27;,note:&#x27;Guld Cup lørdag · Første store pejlemærke&#x27;},
+        {id:&#x27;shd3&#x27;,date:&#x27;2026-09-06&#x27;,name:&#x27;Store Hestedag · Guld Cup&#x27;,type:&#x27;competition&#x27;,status:&#x27;prebooked&#x27;,place:&#x27;Dyrskuepladsen, Roskilde&#x27;,note:&#x27;Guld Cup søndag · Første store pejlemærke&#x27;}
       ];
       seed.forEach(item =&gt; item.pony = &#x27;dobby&#x27;);
       seed.push(
+        {id:&#x27;plan-suhrsminde&#x27;,date:&#x27;2026-08-15&#x27;,endDate:&#x27;2026-08-16&#x27;,name:&#x27;Suhrsminde Rideklub&#x27;,type:&#x27;competition&#x27;,status:&#x27;prebooked&#x27;,pony:&#x27;dobby&#x27;,place:&#x27;Møllevej 15, 4891 Toreby L&#x27;,note:&#x27;C/D · PRI · Første målrettede forsøg på 69 %+ og B-kvalifikation&#x27;},
+        {id:&#x27;plan-aug-extra&#x27;,date:&#x27;2026-08-29&#x27;,name:&#x27;Ekstra C-stævne på Sjælland&#x27;,type:&#x27;competition&#x27;,status:&#x27;prebooked&#x27;,pony:&#x27;dobby&#x27;,place:&#x27;Sjælland · lokation afklares&#x27;,note:&#x27;PRI · Andet forsøg på 69 %+ før Store Hestedag · foreløbig dato&#x27;},
+        {id:&#x27;plan-karlslunde&#x27;,date:&#x27;2026-09-11&#x27;,endDate:&#x27;2026-09-13&#x27;,name:&#x27;Karlslunde Rideklub&#x27;,type:&#x27;competition&#x27;,status:&#x27;prebooked&#x27;,pony:&#x27;dobby&#x27;,place:&#x27;Karlslunde Landevej 34, 2690 Karlslunde&#x27;,note:&#x27;C/D · PRT hvis propositionerne indeholder den ønskede ponyklasse · Stabil PRT-start&#x27;},
+        {id:&#x27;plan-solrod&#x27;,date:&#x27;2026-10-01&#x27;,endDate:&#x27;2026-10-04&#x27;,name:&#x27;ECCO Cup · Solrød Rideklub ⭐&#x27;,type:&#x27;competition&#x27;,status:&#x27;prebooked&#x27;,pony:&#x27;dobby&#x27;,place:&#x27;Nordmarksvej 12, 2680 Solrød Strand&#x27;,note:&#x27;B · PRT + evt. Kür · 3. kvalifikation · efterårets hovedmål&#x27;},
+        {id:&#x27;plan-midtsjaelland&#x27;,date:&#x27;2026-10-25&#x27;,name:&#x27;Midtsjællands Rideklub&#x27;,type:&#x27;competition&#x27;,status:&#x27;prebooked&#x27;,pony:&#x27;dobby&#x27;,place:&#x27;Midtsjællands Rideklub&#x27;,note:&#x27;C · PRT / PRM · Første start efter ECCO og overgang mod PRM&#x27;},
+        {id:&#x27;plan-late-year&#x27;,date:&#x27;2026-11-15&#x27;,name:&#x27;Sjællandsk C/B-stævne&#x27;,type:&#x27;competition&#x27;,status:&#x27;prebooked&#x27;,pony:&#x27;dobby&#x27;,place:&#x27;Sjælland · vælges senere&#x27;,note:&#x27;PRT / PRM · Videre mod A-ekvipage · dato i november/december afklares&#x27;},
         {id:&#x27;summer-transport&#x27;,date:&#x27;2026-07-09&#x27;,name:&#x27;Ponyerne køres til Morten&#x27;,type:&#x27;care&#x27;,pony:&#x27;both&#x27;,place:&#x27;Mortens Place&#x27;,note:&#x27;Rumle og Dobby. Husk eventuelt indkøb af foder m.m.&#x27;},
         {id:&#x27;summer-ride&#x27;,date:&#x27;2026-07-10&#x27;,name:&#x27;Ridning hos Morten&#x27;,type:&#x27;training&#x27;,pony:&#x27;both&#x27;,place:&#x27;Mortens Place&#x27;,note:&#x27;Alicia er med. Tøm bokse på Lykkesholm og tag foder med til Morten bagefter.&#x27;},
         {id:&#x27;summer-stay&#x27;,date:&#x27;2026-07-11&#x27;,endDate:&#x27;2026-08-09&#x27;,name:&#x27;Ponyerne hos Mortens Place&#x27;,type:&#x27;care&#x27;,pony:&#x27;both&#x27;,place:&#x27;Mortens Place&#x27;,note:&#x27;Rumle og Dobby opholder sig hos Morten i hele perioden.&#x27;},
@@ -889,8 +919,9 @@ html&gt;body{padding:0}&lt;/style&gt;
       let events;
       try { events = JSON.parse(localStorage.getItem(key)) || seed; } catch (_) { events = seed; }
       events = events.map(item =&gt; ({...item,pony:item.pony || &#x27;dobby&#x27;}));
-      seed.filter(item =&gt; item.id.startsWith(&#x27;shd&#x27;) || item.id.startsWith(&#x27;morten-&#x27;) || item.id.startsWith(&#x27;summer-&#x27;)).forEach(item =&gt; {
-        if (!events.some(existing =&gt; existing.id === item.id)) events.push(item);
+      seed.filter(item =&gt; item.id.startsWith(&#x27;shd&#x27;) || item.id.startsWith(&#x27;plan-&#x27;) || item.id.startsWith(&#x27;morten-&#x27;) || item.id.startsWith(&#x27;summer-&#x27;)).forEach(item =&gt; {
+        const index = events.findIndex(existing =&gt; existing.id === item.id);
+        if (index &gt;= 0) events[index] = {...events[index],...item}; else events.push(item);
       });
       let view = new Date();
       view.setDate(1);
@@ -898,9 +929,11 @@ html&gt;body{padding:0}&lt;/style&gt;
       const grid = root.querySelector(&#x27;#vc-grid&#x27;);
       const list = root.querySelector(&#x27;#vc-list&#x27;);
       const dialog = root.querySelector(&#x27;#vc-dialog&#x27;);
-      const fields = { id:root.querySelector(&#x27;#vc-id&#x27;), name:root.querySelector(&#x27;#vc-name&#x27;), pony:root.querySelector(&#x27;#vc-pony&#x27;), type:root.querySelector(&#x27;#vc-type&#x27;), date:root.querySelector(&#x27;#vc-date&#x27;), endDate:root.querySelector(&#x27;#vc-end-date&#x27;), time:root.querySelector(&#x27;#vc-time&#x27;), place:root.querySelector(&#x27;#vc-place&#x27;), note:root.querySelector(&#x27;#vc-note&#x27;) };
+      const goalsDialog = root.querySelector(&#x27;#vc-goals-dialog&#x27;);
+      const fields = { id:root.querySelector(&#x27;#vc-id&#x27;), name:root.querySelector(&#x27;#vc-name&#x27;), pony:root.querySelector(&#x27;#vc-pony&#x27;), type:root.querySelector(&#x27;#vc-type&#x27;), status:root.querySelector(&#x27;#vc-status&#x27;), date:root.querySelector(&#x27;#vc-date&#x27;), endDate:root.querySelector(&#x27;#vc-end-date&#x27;), time:root.querySelector(&#x27;#vc-time&#x27;), place:root.querySelector(&#x27;#vc-place&#x27;), note:root.querySelector(&#x27;#vc-note&#x27;) };
       const iso = d =&gt; `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,&#x27;0&#x27;)}-${String(d.getDate()).padStart(2,&#x27;0&#x27;)}`;
       const ponyLabels = {rumle:&#x27;Rumle&#x27;,dobby:&#x27;Dobby&#x27;,both:&#x27;Begge&#x27;};
+      const statusLabels = {prebooked:&#x27;PRE-BOOKET&#x27;,confirmed:&#x27;BEKRÆFTET&#x27;};
       const activeTypes = () =&gt; new Set([...root.querySelectorAll(&#x27;.vc-filter:checked&#x27;)].map(x=&gt;x.value));
       const activePonies = () =&gt; new Set([...root.querySelectorAll(&#x27;.vc-pony-filter:checked&#x27;)].map(x=&gt;x.value));
       const matchesPony = (e,ponies) =&gt; e.pony === &#x27;both&#x27; ? ponies.size &gt; 0 : ponies.has(e.pony);
@@ -909,7 +942,8 @@ html&gt;body{padding:0}&lt;/style&gt;
       const esc = value =&gt; String(value || &#x27;&#x27;).replace(/[&amp;&lt;&gt;&quot;&#x27;]/g,ch=&gt;({&#x27;&amp;&#x27;:&#x27;&amp;amp;&#x27;,&#x27;&lt;&#x27;:&#x27;&amp;lt;&#x27;,&#x27;&gt;&#x27;:&#x27;&amp;gt;&#x27;,&#x27;&quot;&#x27;:&#x27;&amp;quot;&#x27;,&quot;&#x27;&quot;:&#x27;&amp;#39;&#x27;}[ch]));
       const eventButton = (e,detail=false) =&gt; {
         const meta = [ponyLabels[e.pony],e.time,e.place,detail ? e.note : &#x27;&#x27;].filter(Boolean).join(&#x27; · &#x27;);
-        return `&lt;button type=&quot;button&quot; class=&quot;vc-event&quot; data-id=&quot;${esc(e.id)}&quot; aria-label=&quot;Rediger ${esc(e.name)}&quot;&gt;&lt;span class=&quot;vc-dot ${esc(e.type)}&quot;&gt;&lt;/span&gt;&lt;span class=&quot;vc-event-copy&quot;&gt;&lt;span class=&quot;vc-event-name&quot;&gt;${esc(e.name)}&lt;/span&gt;&lt;span class=&quot;vc-event-meta text-small&quot;&gt;${esc(meta)}&lt;/span&gt;&lt;/span&gt;&lt;/button&gt;`;
+        const status = statusLabels[e.status] ? `&lt;span class=&quot;viz-badge&quot;&gt;${statusLabels[e.status]}&lt;/span&gt;` : &#x27;&#x27;;
+        return `&lt;button type=&quot;button&quot; class=&quot;vc-event&quot; data-id=&quot;${esc(e.id)}&quot; aria-label=&quot;Rediger ${esc(e.name)}&quot;&gt;&lt;span class=&quot;vc-dot ${esc(e.type)}&quot;&gt;&lt;/span&gt;&lt;span class=&quot;vc-event-copy&quot;&gt;&lt;span class=&quot;vc-event-top&quot;&gt;&lt;span class=&quot;vc-event-name&quot;&gt;${esc(e.name)}&lt;/span&gt;${status}&lt;/span&gt;&lt;span class=&quot;vc-event-meta text-small&quot;&gt;${esc(meta)}&lt;/span&gt;&lt;/span&gt;&lt;/button&gt;`;
       };
       function render() {
         month.textContent = new Intl.DateTimeFormat(&#x27;da-DK&#x27;,{month:&#x27;long&#x27;,year:&#x27;numeric&#x27;}).format(view);
@@ -931,7 +965,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       }
       function openEditor(e) {
         root.querySelector(&#x27;#vc-form&#x27;).reset();
-        const item=e||{id:&#x27;&#x27;,name:&#x27;&#x27;,pony:&#x27;dobby&#x27;,type:&#x27;training&#x27;,date:iso(new Date(view.getFullYear(),view.getMonth(),1)),endDate:&#x27;&#x27;,time:&#x27;&#x27;,place:&#x27;&#x27;,note:&#x27;&#x27;};
+        const item=e||{id:&#x27;&#x27;,name:&#x27;&#x27;,pony:&#x27;dobby&#x27;,type:&#x27;training&#x27;,status:&#x27;&#x27;,date:iso(new Date(view.getFullYear(),view.getMonth(),1)),endDate:&#x27;&#x27;,time:&#x27;&#x27;,place:&#x27;&#x27;,note:&#x27;&#x27;};
         Object.keys(fields).forEach(k=&gt;fields[k].value=item[k]||&#x27;&#x27;);
         root.querySelector(&#x27;#vc-dialog-title&#x27;).textContent=e?&#x27;Rediger aktivitet&#x27;:&#x27;Ny aktivitet&#x27;;
         root.querySelector(&#x27;#vc-delete&#x27;).style.visibility=e?&#x27;visible&#x27;:&#x27;hidden&#x27;;
@@ -941,6 +975,8 @@ html&gt;body{padding:0}&lt;/style&gt;
       root.querySelector(&#x27;#vc-next&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{view.setMonth(view.getMonth()+1);render();});
       root.querySelector(&#x27;#vc-today&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{view=new Date();view.setDate(1);render();});
       root.querySelector(&#x27;#vc-add&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;openEditor());
+      root.querySelector(&#x27;#vc-goals-open&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;goalsDialog.showModal());
+      root.querySelector(&#x27;#vc-goals-close&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;goalsDialog.close());
       root.querySelectorAll(&#x27;.vc-filter&#x27;).forEach(x=&gt;x.addEventListener(&#x27;change&#x27;,render));
       root.querySelectorAll(&#x27;.vc-pony-filter&#x27;).forEach(x=&gt;x.addEventListener(&#x27;change&#x27;,render));
       root.addEventListener(&#x27;dblclick&#x27;,ev=&gt;{const day=ev.target.closest(&#x27;.vc-day&#x27;);if(day){openEditor();fields.date.value=day.dataset.date;}});
