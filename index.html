@@ -791,13 +791,15 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-list .vc-event-name { white-space:normal; }
     #victoria-calendar .vc-list .vc-event-meta { white-space:normal; }
     #victoria-calendar .vc-empty { color:var(--muted-foreground); padding:30px 0; text-align:center; }
-    #victoria-calendar dialog { color:var(--popover-foreground); background:var(--popover); border:1px solid var(--border); border-radius:12px; width:min(430px,calc(100% - 28px)); padding:20px; }
+    #victoria-calendar dialog { color:var(--popover-foreground); background:var(--popover); border:1px solid var(--border); border-radius:12px; width:min(430px,calc(100% - 28px)); max-height:calc(100vh - 28px); padding:14px; overflow:auto; }
     #victoria-calendar dialog::backdrop { background:color-mix(in srgb, var(--foreground) 32%, transparent); }
-    #victoria-calendar .vc-form { display:grid; gap:13px; }
+    #victoria-calendar .vc-form { display:grid; gap:7px; }
+    #victoria-calendar .vc-form &gt; .form-label { margin-bottom:0; }
+    #victoria-calendar .vc-form textarea.form-control { min-height:52px; padding-top:6px; padding-bottom:6px; }
     #victoria-calendar .vc-form h3 { margin:0 0 2px; }
-    #victoria-calendar .vc-form-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; position:sticky; top:0; z-index:2; padding-bottom:10px; background:var(--popover); border-bottom:1px solid var(--border); }
+    #victoria-calendar .vc-form-head { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; position:sticky; top:0; z-index:2; padding-bottom:7px; background:var(--popover); border-bottom:1px solid var(--border); }
     #victoria-calendar .vc-top-actions { display:flex; justify-content:flex-end; gap:8px; flex-shrink:0; }
-    #victoria-calendar .vc-actions { display:flex; justify-content:flex-end; gap:8px; flex-wrap:wrap; margin-top:5px; }
+    #victoria-calendar .vc-actions { display:flex; justify-content:flex-end; gap:8px; flex-wrap:wrap; margin-top:1px; }
     #victoria-calendar .vc-delete { margin-right:auto; }
     #victoria-calendar .vc-hint { margin:0; color:var(--muted-foreground); }
     @media (max-width:560px) {
