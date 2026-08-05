@@ -774,13 +774,20 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-day.is-other { color:var(--muted-foreground); background:color-mix(in srgb, var(--muted) 34%, transparent); }
     #victoria-calendar .vc-day.is-today .vc-number { background:var(--primary); color:var(--primary-foreground); }
     #victoria-calendar .vc-number { width:25px; height:25px; display:grid; place-items:center; border-radius:50%; margin-bottom:5px; }
-    #victoria-calendar .vc-event { width:100%; display:flex; align-items:flex-start; gap:6px; padding:5px 6px; margin-top:3px; border:0; border-radius:6px; background:color-mix(in srgb, var(--muted) 55%, transparent); color:var(--foreground); text-align:left; cursor:pointer; }
-    #victoria-calendar .vc-event:hover { background:var(--accent); color:var(--accent-foreground); }
+    #victoria-calendar .vc-event { width:100%; display:flex; align-items:flex-start; gap:6px; padding:5px 6px; margin-top:3px; border:1px solid transparent; border-left-width:4px; border-radius:6px; color:var(--foreground); text-align:left; cursor:pointer; }
+    #victoria-calendar .vc-event.status-unbooked { border-color:#dc6868; background:#fff0f0; }
+    #victoria-calendar .vc-event.status-prebooked { border-color:#d5a900; background:#fff8d6; }
+    #victoria-calendar .vc-event.status-confirmed { border-color:#3a9b61; background:#e8f7ed; }
+    #victoria-calendar .vc-event:hover { filter:brightness(.97); }
     #victoria-calendar .vc-event-copy { min-width:0; display:grid; gap:1px; }
-    #victoria-calendar .vc-event-top { min-width:0; display:flex; align-items:center; gap:5px; }
-    #victoria-calendar .vc-event-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-    #victoria-calendar .vc-event-top .viz-badge { flex:none; }
+    #victoria-calendar .vc-event-top { min-width:0; display:grid; gap:3px; }
+    #victoria-calendar .vc-event-name { min-width:0; overflow:hidden; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-height:1.2; }
+    #victoria-calendar .vc-event-top .viz-badge { justify-self:start; padding:2px 5px; font-size:10px; }
+    #victoria-calendar .status-unbooked .viz-badge { color:#8f2020; background:#ffd6d6; }
+    #victoria-calendar .status-prebooked .viz-badge { color:#725700; background:#ffe784; }
+    #victoria-calendar .status-confirmed .viz-badge { color:#17653a; background:#bfe8cc; }
     #victoria-calendar .vc-event-meta { color:var(--muted-foreground); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    #victoria-calendar .vc-event-pony { color:var(--foreground); font-weight:650; }
     #victoria-calendar .vc-list { display:block; margin-top:18px; }
     #victoria-calendar .vc-list h3 { margin:0 0 6px; }
     #victoria-calendar .vc-list-day { display:grid; grid-template-columns:62px 1fr; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
@@ -1000,7 +1007,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       const fields = { id:root.querySelector(&#x27;#vc-id&#x27;), name:root.querySelector(&#x27;#vc-name&#x27;), pony:root.querySelector(&#x27;#vc-pony&#x27;), type:root.querySelector(&#x27;#vc-type&#x27;), status:root.querySelector(&#x27;#vc-status&#x27;), date:root.querySelector(&#x27;#vc-date&#x27;), endDate:root.querySelector(&#x27;#vc-end-date&#x27;), time:root.querySelector(&#x27;#vc-time&#x27;), place:root.querySelector(&#x27;#vc-place&#x27;), note:root.querySelector(&#x27;#vc-note&#x27;) };
       const iso = d =&gt; `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,&#x27;0&#x27;)}-${String(d.getDate()).padStart(2,&#x27;0&#x27;)}`;
       const ponyLabels = {rumle:&#x27;Rumle&#x27;,dobby:&#x27;Dobby&#x27;,both:&#x27;Begge&#x27;};
-      const statusLabels = {prebooked:&#x27;PRE-BOOKET&#x27;,confirmed:&#x27;BEKRÆFTET&#x27;};
+      const statusLabels = {&#x27;&#x27;:&#x27;IKKE BOOKET&#x27;,prebooked:&#x27;PRE-BOOKET&#x27;,confirmed:&#x27;BEKRÆFTET&#x27;};
       const activeTypes = () =&gt; new Set([...root.querySelectorAll(&#x27;.vc-filter:checked&#x27;)].map(x=&gt;x.value));
       const activePonies = () =&gt; new Set([...root.querySelectorAll(&#x27;.vc-pony-filter:checked&#x27;)].map(x=&gt;x.value));
       const matchesPony = (e,ponies) =&gt; e.pony === &#x27;both&#x27; ? ponies.size &gt; 0 : ponies.has(e.pony);
@@ -1050,9 +1057,11 @@ html&gt;body{padding:0}&lt;/style&gt;
       const esc = value =&gt; String(value || &#x27;&#x27;).replace(/[&amp;&lt;&gt;&quot;&#x27;]/g,ch=&gt;({&#x27;&amp;&#x27;:&#x27;&amp;amp;&#x27;,&#x27;&lt;&#x27;:&#x27;&amp;lt;&#x27;,&#x27;&gt;&#x27;:&#x27;&amp;gt;&#x27;,&#x27;&quot;&#x27;:&#x27;&amp;quot;&#x27;,&quot;&#x27;&quot;:&#x27;&amp;#39;&#x27;}[ch]));
       const eventButton = (e,detail=false) =&gt; {
         const author=detail &amp;&amp; (e.updatedBy||e.createdBy) ? `Senest: ${e.updatedBy||e.createdBy}` : &#x27;&#x27;;
-        const meta = [ponyLabels[e.pony],e.time,e.place,detail ? e.note : &#x27;&#x27;,author].filter(Boolean).join(&#x27; · &#x27;);
-        const status = statusLabels[e.status] ? `&lt;span class=&quot;viz-badge&quot;&gt;${statusLabels[e.status]}&lt;/span&gt;` : &#x27;&#x27;;
-        return `&lt;button type=&quot;button&quot; class=&quot;vc-event&quot; data-id=&quot;${esc(e.id)}&quot; aria-label=&quot;Rediger ${esc(e.name)}&quot;&gt;&lt;span class=&quot;vc-dot ${esc(e.type)}&quot;&gt;&lt;/span&gt;&lt;span class=&quot;vc-event-copy&quot;&gt;&lt;span class=&quot;vc-event-top&quot;&gt;&lt;span class=&quot;vc-event-name&quot;&gt;${esc(e.name)}&lt;/span&gt;${status}&lt;/span&gt;&lt;span class=&quot;vc-event-meta text-small&quot;&gt;${esc(meta)}&lt;/span&gt;&lt;/span&gt;&lt;/button&gt;`;
+        const meta = [e.time,e.place,detail ? e.note : &#x27;&#x27;,author].filter(Boolean).join(&#x27; · &#x27;);
+        const statusKey=e.status||&#x27;unbooked&#x27;;
+        const status = `&lt;span class=&quot;viz-badge&quot;&gt;${statusLabels[e.status||&#x27;&#x27;]}&lt;/span&gt;`;
+        const metaText=meta ? ` · ${esc(meta)}` : &#x27;&#x27;;
+        return `&lt;button type=&quot;button&quot; class=&quot;vc-event status-${statusKey}&quot; data-id=&quot;${esc(e.id)}&quot; aria-label=&quot;Rediger ${esc(e.name)}&quot; title=&quot;${esc(e.name)} · ${esc(ponyLabels[e.pony])} · ${esc(statusLabels[e.status||&#x27;&#x27;])}&quot;&gt;&lt;span class=&quot;vc-dot ${esc(e.type)}&quot;&gt;&lt;/span&gt;&lt;span class=&quot;vc-event-copy&quot;&gt;&lt;span class=&quot;vc-event-top&quot;&gt;&lt;span class=&quot;vc-event-name&quot;&gt;${esc(e.name)}&lt;/span&gt;${status}&lt;/span&gt;&lt;span class=&quot;vc-event-meta text-small&quot;&gt;&lt;span class=&quot;vc-event-pony&quot;&gt;${esc(ponyLabels[e.pony])}&lt;/span&gt;${metaText}&lt;/span&gt;&lt;/span&gt;&lt;/button&gt;`;
       };
       function render() {
         month.textContent = new Intl.DateTimeFormat(&#x27;da-DK&#x27;,{month:&#x27;long&#x27;,year:&#x27;numeric&#x27;}).format(view);
