@@ -795,9 +795,16 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar dialog::backdrop { background:color-mix(in srgb, var(--foreground) 32%, transparent); }
     #victoria-calendar .vc-form { display:grid; gap:13px; }
     #victoria-calendar .vc-form h3 { margin:0 0 2px; }
+    #victoria-calendar .vc-form-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; position:sticky; top:0; z-index:2; padding-bottom:10px; background:var(--popover); border-bottom:1px solid var(--border); }
+    #victoria-calendar .vc-top-actions { display:flex; justify-content:flex-end; gap:8px; flex-shrink:0; }
     #victoria-calendar .vc-actions { display:flex; justify-content:flex-end; gap:8px; flex-wrap:wrap; margin-top:5px; }
     #victoria-calendar .vc-delete { margin-right:auto; }
     #victoria-calendar .vc-hint { margin:0; color:var(--muted-foreground); }
+    @media (max-width:560px) {
+      #victoria-calendar .vc-form-head { flex-direction:column; }
+      #victoria-calendar .vc-top-actions { width:100%; }
+      #victoria-calendar .vc-top-actions .btn { flex:1; }
+    }
     #victoria-calendar .vc-goals { display:grid; gap:9px; padding-left:22px; margin:12px 0 18px; }
     #victoria-calendar .vc-goal-footer { display:flex; justify-content:flex-end; }
     @media (max-width:600px) {
@@ -853,8 +860,13 @@ html&gt;body{padding:0}&lt;/style&gt;
 
   &lt;dialog id=&quot;vc-dialog&quot;&gt;
     &lt;form class=&quot;vc-form&quot; id=&quot;vc-form&quot;&gt;
-      &lt;h3 id=&quot;vc-dialog-title&quot;&gt;Ny aktivitet&lt;/h3&gt;
-      &lt;p class=&quot;vc-hint text-small&quot;&gt;Tilføj en aktivitet for Rumle, Dobby eller begge.&lt;/p&gt;
+      &lt;div class=&quot;vc-form-head&quot;&gt;
+        &lt;div&gt;&lt;h3 id=&quot;vc-dialog-title&quot;&gt;Ny aktivitet&lt;/h3&gt;&lt;p class=&quot;vc-hint text-small&quot;&gt;Tilføj en aktivitet for Rumle, Dobby eller begge.&lt;/p&gt;&lt;/div&gt;
+        &lt;div class=&quot;vc-top-actions&quot;&gt;
+          &lt;button class=&quot;btn&quot; id=&quot;vc-cancel&quot; type=&quot;button&quot;&gt;Annuller&lt;/button&gt;
+          &lt;button class=&quot;btn btn-primary&quot; id=&quot;vc-save&quot; type=&quot;button&quot;&gt;Gem&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
       &lt;input type=&quot;hidden&quot; id=&quot;vc-id&quot;&gt;
       &lt;label class=&quot;form-label&quot;&gt;Aktivitet&lt;input class=&quot;form-control&quot; id=&quot;vc-name&quot; required placeholder=&quot;Fx dressurtræning&quot;&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Pony&lt;select class=&quot;form-select&quot; id=&quot;vc-pony&quot;&gt;&lt;option value=&quot;dobby&quot;&gt;Dobby / Double&lt;/option&gt;&lt;option value=&quot;rumle&quot;&gt;Rumle&lt;/option&gt;&lt;option value=&quot;both&quot;&gt;Begge ponyer&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
@@ -867,8 +879,6 @@ html&gt;body{padding:0}&lt;/style&gt;
       &lt;label class=&quot;form-label&quot;&gt;Note&lt;textarea class=&quot;form-control&quot; id=&quot;vc-note&quot; rows=&quot;2&quot; placeholder=&quot;Klasse, træner eller huskeliste&quot;&gt;&lt;/textarea&gt;&lt;/label&gt;
       &lt;div class=&quot;vc-actions&quot;&gt;
         &lt;button class=&quot;btn btn-ghost vc-delete&quot; id=&quot;vc-delete&quot; type=&quot;button&quot;&gt;Slet&lt;/button&gt;
-        &lt;button class=&quot;btn&quot; id=&quot;vc-cancel&quot; type=&quot;button&quot;&gt;Annuller&lt;/button&gt;
-        &lt;button class=&quot;btn btn-primary&quot; id=&quot;vc-save&quot; type=&quot;button&quot;&gt;Gem&lt;/button&gt;
       &lt;/div&gt;
     &lt;/form&gt;
   &lt;/dialog&gt;
