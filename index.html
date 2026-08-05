@@ -799,7 +799,9 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-form h3 { margin:0 0 2px; }
     #victoria-calendar .vc-form-head { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; position:sticky; top:0; z-index:2; padding-bottom:7px; background:var(--popover); border-bottom:1px solid var(--border); }
     #victoria-calendar .vc-top-actions { display:flex; justify-content:flex-end; gap:8px; flex-shrink:0; }
-    #victoria-calendar .vc-close { width:30px; min-width:30px; padding:0; font-size:21px; line-height:1; }
+    #victoria-calendar .vc-close { min-width:54px; }
+    #victoria-calendar .btn-danger { border-color:transparent; color:#fff; background:#c73535; }
+    #victoria-calendar .btn-danger:not(:disabled):hover { background:#a92727; }
     #victoria-calendar .vc-actions { display:flex; justify-content:flex-end; gap:8px; flex-wrap:wrap; margin-top:1px; }
     #victoria-calendar .vc-delete { margin-right:auto; }
     #victoria-calendar .vc-hint { margin:0; color:var(--muted-foreground); }
@@ -807,7 +809,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       #victoria-calendar .vc-form-head { flex-direction:column; }
       #victoria-calendar .vc-top-actions { width:100%; }
       #victoria-calendar .vc-top-actions .btn { flex:1; }
-      #victoria-calendar .vc-top-actions .vc-close { flex:0 0 30px; }
+      #victoria-calendar .vc-top-actions .vc-close { flex:1; }
     }
     #victoria-calendar .vc-goals { display:grid; gap:9px; padding-left:22px; margin:12px 0 18px; }
     #victoria-calendar .vc-goal-footer { display:flex; justify-content:flex-end; }
@@ -885,9 +887,9 @@ html&gt;body{padding:0}&lt;/style&gt;
       &lt;div class=&quot;vc-form-head&quot;&gt;
         &lt;div&gt;&lt;h3 id=&quot;vc-dialog-title&quot;&gt;Ny aktivitet&lt;/h3&gt;&lt;p class=&quot;vc-hint text-small&quot;&gt;Tilføj en aktivitet for Rumle, Dobby eller begge.&lt;/p&gt;&lt;/div&gt;
         &lt;div class=&quot;vc-top-actions&quot;&gt;
-          &lt;button class=&quot;btn&quot; id=&quot;vc-cancel&quot; type=&quot;button&quot;&gt;Annuller&lt;/button&gt;
+          &lt;button class=&quot;btn btn-danger&quot; id=&quot;vc-delete&quot; type=&quot;button&quot;&gt;Slet&lt;/button&gt;
           &lt;button class=&quot;btn btn-primary&quot; id=&quot;vc-save&quot; type=&quot;button&quot;&gt;Gem&lt;/button&gt;
-          &lt;button class=&quot;btn btn-ghost vc-close&quot; id=&quot;vc-close&quot; type=&quot;button&quot; aria-label=&quot;Luk&quot; title=&quot;Luk&quot;&gt;×&lt;/button&gt;
+          &lt;button class=&quot;btn vc-close&quot; id=&quot;vc-close&quot; type=&quot;button&quot;&gt;Luk&lt;/button&gt;
         &lt;/div&gt;
       &lt;/div&gt;
       &lt;input type=&quot;hidden&quot; id=&quot;vc-id&quot;&gt;
@@ -901,9 +903,6 @@ html&gt;body{padding:0}&lt;/style&gt;
       &lt;label class=&quot;form-label&quot;&gt;Sted&lt;input class=&quot;form-control&quot; id=&quot;vc-place&quot; placeholder=&quot;Fx Ballerup Rideklub&quot;&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Note&lt;textarea class=&quot;form-control&quot; id=&quot;vc-note&quot; rows=&quot;2&quot; placeholder=&quot;Klasse, træner eller huskeliste&quot;&gt;&lt;/textarea&gt;&lt;/label&gt;
       &lt;p class=&quot;vc-editor-meta text-small&quot; id=&quot;vc-editor-meta&quot;&gt;&lt;/p&gt;
-      &lt;div class=&quot;vc-actions&quot;&gt;
-        &lt;button class=&quot;btn btn-ghost vc-delete&quot; id=&quot;vc-delete&quot; type=&quot;button&quot;&gt;Slet&lt;/button&gt;
-      &lt;/div&gt;
     &lt;/form&gt;
   &lt;/dialog&gt;
 
@@ -1066,6 +1065,8 @@ html&gt;body{padding:0}&lt;/style&gt;
         const inMonth=events.filter(e=&gt;e.date&lt;=monthEnd&amp;&amp;(e.endDate||e.date)&gt;=monthStart&amp;&amp;types.has(e.type)&amp;&amp;matchesPony(e,ponies)).sort((a,b)=&gt;(a.date+(a.time||&#x27;&#x27;)).localeCompare(b.date+(b.time||&#x27;&#x27;)));
         list.innerHTML=inMonth.length?inMonth.map(e=&gt;{const startDate=new Date(e.date+&#x27;T12:00:00&#x27;);const end=e.endDate?new Date(e.endDate+&#x27;T12:00:00&#x27;):null;const range=end?`${startDate.getDate()}/${startDate.getMonth()+1}–${end.getDate()}/${end.getMonth()+1}`:`${startDate.getDate()}/${startDate.getMonth()+1}`;return `&lt;div class=&quot;vc-list-day&quot;&gt;&lt;div class=&quot;vc-list-date&quot;&gt;&lt;strong&gt;${range}&lt;/strong&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;${new Intl.DateTimeFormat(&#x27;da-DK&#x27;,{weekday:&#x27;short&#x27;}).format(startDate)}&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;vc-list-events&quot;&gt;${eventButton(e,true)}&lt;/div&gt;&lt;/div&gt;`}).join(&#x27;&#x27;):&#x27;&lt;div class=&quot;vc-empty&quot;&gt;Ingen aktiviteter denne måned&lt;/div&gt;&#x27;;
       }
+      const formState = () =&gt; JSON.stringify(Object.fromEntries(Object.entries(fields).map(([name,field])=&gt;[name,field.value])));
+      let editorInitial = &#x27;&#x27;;
       function openEditor(e) {
         root.querySelector(&#x27;#vc-form&#x27;).reset();
         const item=e||{id:&#x27;&#x27;,name:&#x27;&#x27;,pony:&#x27;dobby&#x27;,type:&#x27;training&#x27;,status:&#x27;&#x27;,date:iso(new Date(view.getFullYear(),view.getMonth(),1)),endDate:&#x27;&#x27;,time:&#x27;&#x27;,place:&#x27;&#x27;,note:&#x27;&#x27;};
@@ -1073,6 +1074,7 @@ html&gt;body{padding:0}&lt;/style&gt;
         root.querySelector(&#x27;#vc-dialog-title&#x27;).textContent=e?&#x27;Rediger aktivitet&#x27;:&#x27;Ny aktivitet&#x27;;
         root.querySelector(&#x27;#vc-delete&#x27;).style.visibility=e?&#x27;visible&#x27;:&#x27;hidden&#x27;;
         editorMeta.textContent=e &amp;&amp; (e.createdBy||e.updatedBy) ? `Oprettet af ${e.createdBy||&#x27;ukendt&#x27;}${e.updatedBy &amp;&amp; e.updatedBy!==e.createdBy ? ` · senest rettet af ${e.updatedBy}` : &#x27;&#x27;}` : &#x27;&#x27;;
+        editorInitial=formState();
         dialog.showModal(); fields.name.focus();
       }
       root.querySelector(&#x27;#vc-prev&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{view.setMonth(view.getMonth()-1);render();});
@@ -1083,12 +1085,11 @@ html&gt;body{padding:0}&lt;/style&gt;
       root.querySelector(&#x27;#vc-goals-close&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;goalsDialog.close());
       root.querySelectorAll(&#x27;.vc-filter&#x27;).forEach(x=&gt;x.addEventListener(&#x27;change&#x27;,render));
       root.querySelectorAll(&#x27;.vc-pony-filter&#x27;).forEach(x=&gt;x.addEventListener(&#x27;change&#x27;,render));
-      root.addEventListener(&#x27;dblclick&#x27;,ev=&gt;{const day=ev.target.closest(&#x27;.vc-day&#x27;);if(day &amp;&amp; requireUser()){openEditor();fields.date.value=day.dataset.date;}});
-      root.addEventListener(&#x27;click&#x27;,ev=&gt;{const b=ev.target.closest(&#x27;.vc-event&#x27;);if(b)openEditor(events.find(e=&gt;e.id===b.dataset.id));});
-      root.querySelector(&#x27;#vc-cancel&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;dialog.close());
-      root.querySelector(&#x27;#vc-close&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;dialog.close());
-      root.querySelector(&#x27;#vc-delete&#x27;).addEventListener(&#x27;click&#x27;,async ()=&gt;{if(!requireUser())return;const id=fields.id.value;deletedIds.add(id);events=events.filter(e=&gt;e.id!==id);save();dialog.close();render();const tombstone={deletedAt:new Date().toISOString(),deletedBy:selectedUser()};try{await deleteCloudEvent(id,tombstone);setSyncStatus(&#x27;Sletning synkroniseret&#x27;);}catch(_){setSyncStatus(&#x27;Offline – sletningen synkroniseres senere&#x27;);}});
+      root.addEventListener(&#x27;dblclick&#x27;,ev=&gt;{const day=ev.target.closest(&#x27;.vc-day&#x27;);if(day &amp;&amp; requireUser()){openEditor();fields.date.value=day.dataset.date;editorInitial=formState();}});
+      root.addEventListener(&#x27;click&#x27;,ev=&gt;{const b=ev.target.closest(&#x27;.vc-event&#x27;);if(b &amp;&amp; requireUser())openEditor(events.find(e=&gt;e.id===b.dataset.id));});
+      root.querySelector(&#x27;#vc-delete&#x27;).addEventListener(&#x27;click&#x27;,async ()=&gt;{if(!requireUser()||!confirm(&#x27;Vil du slette aktiviteten?&#x27;))return;const id=fields.id.value;deletedIds.add(id);events=events.filter(e=&gt;e.id!==id);save();dialog.close();render();const tombstone={deletedAt:new Date().toISOString(),deletedBy:selectedUser()};try{await deleteCloudEvent(id,tombstone);setSyncStatus(&#x27;Sletning synkroniseret&#x27;);}catch(_){setSyncStatus(&#x27;Offline – sletningen synkroniseres senere&#x27;);}});
       const saveEditor = async () =&gt; {if(!requireUser()||!fields.name.reportValidity()||!fields.date.reportValidity())return;const previous=events.find(e=&gt;e.id===fields.id.value);const item={};Object.keys(fields).forEach(k=&gt;item[k]=fields[k].value.trim());if(item.endDate&amp;&amp;item.endDate&lt;item.date){fields.endDate.setCustomValidity(&#x27;Slutdato skal være efter startdato&#x27;);fields.endDate.reportValidity();return;}fields.endDate.setCustomValidity(&#x27;&#x27;);const now=new Date().toISOString();item.userEdited=true;item.createdBy=previous?.createdBy||selectedUser();item.createdAt=previous?.createdAt||now;item.updatedBy=selectedUser();item.updatedAt=now;if(item.id){events=events.map(e=&gt;e.id===item.id?item:e);deletedIds.delete(item.id);}else{item.id=&#x27;e&#x27;+Date.now();events.push(item);}save();dialog.close();view=new Date(item.date+&#x27;T12:00:00&#x27;);view.setDate(1);render();setSyncStatus(&#x27;Gemmer fælles…&#x27;);try{await writeCloudEvent(item);setSyncStatus(&#x27;Gemt og synkroniseret&#x27;);}catch(_){setSyncStatus(&#x27;Offline – gemt på denne enhed&#x27;);}};
+      root.querySelector(&#x27;#vc-close&#x27;).addEventListener(&#x27;click&#x27;,async ()=&gt;{if(formState()===editorInitial){dialog.close();return;}if(confirm(&#x27;Du har ændringer, som ikke er gemt. Vil du gemme dem?&#x27;))await saveEditor();else dialog.close();});
       root.querySelector(&#x27;#vc-save&#x27;).addEventListener(&#x27;click&#x27;,saveEditor);
       root.querySelector(&#x27;#vc-form&#x27;).addEventListener(&#x27;submit&#x27;,ev=&gt;{ev.preventDefault();saveEditor();});
       render();
