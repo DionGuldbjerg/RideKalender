@@ -799,6 +799,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-form h3 { margin:0 0 2px; }
     #victoria-calendar .vc-form-head { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; position:sticky; top:0; z-index:2; padding-bottom:7px; background:var(--popover); border-bottom:1px solid var(--border); }
     #victoria-calendar .vc-top-actions { display:flex; justify-content:flex-end; gap:8px; flex-shrink:0; }
+    #victoria-calendar .vc-close { width:30px; min-width:30px; padding:0; font-size:21px; line-height:1; }
     #victoria-calendar .vc-actions { display:flex; justify-content:flex-end; gap:8px; flex-wrap:wrap; margin-top:1px; }
     #victoria-calendar .vc-delete { margin-right:auto; }
     #victoria-calendar .vc-hint { margin:0; color:var(--muted-foreground); }
@@ -806,6 +807,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       #victoria-calendar .vc-form-head { flex-direction:column; }
       #victoria-calendar .vc-top-actions { width:100%; }
       #victoria-calendar .vc-top-actions .btn { flex:1; }
+      #victoria-calendar .vc-top-actions .vc-close { flex:0 0 30px; }
     }
     #victoria-calendar .vc-goals { display:grid; gap:9px; padding-left:22px; margin:12px 0 18px; }
     #victoria-calendar .vc-goal-footer { display:flex; justify-content:flex-end; }
@@ -867,6 +869,7 @@ html&gt;body{padding:0}&lt;/style&gt;
         &lt;div class=&quot;vc-top-actions&quot;&gt;
           &lt;button class=&quot;btn&quot; id=&quot;vc-cancel&quot; type=&quot;button&quot;&gt;Annuller&lt;/button&gt;
           &lt;button class=&quot;btn btn-primary&quot; id=&quot;vc-save&quot; type=&quot;button&quot;&gt;Gem&lt;/button&gt;
+          &lt;button class=&quot;btn btn-ghost vc-close&quot; id=&quot;vc-close&quot; type=&quot;button&quot; aria-label=&quot;Luk&quot; title=&quot;Luk&quot;&gt;×&lt;/button&gt;
         &lt;/div&gt;
       &lt;/div&gt;
       &lt;input type=&quot;hidden&quot; id=&quot;vc-id&quot;&gt;
@@ -889,6 +892,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     (() =&gt; {
       const root = document.getElementById(&#x27;victoria-calendar&#x27;);
       const key = &#x27;victoria-ridning-events-v1&#x27;;
+      const deletedKey = &#x27;victoria-ridning-deleted-v1&#x27;;
       const seed = [
         {id:&#x27;s1&#x27;,date:&#x27;2026-05-16&#x27;,name:&#x27;Stævne Ballerup&#x27;,type:&#x27;competition&#x27;,place:&#x27;Ballerup&#x27;,note:&#x27;LA1&#x27;},
         {id:&#x27;s2&#x27;,date:&#x27;2026-05-17&#x27;,name:&#x27;Stævne Ballerup&#x27;,type:&#x27;competition&#x27;,place:&#x27;Ballerup&#x27;,note:&#x27;LA1&#x27;},
@@ -935,12 +939,25 @@ html&gt;body{padding:0}&lt;/style&gt;
         }
       }
       let events;
-      try { events = JSON.parse(localStorage.getItem(key)) || seed; } catch (_) { events = seed; }
+      let deletedIds;
+      try {
+        events = JSON.parse(localStorage.getItem(key)) || seed.map(item =&gt; ({...item}));
+        deletedIds = new Set(JSON.parse(localStorage.getItem(deletedKey)) || []);
+      } catch (_) {
+        events = seed.map(item =&gt; ({...item}));
+        deletedIds = new Set();
+      }
       events = events.map(item =&gt; ({...item,pony:item.pony || &#x27;dobby&#x27;}));
       events = events.filter(item =&gt; ![&#x27;morten-2026-10-20&#x27;,&#x27;morten-2026-10-23&#x27;].includes(item.id));
       seed.filter(item =&gt; item.id.startsWith(&#x27;shd&#x27;) || item.id.startsWith(&#x27;plan-&#x27;) || item.id.startsWith(&#x27;morten-&#x27;) || item.id.startsWith(&#x27;summer-&#x27;) || item.id === &#x27;barcelona-oct&#x27;).forEach(item =&gt; {
+        if (deletedIds.has(item.id)) return;
         const index = events.findIndex(existing =&gt; existing.id === item.id);
-        if (index &gt;= 0) events[index] = {...events[index],...item}; else events.push(item);
+        if (index &lt; 0) { events.push(item); return; }
+        const existing = events[index];
+        const editableKeys = [&#x27;date&#x27;,&#x27;endDate&#x27;,&#x27;name&#x27;,&#x27;type&#x27;,&#x27;status&#x27;,&#x27;pony&#x27;,&#x27;time&#x27;,&#x27;place&#x27;,&#x27;note&#x27;];
+        const matchesSeed = editableKeys.every(field =&gt; (existing[field] || &#x27;&#x27;) === (item[field] || &#x27;&#x27;));
+        if (!existing.userEdited &amp;&amp; matchesSeed) events[index] = {...existing,...item};
+        else if (!existing.userEdited) events[index] = {...existing,userEdited:true};
       });
       let view = new Date();
       view.setDate(1);
@@ -957,7 +974,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       const activePonies = () =&gt; new Set([...root.querySelectorAll(&#x27;.vc-pony-filter:checked&#x27;)].map(x=&gt;x.value));
       const matchesPony = (e,ponies) =&gt; e.pony === &#x27;both&#x27; ? ponies.size &gt; 0 : ponies.has(e.pony);
       const occursOn = (e,date) =&gt; e.date &lt;= date &amp;&amp; (e.endDate || e.date) &gt;= date;
-      const save = () =&gt; { try { localStorage.setItem(key,JSON.stringify(events)); } catch (_) {} };
+      const save = () =&gt; { try { localStorage.setItem(key,JSON.stringify(events)); localStorage.setItem(deletedKey,JSON.stringify([...deletedIds])); } catch (_) {} };
       const esc = value =&gt; String(value || &#x27;&#x27;).replace(/[&amp;&lt;&gt;&quot;&#x27;]/g,ch=&gt;({&#x27;&amp;&#x27;:&#x27;&amp;amp;&#x27;,&#x27;&lt;&#x27;:&#x27;&amp;lt;&#x27;,&#x27;&gt;&#x27;:&#x27;&amp;gt;&#x27;,&#x27;&quot;&#x27;:&#x27;&amp;quot;&#x27;,&quot;&#x27;&quot;:&#x27;&amp;#39;&#x27;}[ch]));
       const eventButton = (e,detail=false) =&gt; {
         const meta = [ponyLabels[e.pony],e.time,e.place,detail ? e.note : &#x27;&#x27;].filter(Boolean).join(&#x27; · &#x27;);
@@ -1001,8 +1018,9 @@ html&gt;body{padding:0}&lt;/style&gt;
       root.addEventListener(&#x27;dblclick&#x27;,ev=&gt;{const day=ev.target.closest(&#x27;.vc-day&#x27;);if(day){openEditor();fields.date.value=day.dataset.date;}});
       root.addEventListener(&#x27;click&#x27;,ev=&gt;{const b=ev.target.closest(&#x27;.vc-event&#x27;);if(b)openEditor(events.find(e=&gt;e.id===b.dataset.id));});
       root.querySelector(&#x27;#vc-cancel&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;dialog.close());
-      root.querySelector(&#x27;#vc-delete&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{events=events.filter(e=&gt;e.id!==fields.id.value);save();dialog.close();render();});
-      const saveEditor = () =&gt; {if(!fields.name.reportValidity()||!fields.date.reportValidity())return;const item={};Object.keys(fields).forEach(k=&gt;item[k]=fields[k].value.trim());if(item.endDate&amp;&amp;item.endDate&lt;item.date){fields.endDate.setCustomValidity(&#x27;Slutdato skal være efter startdato&#x27;);fields.endDate.reportValidity();return;}fields.endDate.setCustomValidity(&#x27;&#x27;);if(item.id){events=events.map(e=&gt;e.id===item.id?item:e);}else{item.id=&#x27;e&#x27;+Date.now();events.push(item);}save();dialog.close();view=new Date(item.date+&#x27;T12:00:00&#x27;);view.setDate(1);render();};
+      root.querySelector(&#x27;#vc-close&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;dialog.close());
+      root.querySelector(&#x27;#vc-delete&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{const id=fields.id.value;if(seed.some(item=&gt;item.id===id))deletedIds.add(id);events=events.filter(e=&gt;e.id!==id);save();dialog.close();render();});
+      const saveEditor = () =&gt; {if(!fields.name.reportValidity()||!fields.date.reportValidity())return;const item={};Object.keys(fields).forEach(k=&gt;item[k]=fields[k].value.trim());if(item.endDate&amp;&amp;item.endDate&lt;item.date){fields.endDate.setCustomValidity(&#x27;Slutdato skal være efter startdato&#x27;);fields.endDate.reportValidity();return;}fields.endDate.setCustomValidity(&#x27;&#x27;);item.userEdited=true;if(item.id){events=events.map(e=&gt;e.id===item.id?item:e);deletedIds.delete(item.id);}else{item.id=&#x27;e&#x27;+Date.now();events.push(item);}save();dialog.close();view=new Date(item.date+&#x27;T12:00:00&#x27;);view.setDate(1);render();};
       root.querySelector(&#x27;#vc-save&#x27;).addEventListener(&#x27;click&#x27;,saveEditor);
       root.querySelector(&#x27;#vc-form&#x27;).addEventListener(&#x27;submit&#x27;,ev=&gt;{ev.preventDefault();saveEditor();});
       render();
