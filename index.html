@@ -802,6 +802,8 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-close { min-width:54px; }
     #victoria-calendar .btn-danger { border-color:transparent; color:#fff; background:#c73535; }
     #victoria-calendar .btn-danger:not(:disabled):hover { background:#a92727; }
+    #victoria-calendar .vc-delete-warning { display:none; margin:0; padding:8px 10px; border:1px solid #c73535; border-radius:8px; color:#8f2020; background:#fff0f0; font-weight:600; }
+    #victoria-calendar .vc-delete-warning.is-visible { display:block; }
     #victoria-calendar .vc-actions { display:flex; justify-content:flex-end; gap:8px; flex-wrap:wrap; margin-top:1px; }
     #victoria-calendar .vc-delete { margin-right:auto; }
     #victoria-calendar .vc-hint { margin:0; color:var(--muted-foreground); }
@@ -892,6 +894,7 @@ html&gt;body{padding:0}&lt;/style&gt;
           &lt;button class=&quot;btn vc-close&quot; id=&quot;vc-close&quot; type=&quot;button&quot;&gt;Luk&lt;/button&gt;
         &lt;/div&gt;
       &lt;/div&gt;
+      &lt;p class=&quot;vc-delete-warning text-small&quot; id=&quot;vc-delete-warning&quot; role=&quot;alert&quot;&gt;⚠️ Vil du virkelig slette aktiviteten? Tryk på “Slet nu” for at bekræfte.&lt;/p&gt;
       &lt;input type=&quot;hidden&quot; id=&quot;vc-id&quot;&gt;
       &lt;label class=&quot;form-label&quot;&gt;Aktivitet&lt;input class=&quot;form-control&quot; id=&quot;vc-name&quot; required placeholder=&quot;Fx dressurtræning&quot;&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Pony&lt;select class=&quot;form-select&quot; id=&quot;vc-pony&quot;&gt;&lt;option value=&quot;dobby&quot;&gt;Dobby / Double&lt;/option&gt;&lt;option value=&quot;rumle&quot;&gt;Rumle&lt;/option&gt;&lt;option value=&quot;both&quot;&gt;Begge ponyer&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
@@ -989,6 +992,10 @@ html&gt;body{padding:0}&lt;/style&gt;
       const userSelect = root.querySelector(&#x27;#vc-user&#x27;);
       const syncStatus = root.querySelector(&#x27;#vc-sync-status&#x27;);
       const editorMeta = root.querySelector(&#x27;#vc-editor-meta&#x27;);
+      const deleteButton = root.querySelector(&#x27;#vc-delete&#x27;);
+      const deleteWarning = root.querySelector(&#x27;#vc-delete-warning&#x27;);
+      let deleteArmed = false;
+      const resetDelete = () =&gt; { deleteArmed=false; deleteButton.textContent=&#x27;Slet&#x27;; deleteWarning.classList.remove(&#x27;is-visible&#x27;); };
       try { userSelect.value = localStorage.getItem(userKey) || &#x27;&#x27;; } catch (_) {}
       const fields = { id:root.querySelector(&#x27;#vc-id&#x27;), name:root.querySelector(&#x27;#vc-name&#x27;), pony:root.querySelector(&#x27;#vc-pony&#x27;), type:root.querySelector(&#x27;#vc-type&#x27;), status:root.querySelector(&#x27;#vc-status&#x27;), date:root.querySelector(&#x27;#vc-date&#x27;), endDate:root.querySelector(&#x27;#vc-end-date&#x27;), time:root.querySelector(&#x27;#vc-time&#x27;), place:root.querySelector(&#x27;#vc-place&#x27;), note:root.querySelector(&#x27;#vc-note&#x27;) };
       const iso = d =&gt; `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,&#x27;0&#x27;)}-${String(d.getDate()).padStart(2,&#x27;0&#x27;)}`;
@@ -1068,11 +1075,12 @@ html&gt;body{padding:0}&lt;/style&gt;
       const formState = () =&gt; JSON.stringify(Object.fromEntries(Object.entries(fields).map(([name,field])=&gt;[name,field.value])));
       let editorInitial = &#x27;&#x27;;
       function openEditor(e) {
+        resetDelete();
         root.querySelector(&#x27;#vc-form&#x27;).reset();
         const item=e||{id:&#x27;&#x27;,name:&#x27;&#x27;,pony:&#x27;dobby&#x27;,type:&#x27;training&#x27;,status:&#x27;&#x27;,date:iso(new Date(view.getFullYear(),view.getMonth(),1)),endDate:&#x27;&#x27;,time:&#x27;&#x27;,place:&#x27;&#x27;,note:&#x27;&#x27;};
         Object.keys(fields).forEach(k=&gt;fields[k].value=item[k]||&#x27;&#x27;);
         root.querySelector(&#x27;#vc-dialog-title&#x27;).textContent=e?&#x27;Rediger aktivitet&#x27;:&#x27;Ny aktivitet&#x27;;
-        root.querySelector(&#x27;#vc-delete&#x27;).style.visibility=e?&#x27;visible&#x27;:&#x27;hidden&#x27;;
+        deleteButton.style.visibility=e?&#x27;visible&#x27;:&#x27;hidden&#x27;;
         editorMeta.textContent=e &amp;&amp; (e.createdBy||e.updatedBy) ? `Oprettet af ${e.createdBy||&#x27;ukendt&#x27;}${e.updatedBy &amp;&amp; e.updatedBy!==e.createdBy ? ` · senest rettet af ${e.updatedBy}` : &#x27;&#x27;}` : &#x27;&#x27;;
         editorInitial=formState();
         dialog.showModal(); fields.name.focus();
@@ -1087,7 +1095,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       root.querySelectorAll(&#x27;.vc-pony-filter&#x27;).forEach(x=&gt;x.addEventListener(&#x27;change&#x27;,render));
       root.addEventListener(&#x27;dblclick&#x27;,ev=&gt;{const day=ev.target.closest(&#x27;.vc-day&#x27;);if(day &amp;&amp; requireUser()){openEditor();fields.date.value=day.dataset.date;editorInitial=formState();}});
       root.addEventListener(&#x27;click&#x27;,ev=&gt;{const b=ev.target.closest(&#x27;.vc-event&#x27;);if(b &amp;&amp; requireUser())openEditor(events.find(e=&gt;e.id===b.dataset.id));});
-      root.querySelector(&#x27;#vc-delete&#x27;).addEventListener(&#x27;click&#x27;,async ()=&gt;{if(!requireUser()||!confirm(&#x27;Vil du slette aktiviteten?&#x27;))return;const id=fields.id.value;deletedIds.add(id);events=events.filter(e=&gt;e.id!==id);save();dialog.close();render();const tombstone={deletedAt:new Date().toISOString(),deletedBy:selectedUser()};try{await deleteCloudEvent(id,tombstone);setSyncStatus(&#x27;Sletning synkroniseret&#x27;);}catch(_){setSyncStatus(&#x27;Offline – sletningen synkroniseres senere&#x27;);}});
+      deleteButton.addEventListener(&#x27;click&#x27;,async ()=&gt;{if(!requireUser())return;if(!deleteArmed){deleteArmed=true;deleteButton.textContent=&#x27;Slet nu&#x27;;deleteWarning.classList.add(&#x27;is-visible&#x27;);return;}const id=fields.id.value;if(!id)return;deletedIds.add(id);events=events.filter(e=&gt;e.id!==id);save();dialog.close();render();const tombstone={deletedAt:new Date().toISOString(),deletedBy:selectedUser()};try{await deleteCloudEvent(id,tombstone);setSyncStatus(&#x27;Slettet og synkroniseret&#x27;);}catch(_){setSyncStatus(&#x27;Offline – sletningen synkroniseres senere&#x27;);}});
       const saveEditor = async () =&gt; {if(!requireUser()||!fields.name.reportValidity()||!fields.date.reportValidity())return;const previous=events.find(e=&gt;e.id===fields.id.value);const item={};Object.keys(fields).forEach(k=&gt;item[k]=fields[k].value.trim());if(item.endDate&amp;&amp;item.endDate&lt;item.date){fields.endDate.setCustomValidity(&#x27;Slutdato skal være efter startdato&#x27;);fields.endDate.reportValidity();return;}fields.endDate.setCustomValidity(&#x27;&#x27;);const now=new Date().toISOString();item.userEdited=true;item.createdBy=previous?.createdBy||selectedUser();item.createdAt=previous?.createdAt||now;item.updatedBy=selectedUser();item.updatedAt=now;if(item.id){events=events.map(e=&gt;e.id===item.id?item:e);deletedIds.delete(item.id);}else{item.id=&#x27;e&#x27;+Date.now();events.push(item);}save();dialog.close();view=new Date(item.date+&#x27;T12:00:00&#x27;);view.setDate(1);render();setSyncStatus(&#x27;Gemmer fælles…&#x27;);try{await writeCloudEvent(item);setSyncStatus(&#x27;Gemt og synkroniseret&#x27;);}catch(_){setSyncStatus(&#x27;Offline – gemt på denne enhed&#x27;);}};
       root.querySelector(&#x27;#vc-close&#x27;).addEventListener(&#x27;click&#x27;,async ()=&gt;{if(formState()===editorInitial){dialog.close();return;}if(confirm(&#x27;Du har ændringer, som ikke er gemt. Vil du gemme dem?&#x27;))await saveEditor();else dialog.close();});
       root.querySelector(&#x27;#vc-save&#x27;).addEventListener(&#x27;click&#x27;,saveEditor);
