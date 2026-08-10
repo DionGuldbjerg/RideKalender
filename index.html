@@ -801,7 +801,9 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .status-confirmed .viz-badge { color:#17653a; background:#bfe8cc; }
     #victoria-calendar .vc-event-meta { color:var(--muted-foreground); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     #victoria-calendar .vc-event-pony { display:inline-flex; max-width:100%; align-items:center; gap:4px; padding:2px 5px; overflow:hidden; border:1px solid color-mix(in srgb, var(--foreground) 24%, transparent); border-radius:5px; color:var(--foreground); background:color-mix(in srgb, var(--foreground) 7%, var(--background)); font-size:10px; font-weight:650; line-height:1.1; vertical-align:middle; white-space:nowrap; }
-    #victoria-calendar .vc-pony-icon, #victoria-calendar .vc-pony-filter-icon { flex:none; color:var(--foreground); font-size:14px; font-weight:800; line-height:1; }
+    #victoria-calendar .vc-pony-icon, #victoria-calendar .vc-pony-filter-icon { flex:none; display:inline-block; font-size:16px; font-weight:800; line-height:1; }
+    #victoria-calendar .pony-rumle { color:#f08bb4; }
+    #victoria-calendar .pony-dobby { color:#3488e8; }
     #victoria-calendar .vc-list { display:block; margin-top:18px; }
     #victoria-calendar .vc-list h3 { margin:0 0 6px; }
     #victoria-calendar .vc-list-day { display:grid; grid-template-columns:62px 1fr; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
@@ -884,8 +886,8 @@ html&gt;body{padding:0}&lt;/style&gt;
     &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-filter&quot; type=&quot;checkbox&quot; value=&quot;off&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-filter-dot off&quot;&gt;&lt;/span&gt; Andet&lt;/span&gt;&lt;/label&gt;
   &lt;/div&gt;
   &lt;div class=&quot;viz-controls vc-pony-filters&quot; aria-label=&quot;Filtrer ponyer&quot;&gt;
-    &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-pony-filter&quot; type=&quot;checkbox&quot; value=&quot;rumle&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-pony-filter-icon&quot; aria-hidden=&quot;true&quot;&gt;🐴&lt;/span&gt; Rumle&lt;/span&gt;&lt;/label&gt;
-    &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-pony-filter&quot; type=&quot;checkbox&quot; value=&quot;dobby&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-pony-filter-icon&quot; aria-hidden=&quot;true&quot;&gt;🐴&lt;/span&gt; Dobby&lt;/span&gt;&lt;/label&gt;
+    &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-pony-filter&quot; type=&quot;checkbox&quot; value=&quot;rumle&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-pony-filter-icon pony-rumle&quot; aria-hidden=&quot;true&quot;&gt;♞&lt;/span&gt; Rumle&lt;/span&gt;&lt;/label&gt;
+    &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-pony-filter&quot; type=&quot;checkbox&quot; value=&quot;dobby&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-pony-filter-icon pony-dobby&quot; aria-hidden=&quot;true&quot;&gt;♞&lt;/span&gt; Dobby&lt;/span&gt;&lt;/label&gt;
   &lt;/div&gt;
   &lt;div class=&quot;vc-grid&quot; id=&quot;vc-grid&quot; role=&quot;grid&quot; aria-label=&quot;Månedskalender&quot;&gt;&lt;/div&gt;
   &lt;div class=&quot;vc-list&quot; aria-label=&quot;Aktiviteter denne måned&quot;&gt;&lt;h3&gt;Månedens aktiviteter&lt;/h3&gt;&lt;div id=&quot;vc-list&quot;&gt;&lt;/div&gt;&lt;/div&gt;
@@ -920,7 +922,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       &lt;input type=&quot;hidden&quot; id=&quot;vc-id&quot;&gt;
       &lt;label class=&quot;form-label&quot;&gt;Type&lt;select class=&quot;form-select&quot; id=&quot;vc-type&quot;&gt;&lt;option value=&quot;competition&quot;&gt;Stævne&lt;/option&gt;&lt;option value=&quot;training&quot;&gt;Træning Morten&lt;/option&gt;&lt;option value=&quot;care&quot;&gt;Pasning&lt;/option&gt;&lt;option value=&quot;selftraining&quot;&gt;Selvtræning&lt;/option&gt;&lt;option value=&quot;off&quot;&gt;Andet&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Beskrivelse&lt;input class=&quot;form-control&quot; id=&quot;vc-name&quot; required placeholder=&quot;Fx dressurtræning&quot;&gt;&lt;/label&gt;
-      &lt;label class=&quot;form-label&quot;&gt;Pony&lt;select class=&quot;form-select&quot; id=&quot;vc-pony&quot;&gt;&lt;option value=&quot;dobby&quot;&gt;🐴 Dobby&lt;/option&gt;&lt;option value=&quot;rumle&quot;&gt;🐴 Rumle&lt;/option&gt;&lt;option value=&quot;both&quot;&gt;🐴🐴 Rumle + Dobby&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
+      &lt;label class=&quot;form-label&quot;&gt;Pony&lt;select class=&quot;form-select&quot; id=&quot;vc-pony&quot;&gt;&lt;option value=&quot;dobby&quot;&gt;♞ Dobby&lt;/option&gt;&lt;option value=&quot;rumle&quot;&gt;♞ Rumle&lt;/option&gt;&lt;option value=&quot;both&quot;&gt;♞♞ Rumle + Dobby&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Status&lt;select class=&quot;form-select&quot; id=&quot;vc-status&quot;&gt;&lt;option value=&quot;&quot;&gt;Ingen status&lt;/option&gt;&lt;option value=&quot;prebooked&quot;&gt;PRE-BOOKET&lt;/option&gt;&lt;option value=&quot;confirmed&quot;&gt;Bekræftet&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Dato&lt;input class=&quot;form-control&quot; id=&quot;vc-date&quot; type=&quot;date&quot; required&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Slutdato &lt;span class=&quot;text-muted&quot;&gt;(valgfri)&lt;/span&gt;&lt;input class=&quot;form-control&quot; id=&quot;vc-end-date&quot; type=&quot;date&quot;&gt;&lt;/label&gt;
@@ -1078,8 +1080,10 @@ html&gt;body{padding:0}&lt;/style&gt;
         const statusKey=e.status||&#x27;unbooked&#x27;;
         const status = `&lt;span class=&quot;viz-badge&quot;&gt;${statusLabels[e.status||&#x27;&#x27;]}&lt;/span&gt;`;
         const metaText=meta ? ` · ${esc(meta)}` : &#x27;&#x27;;
-        const ponyIcons=e.pony===&#x27;both&#x27;?&#x27;🐴🐴&#x27;:&#x27;🐴&#x27;;
-        return `&lt;button type=&quot;button&quot; class=&quot;vc-event type-${esc(e.type)} status-${statusKey}&quot; data-id=&quot;${esc(e.id)}&quot; aria-label=&quot;Rediger ${esc(e.name)}&quot; title=&quot;${esc(e.name)} · ${esc(ponyLabels[e.pony])} · ${esc(statusLabels[e.status||&#x27;&#x27;])}&quot;&gt;&lt;span class=&quot;vc-event-copy&quot;&gt;&lt;span class=&quot;vc-event-top&quot;&gt;&lt;span class=&quot;vc-event-name&quot;&gt;${esc(e.name)}&lt;/span&gt;${status}&lt;/span&gt;&lt;span class=&quot;vc-event-meta text-small&quot;&gt;&lt;span class=&quot;vc-event-pony&quot;&gt;&lt;span class=&quot;vc-pony-icon&quot; aria-hidden=&quot;true&quot;&gt;${ponyIcons}&lt;/span&gt;${esc(ponyLabels[e.pony])}&lt;/span&gt;${metaText}&lt;/span&gt;&lt;/span&gt;&lt;/button&gt;`;
+        const ponyIcons=e.pony===&#x27;both&#x27;
+          ?&#x27;&lt;span class=&quot;vc-pony-icon pony-rumle&quot; aria-hidden=&quot;true&quot;&gt;♞&lt;/span&gt;&lt;span class=&quot;vc-pony-icon pony-dobby&quot; aria-hidden=&quot;true&quot;&gt;♞&lt;/span&gt;&#x27;
+          :`&lt;span class=&quot;vc-pony-icon pony-${esc(e.pony)}&quot; aria-hidden=&quot;true&quot;&gt;♞&lt;/span&gt;`;
+        return `&lt;button type=&quot;button&quot; class=&quot;vc-event type-${esc(e.type)} status-${statusKey}&quot; data-id=&quot;${esc(e.id)}&quot; aria-label=&quot;Rediger ${esc(e.name)}&quot; title=&quot;${esc(e.name)} · ${esc(ponyLabels[e.pony])} · ${esc(statusLabels[e.status||&#x27;&#x27;])}&quot;&gt;&lt;span class=&quot;vc-event-copy&quot;&gt;&lt;span class=&quot;vc-event-top&quot;&gt;&lt;span class=&quot;vc-event-name&quot;&gt;${esc(e.name)}&lt;/span&gt;${status}&lt;/span&gt;&lt;span class=&quot;vc-event-meta text-small&quot;&gt;&lt;span class=&quot;vc-event-pony&quot;&gt;${ponyIcons}${esc(ponyLabels[e.pony])}&lt;/span&gt;${metaText}&lt;/span&gt;&lt;/span&gt;&lt;/button&gt;`;
       };
       function render() {
         month.textContent = new Intl.DateTimeFormat(&#x27;da-DK&#x27;,{month:&#x27;long&#x27;,year:&#x27;numeric&#x27;}).format(view);
