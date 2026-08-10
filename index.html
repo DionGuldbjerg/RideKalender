@@ -759,11 +759,12 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-nav { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
     #victoria-calendar .vc-filters { margin-bottom:10px; }
     #victoria-calendar .vc-pony-filters { margin-bottom:14px; }
-    #victoria-calendar .vc-filter-dot, #victoria-calendar .vc-dot { width:9px; height:9px; border-radius:50%; display:inline-block; flex:none; }
+    #victoria-calendar .vc-filter-dot { width:9px; height:9px; border-radius:50%; display:inline-block; flex:none; }
     #victoria-calendar .competition { background:var(--viz-series-1); }
     #victoria-calendar .training { background:var(--viz-series-2); }
     #victoria-calendar .off { background:var(--viz-series-4); }
     #victoria-calendar .care { background:var(--viz-series-6); }
+    #victoria-calendar .selftraining { background:var(--viz-series-5); }
     #victoria-calendar .rumle { background:var(--viz-series-3); }
     #victoria-calendar .dobby { background:var(--viz-series-5); }
     #victoria-calendar .both { background:var(--viz-series-6); }
@@ -774,12 +775,18 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-day.is-other { color:var(--muted-foreground); background:color-mix(in srgb, var(--muted) 34%, transparent); }
     #victoria-calendar .vc-day.is-today .vc-number { background:var(--primary); color:var(--primary-foreground); }
     #victoria-calendar .vc-number { width:25px; height:25px; display:grid; place-items:center; border-radius:50%; margin-bottom:5px; }
-    #victoria-calendar .vc-event { width:100%; display:flex; align-items:flex-start; gap:6px; padding:5px 6px; margin-top:3px; border:1px solid transparent; border-left-width:4px; border-radius:6px; color:var(--foreground); text-align:left; cursor:pointer; }
+    #victoria-calendar .vc-event { position:relative; width:100%; display:flex; align-items:flex-start; padding:10px 6px 5px; margin-top:3px; overflow:hidden; border:1px solid transparent; border-left-width:4px; border-radius:6px; color:var(--foreground); text-align:left; cursor:pointer; }
+    #victoria-calendar .vc-event::before { position:absolute; top:0; right:0; left:0; height:5px; content:&quot;&quot;; }
+    #victoria-calendar .vc-event.type-competition::before { background:var(--viz-series-1); }
+    #victoria-calendar .vc-event.type-training::before { background:var(--viz-series-2); }
+    #victoria-calendar .vc-event.type-care::before { background:var(--viz-series-6); }
+    #victoria-calendar .vc-event.type-selftraining::before { background:var(--viz-series-5); }
+    #victoria-calendar .vc-event.type-off::before { background:var(--viz-series-4); }
     #victoria-calendar .vc-event.status-unbooked { border-color:#dc6868; background:#fff0f0; }
     #victoria-calendar .vc-event.status-prebooked { border-color:#d5a900; background:#fff8d6; }
     #victoria-calendar .vc-event.status-confirmed { border-color:#3a9b61; background:#e8f7ed; }
     #victoria-calendar .vc-event:hover { filter:brightness(.97); }
-    #victoria-calendar .vc-event-copy { min-width:0; display:grid; gap:1px; }
+    #victoria-calendar .vc-event-copy { width:100%; min-width:0; display:grid; gap:1px; }
     #victoria-calendar .vc-event-top { min-width:0; display:grid; gap:3px; }
     #victoria-calendar .vc-event-name { min-width:0; overflow:hidden; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-height:1.2; }
     #victoria-calendar .vc-event-top .viz-badge { max-width:100%; justify-self:start; padding:1px 3px; font-size:7px; line-height:10px; letter-spacing:-0.1px; white-space:nowrap; }
@@ -863,10 +870,11 @@ html&gt;body{padding:0}&lt;/style&gt;
     &lt;button class=&quot;btn&quot; id=&quot;vc-today&quot; type=&quot;button&quot;&gt;I dag&lt;/button&gt;
   &lt;/div&gt;
   &lt;div class=&quot;viz-controls vc-filters&quot; aria-label=&quot;Filtrer aktiviteter&quot;&gt;
-    &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-filter&quot; type=&quot;checkbox&quot; value=&quot;competition&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-filter-dot competition&quot;&gt;&lt;/span&gt; Stævner&lt;/span&gt;&lt;/label&gt;
-    &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-filter&quot; type=&quot;checkbox&quot; value=&quot;training&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-filter-dot training&quot;&gt;&lt;/span&gt; Træning&lt;/span&gt;&lt;/label&gt;
-    &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-filter&quot; type=&quot;checkbox&quot; value=&quot;off&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-filter-dot off&quot;&gt;&lt;/span&gt; Fri&lt;/span&gt;&lt;/label&gt;
+    &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-filter&quot; type=&quot;checkbox&quot; value=&quot;competition&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-filter-dot competition&quot;&gt;&lt;/span&gt; Stævne&lt;/span&gt;&lt;/label&gt;
+    &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-filter&quot; type=&quot;checkbox&quot; value=&quot;training&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-filter-dot training&quot;&gt;&lt;/span&gt; Træning Morten&lt;/span&gt;&lt;/label&gt;
     &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-filter&quot; type=&quot;checkbox&quot; value=&quot;care&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-filter-dot care&quot;&gt;&lt;/span&gt; Pasning&lt;/span&gt;&lt;/label&gt;
+    &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-filter&quot; type=&quot;checkbox&quot; value=&quot;selftraining&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-filter-dot selftraining&quot;&gt;&lt;/span&gt; Selvtræning&lt;/span&gt;&lt;/label&gt;
+    &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-filter&quot; type=&quot;checkbox&quot; value=&quot;off&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-filter-dot off&quot;&gt;&lt;/span&gt; Andet&lt;/span&gt;&lt;/label&gt;
   &lt;/div&gt;
   &lt;div class=&quot;viz-controls vc-pony-filters&quot; aria-label=&quot;Filtrer ponyer&quot;&gt;
     &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-pony-filter&quot; type=&quot;checkbox&quot; value=&quot;rumle&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-filter-dot rumle&quot;&gt;&lt;/span&gt; Rumle&lt;/span&gt;&lt;/label&gt;
@@ -905,7 +913,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       &lt;input type=&quot;hidden&quot; id=&quot;vc-id&quot;&gt;
       &lt;label class=&quot;form-label&quot;&gt;Aktivitet&lt;input class=&quot;form-control&quot; id=&quot;vc-name&quot; required placeholder=&quot;Fx dressurtræning&quot;&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Pony&lt;select class=&quot;form-select&quot; id=&quot;vc-pony&quot;&gt;&lt;option value=&quot;dobby&quot;&gt;Dobby / Double&lt;/option&gt;&lt;option value=&quot;rumle&quot;&gt;Rumle&lt;/option&gt;&lt;option value=&quot;both&quot;&gt;Begge ponyer&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
-      &lt;label class=&quot;form-label&quot;&gt;Type&lt;select class=&quot;form-select&quot; id=&quot;vc-type&quot;&gt;&lt;option value=&quot;training&quot;&gt;Træning&lt;/option&gt;&lt;option value=&quot;competition&quot;&gt;Stævne&lt;/option&gt;&lt;option value=&quot;care&quot;&gt;Pasning / ophold&lt;/option&gt;&lt;option value=&quot;off&quot;&gt;Ferie / fri&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
+      &lt;label class=&quot;form-label&quot;&gt;Type&lt;select class=&quot;form-select&quot; id=&quot;vc-type&quot;&gt;&lt;option value=&quot;competition&quot;&gt;Stævne&lt;/option&gt;&lt;option value=&quot;training&quot;&gt;Træning Morten&lt;/option&gt;&lt;option value=&quot;care&quot;&gt;Pasning&lt;/option&gt;&lt;option value=&quot;selftraining&quot;&gt;Selvtræning&lt;/option&gt;&lt;option value=&quot;off&quot;&gt;Andet&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Status&lt;select class=&quot;form-select&quot; id=&quot;vc-status&quot;&gt;&lt;option value=&quot;&quot;&gt;Ingen status&lt;/option&gt;&lt;option value=&quot;prebooked&quot;&gt;PRE-BOOKET&lt;/option&gt;&lt;option value=&quot;confirmed&quot;&gt;Bekræftet&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Dato&lt;input class=&quot;form-control&quot; id=&quot;vc-date&quot; type=&quot;date&quot; required&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Slutdato &lt;span class=&quot;text-muted&quot;&gt;(valgfri)&lt;/span&gt;&lt;input class=&quot;form-control&quot; id=&quot;vc-end-date&quot; type=&quot;date&quot;&gt;&lt;/label&gt;
@@ -1061,7 +1069,7 @@ html&gt;body{padding:0}&lt;/style&gt;
         const statusKey=e.status||&#x27;unbooked&#x27;;
         const status = `&lt;span class=&quot;viz-badge&quot;&gt;${statusLabels[e.status||&#x27;&#x27;]}&lt;/span&gt;`;
         const metaText=meta ? ` · ${esc(meta)}` : &#x27;&#x27;;
-        return `&lt;button type=&quot;button&quot; class=&quot;vc-event status-${statusKey}&quot; data-id=&quot;${esc(e.id)}&quot; aria-label=&quot;Rediger ${esc(e.name)}&quot; title=&quot;${esc(e.name)} · ${esc(ponyLabels[e.pony])} · ${esc(statusLabels[e.status||&#x27;&#x27;])}&quot;&gt;&lt;span class=&quot;vc-dot ${esc(e.type)}&quot;&gt;&lt;/span&gt;&lt;span class=&quot;vc-event-copy&quot;&gt;&lt;span class=&quot;vc-event-top&quot;&gt;&lt;span class=&quot;vc-event-name&quot;&gt;${esc(e.name)}&lt;/span&gt;${status}&lt;/span&gt;&lt;span class=&quot;vc-event-meta text-small&quot;&gt;&lt;span class=&quot;vc-event-pony&quot;&gt;${esc(ponyLabels[e.pony])}&lt;/span&gt;${metaText}&lt;/span&gt;&lt;/span&gt;&lt;/button&gt;`;
+        return `&lt;button type=&quot;button&quot; class=&quot;vc-event type-${esc(e.type)} status-${statusKey}&quot; data-id=&quot;${esc(e.id)}&quot; aria-label=&quot;Rediger ${esc(e.name)}&quot; title=&quot;${esc(e.name)} · ${esc(ponyLabels[e.pony])} · ${esc(statusLabels[e.status||&#x27;&#x27;])}&quot;&gt;&lt;span class=&quot;vc-event-copy&quot;&gt;&lt;span class=&quot;vc-event-top&quot;&gt;&lt;span class=&quot;vc-event-name&quot;&gt;${esc(e.name)}&lt;/span&gt;${status}&lt;/span&gt;&lt;span class=&quot;vc-event-meta text-small&quot;&gt;&lt;span class=&quot;vc-event-pony&quot;&gt;${esc(ponyLabels[e.pony])}&lt;/span&gt;${metaText}&lt;/span&gt;&lt;/span&gt;&lt;/button&gt;`;
       };
       function render() {
         month.textContent = new Intl.DateTimeFormat(&#x27;da-DK&#x27;,{month:&#x27;long&#x27;,year:&#x27;numeric&#x27;}).format(view);
