@@ -1024,7 +1024,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       const fields = { id:root.querySelector(&#x27;#vc-id&#x27;), name:root.querySelector(&#x27;#vc-name&#x27;), pony:root.querySelector(&#x27;#vc-pony&#x27;), type:root.querySelector(&#x27;#vc-type&#x27;), status:root.querySelector(&#x27;#vc-status&#x27;), date:root.querySelector(&#x27;#vc-date&#x27;), endDate:root.querySelector(&#x27;#vc-end-date&#x27;), time:root.querySelector(&#x27;#vc-time&#x27;), place:root.querySelector(&#x27;#vc-place&#x27;), note:root.querySelector(&#x27;#vc-note&#x27;) };
       const iso = d =&gt; `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,&#x27;0&#x27;)}-${String(d.getDate()).padStart(2,&#x27;0&#x27;)}`;
       const ponyLabels = {rumle:&#x27;Rumle&#x27;,dobby:&#x27;Dobby&#x27;,both:&#x27;Begge&#x27;};
-      const typeLabels = {competition:&#x27;Stævne&#x27;,training:&#x27;Træning Morten&#x27;,care:&#x27;Pasning&#x27;,selftraining:&#x27;Selvtræning&#x27;,off:&#x27;Andet&#x27;};
+      const typeLabels = {competition:&#x27;STÆVNE&#x27;,training:&#x27;Træning Morten&#x27;,care:&#x27;Pasning&#x27;,selftraining:&#x27;Selvtræning&#x27;,off:&#x27;Andet&#x27;};
       const statusLabels = {&#x27;&#x27;:&#x27;IKKE BOOKET&#x27;,prebooked:&#x27;PRE-BOOKET&#x27;,confirmed:&#x27;BEKRÆFTET&#x27;};
       const activeTypes = () =&gt; new Set([...root.querySelectorAll(&#x27;.vc-filter:checked&#x27;)].map(x=&gt;x.value));
       const activePonies = () =&gt; new Set([...root.querySelectorAll(&#x27;.vc-pony-filter:checked&#x27;)].map(x=&gt;x.value));
