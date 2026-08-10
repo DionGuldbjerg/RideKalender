@@ -794,7 +794,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-event:hover { filter:brightness(.97); }
     #victoria-calendar .vc-event-copy { width:100%; min-width:0; display:grid; gap:1px; }
     #victoria-calendar .vc-event-top { min-width:0; display:grid; gap:3px; }
-    #victoria-calendar .vc-event-name { min-width:0; overflow:hidden; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-height:1.2; }
+    #victoria-calendar .vc-event-name { display:block; min-width:0; overflow:hidden; font-style:italic; line-height:1.2; text-overflow:ellipsis; white-space:nowrap; }
     #victoria-calendar .vc-event-top .viz-badge { max-width:100%; justify-self:start; padding:1px 3px; font-size:7px; line-height:10px; letter-spacing:-0.1px; white-space:nowrap; }
     #victoria-calendar .status-unbooked .viz-badge { color:#8f2020; background:#ffd6d6; }
     #victoria-calendar .status-prebooked .viz-badge { color:#725700; background:#ffe784; }
@@ -809,7 +809,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-list-date strong { display:block; }
     #victoria-calendar .vc-list-events { display:grid; gap:6px; }
     #victoria-calendar .vc-list .vc-event { padding:8px; margin:0; }
-    #victoria-calendar .vc-list .vc-event-name { white-space:normal; }
+    #victoria-calendar .vc-list .vc-event-name { white-space:nowrap; }
     #victoria-calendar .vc-list .vc-event-meta { white-space:normal; }
     #victoria-calendar .vc-empty { color:var(--muted-foreground); padding:30px 0; text-align:center; }
     #victoria-calendar dialog { color:var(--popover-foreground); background:var(--popover); border:1px solid var(--border); border-radius:12px; width:min(430px,calc(100% - 28px)); max-height:calc(100vh - 28px); padding:14px; overflow:auto; }
@@ -918,9 +918,9 @@ html&gt;body{padding:0}&lt;/style&gt;
       &lt;/div&gt;
       &lt;p class=&quot;vc-delete-warning text-small&quot; id=&quot;vc-delete-warning&quot; role=&quot;alert&quot;&gt;⚠️ Vil du virkelig slette aktiviteten? Tryk på “Slet nu” for at bekræfte.&lt;/p&gt;
       &lt;input type=&quot;hidden&quot; id=&quot;vc-id&quot;&gt;
-      &lt;label class=&quot;form-label&quot;&gt;Aktivitet&lt;input class=&quot;form-control&quot; id=&quot;vc-name&quot; required placeholder=&quot;Fx dressurtræning&quot;&gt;&lt;/label&gt;
-      &lt;label class=&quot;form-label&quot;&gt;Pony&lt;select class=&quot;form-select&quot; id=&quot;vc-pony&quot;&gt;&lt;option value=&quot;dobby&quot;&gt;🐴 Dobby&lt;/option&gt;&lt;option value=&quot;rumle&quot;&gt;🐴 Rumle&lt;/option&gt;&lt;option value=&quot;both&quot;&gt;🐴 Rumle + Dobby&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Type&lt;select class=&quot;form-select&quot; id=&quot;vc-type&quot;&gt;&lt;option value=&quot;competition&quot;&gt;Stævne&lt;/option&gt;&lt;option value=&quot;training&quot;&gt;Træning Morten&lt;/option&gt;&lt;option value=&quot;care&quot;&gt;Pasning&lt;/option&gt;&lt;option value=&quot;selftraining&quot;&gt;Selvtræning&lt;/option&gt;&lt;option value=&quot;off&quot;&gt;Andet&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
+      &lt;label class=&quot;form-label&quot;&gt;Beskrivelse&lt;input class=&quot;form-control&quot; id=&quot;vc-name&quot; required placeholder=&quot;Fx dressurtræning&quot;&gt;&lt;/label&gt;
+      &lt;label class=&quot;form-label&quot;&gt;Pony&lt;select class=&quot;form-select&quot; id=&quot;vc-pony&quot;&gt;&lt;option value=&quot;dobby&quot;&gt;🐴 Dobby&lt;/option&gt;&lt;option value=&quot;rumle&quot;&gt;🐴 Rumle&lt;/option&gt;&lt;option value=&quot;both&quot;&gt;🐴🐴 Rumle + Dobby&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Status&lt;select class=&quot;form-select&quot; id=&quot;vc-status&quot;&gt;&lt;option value=&quot;&quot;&gt;Ingen status&lt;/option&gt;&lt;option value=&quot;prebooked&quot;&gt;PRE-BOOKET&lt;/option&gt;&lt;option value=&quot;confirmed&quot;&gt;Bekræftet&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Dato&lt;input class=&quot;form-control&quot; id=&quot;vc-date&quot; type=&quot;date&quot; required&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Slutdato &lt;span class=&quot;text-muted&quot;&gt;(valgfri)&lt;/span&gt;&lt;input class=&quot;form-control&quot; id=&quot;vc-end-date&quot; type=&quot;date&quot;&gt;&lt;/label&gt;
@@ -1078,7 +1078,8 @@ html&gt;body{padding:0}&lt;/style&gt;
         const statusKey=e.status||&#x27;unbooked&#x27;;
         const status = `&lt;span class=&quot;viz-badge&quot;&gt;${statusLabels[e.status||&#x27;&#x27;]}&lt;/span&gt;`;
         const metaText=meta ? ` · ${esc(meta)}` : &#x27;&#x27;;
-        return `&lt;button type=&quot;button&quot; class=&quot;vc-event type-${esc(e.type)} status-${statusKey}&quot; data-id=&quot;${esc(e.id)}&quot; aria-label=&quot;Rediger ${esc(e.name)}&quot; title=&quot;${esc(e.name)} · ${esc(ponyLabels[e.pony])} · ${esc(statusLabels[e.status||&#x27;&#x27;])}&quot;&gt;&lt;span class=&quot;vc-event-copy&quot;&gt;&lt;span class=&quot;vc-event-top&quot;&gt;&lt;span class=&quot;vc-event-name&quot;&gt;${esc(e.name)}&lt;/span&gt;${status}&lt;/span&gt;&lt;span class=&quot;vc-event-meta text-small&quot;&gt;&lt;span class=&quot;vc-event-pony&quot;&gt;&lt;span class=&quot;vc-pony-icon&quot; aria-hidden=&quot;true&quot;&gt;🐴&lt;/span&gt;${esc(ponyLabels[e.pony])}&lt;/span&gt;${metaText}&lt;/span&gt;&lt;/span&gt;&lt;/button&gt;`;
+        const ponyIcons=e.pony===&#x27;both&#x27;?&#x27;🐴🐴&#x27;:&#x27;🐴&#x27;;
+        return `&lt;button type=&quot;button&quot; class=&quot;vc-event type-${esc(e.type)} status-${statusKey}&quot; data-id=&quot;${esc(e.id)}&quot; aria-label=&quot;Rediger ${esc(e.name)}&quot; title=&quot;${esc(e.name)} · ${esc(ponyLabels[e.pony])} · ${esc(statusLabels[e.status||&#x27;&#x27;])}&quot;&gt;&lt;span class=&quot;vc-event-copy&quot;&gt;&lt;span class=&quot;vc-event-top&quot;&gt;&lt;span class=&quot;vc-event-name&quot;&gt;${esc(e.name)}&lt;/span&gt;${status}&lt;/span&gt;&lt;span class=&quot;vc-event-meta text-small&quot;&gt;&lt;span class=&quot;vc-event-pony&quot;&gt;&lt;span class=&quot;vc-pony-icon&quot; aria-hidden=&quot;true&quot;&gt;${ponyIcons}&lt;/span&gt;${esc(ponyLabels[e.pony])}&lt;/span&gt;${metaText}&lt;/span&gt;&lt;/span&gt;&lt;/button&gt;`;
       };
       function render() {
         month.textContent = new Intl.DateTimeFormat(&#x27;da-DK&#x27;,{month:&#x27;long&#x27;,year:&#x27;numeric&#x27;}).format(view);
