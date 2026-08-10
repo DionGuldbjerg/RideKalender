@@ -835,8 +835,28 @@ html&gt;body{padding:0}&lt;/style&gt;
       #victoria-calendar .vc-top-actions .btn { flex:1; }
       #victoria-calendar .vc-top-actions .vc-close { flex:1; }
     }
-    #victoria-calendar .vc-goals { display:grid; gap:9px; padding-left:22px; margin:12px 0 18px; }
-    #victoria-calendar .vc-goal-footer { display:flex; justify-content:flex-end; }
+    #victoria-calendar #vc-goals-dialog { width:min(620px,calc(100% - 20px)); }
+    #victoria-calendar .vc-ponydata-head { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; margin-bottom:10px; }
+    #victoria-calendar .vc-pony-tabs { display:flex; gap:6px; margin-bottom:10px; }
+    #victoria-calendar .vc-pony-tab[aria-selected=&quot;true&quot;] { border-color:var(--primary); background:var(--accent); }
+    #victoria-calendar .vc-pony-panel { display:none; gap:10px; }
+    #victoria-calendar .vc-pony-panel.is-active { display:grid; }
+    #victoria-calendar .vc-pony-profile { padding:9px; border:1px solid var(--border); border-radius:var(--radius-md); background:var(--card); }
+    #victoria-calendar .vc-pony-profile h4 { margin:0 0 5px; }
+    #victoria-calendar .vc-pony-facts { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:4px 12px; margin:0; }
+    #victoria-calendar .vc-pony-facts div { min-width:0; }
+    #victoria-calendar .vc-pony-facts dt { color:var(--muted-foreground); font-size:11px; }
+    #victoria-calendar .vc-pony-facts dd { margin:0; overflow-wrap:anywhere; }
+    #victoria-calendar .vc-pony-form { display:grid; gap:7px; }
+    #victoria-calendar .vc-pony-form .form-label { margin:0; font-weight:600; }
+    #victoria-calendar .vc-pony-form textarea { min-height:58px; font-weight:430; }
+    #victoria-calendar .vc-date-row { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+    #victoria-calendar .vc-countdown { display:block; min-height:17px; margin-top:2px; color:var(--primary); }
+    #victoria-calendar .vc-pedigree { padding:8px; border:1px solid var(--border); border-radius:var(--radius-md); }
+    #victoria-calendar .vc-pedigree summary { cursor:pointer; font-weight:650; }
+    #victoria-calendar .vc-pedigree p { margin:7px 0 0; }
+    #victoria-calendar .vc-pedigree-preview { display:block; width:100%; max-height:280px; margin-top:7px; object-fit:contain; border-radius:var(--radius-md); }
+    #victoria-calendar .vc-ponydata-footer { position:sticky; bottom:-14px; display:flex; justify-content:flex-end; gap:6px; padding:9px 0 0; background:var(--popover); }
     #victoria-calendar .vc-syncbar { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin:8px 0 10px; padding:8px 10px; border:1px solid var(--border); border-radius:var(--radius-md); background:var(--card); }
     #victoria-calendar .vc-syncbar .form-select { width:auto; min-width:130px; }
     #victoria-calendar .vc-sync-status { margin-left:auto; color:var(--muted-foreground); }
@@ -848,13 +868,14 @@ html&gt;body{padding:0}&lt;/style&gt;
       #victoria-calendar .vc-header { align-items:flex-start; }
       #victoria-calendar .vc-nav { width:100%; justify-content:space-between; }
       #victoria-calendar .vc-sync-status { width:100%; margin-left:0; }
+      #victoria-calendar .vc-pony-facts, #victoria-calendar .vc-date-row { grid-template-columns:1fr; }
     }
   &lt;/style&gt;
 
   &lt;div class=&quot;vc-header&quot;&gt;
     &lt;div class=&quot;vc-title&quot;&gt;&lt;span class=&quot;vc-mark&quot;&gt;&lt;i data-lucide=&quot;calendar-days&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/span&gt;&lt;h2&gt;Victoria ride- og stævnekalender&lt;/h2&gt;&lt;/div&gt;
     &lt;div class=&quot;vc-header-actions&quot;&gt;
-      &lt;button class=&quot;btn&quot; id=&quot;vc-goals-open&quot; type=&quot;button&quot;&gt;&lt;i data-lucide=&quot;target&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; Målsætning&lt;/button&gt;
+      &lt;button class=&quot;btn&quot; id=&quot;vc-goals-open&quot; type=&quot;button&quot;&gt;&lt;i data-lucide=&quot;heart&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; Ponydata&lt;/button&gt;
       &lt;button class=&quot;btn btn-primary&quot; id=&quot;vc-add&quot; type=&quot;button&quot;&gt;&lt;i data-lucide=&quot;plus&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt; Ny aktivitet&lt;/button&gt;
     &lt;/div&gt;
   &lt;/div&gt;
@@ -892,19 +913,19 @@ html&gt;body{padding:0}&lt;/style&gt;
   &lt;div class=&quot;vc-list&quot; aria-label=&quot;Aktiviteter denne måned&quot;&gt;&lt;h3&gt;Månedens aktiviteter&lt;/h3&gt;&lt;div id=&quot;vc-list&quot;&gt;&lt;/div&gt;&lt;/div&gt;
 
   &lt;dialog id=&quot;vc-goals-dialog&quot;&gt;
-    &lt;h3&gt;Målsætning for Victoria &amp;amp; Dobby&lt;/h3&gt;
-    &lt;p class=&quot;vc-hint&quot;&gt;Strategien for resten af 2026:&lt;/p&gt;
-    &lt;ol class=&quot;vc-goals&quot;&gt;
-      &lt;li&gt;&lt;strong&gt;PRI 69 %+&lt;/strong&gt; · opnå B-kvalifikation med to forsøg i august&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;Store Hestedag&lt;/strong&gt; · skifte fokus fra PRI til et sikkert PRT-ridt&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;C-stævne på Sjælland&lt;/strong&gt; · PRT-generalprøve efter Store Hestedag&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;ECCO Cup, Solrød ⭐&lt;/strong&gt; · 3. kvalifikation, PRT, forhåbentlig Kür og vise Victoria og Dobby frem&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;Midtsjælland&lt;/strong&gt; · PRT/PRM&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;Holte og Ballerup&lt;/strong&gt; · PRT/PRM i november&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;Aagerupgård&lt;/strong&gt; · PRM som årets afslutning 🎯&lt;/li&gt;
-    &lt;/ol&gt;
-    &lt;p class=&quot;text-small text-muted&quot;&gt;Åbent punkt: stævne nr. 2 i august skal helst findes på Sjælland.&lt;/p&gt;
-    &lt;div class=&quot;vc-goal-footer&quot;&gt;&lt;button class=&quot;btn btn-primary&quot; id=&quot;vc-goals-close&quot; type=&quot;button&quot;&gt;Luk&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;vc-ponydata-head&quot;&gt;&lt;div&gt;&lt;h3&gt;Ponydata&lt;/h3&gt;&lt;p class=&quot;vc-hint text-small&quot;&gt;Fælles oplysninger for Dobby og Rumle.&lt;/p&gt;&lt;/div&gt;&lt;button class=&quot;btn btn-ghost&quot; id=&quot;vc-goals-close&quot; type=&quot;button&quot; aria-label=&quot;Luk ponydata&quot;&gt;Luk&lt;/button&gt;&lt;/div&gt;
+    &lt;div class=&quot;vc-pony-tabs&quot; role=&quot;tablist&quot;&gt;&lt;button class=&quot;btn vc-pony-tab&quot; type=&quot;button&quot; data-pony-tab=&quot;dobby&quot; aria-selected=&quot;true&quot;&gt;&lt;span class=&quot;vc-pony-filter-icon pony-dobby&quot;&gt;♞&lt;/span&gt; Dobby&lt;/button&gt;&lt;button class=&quot;btn vc-pony-tab&quot; type=&quot;button&quot; data-pony-tab=&quot;rumle&quot; aria-selected=&quot;false&quot;&gt;&lt;span class=&quot;vc-pony-filter-icon pony-rumle&quot;&gt;♞&lt;/span&gt; Rumle&lt;/button&gt;&lt;/div&gt;
+    &lt;section class=&quot;vc-pony-panel is-active&quot; data-pony-panel=&quot;dobby&quot;&gt;
+      &lt;div class=&quot;vc-pony-profile&quot;&gt;&lt;h4&gt;Lykkebo Double Up · Dobby&lt;/h4&gt;&lt;dl class=&quot;vc-pony-facts&quot;&gt;&lt;div&gt;&lt;dt&gt;Født&lt;/dt&gt;&lt;dd&gt;21. marts 2014&lt;/dd&gt;&lt;/div&gt;&lt;div&gt;&lt;dt&gt;Race / køn&lt;/dt&gt;&lt;dd&gt;Dansk Sports Pony · hingst i passet&lt;/dd&gt;&lt;/div&gt;&lt;div&gt;&lt;dt&gt;Højde&lt;/dt&gt;&lt;dd&gt;141,8 cm · kategori I&lt;/dd&gt;&lt;/div&gt;&lt;div&gt;&lt;dt&gt;Far / mor&lt;/dt&gt;&lt;dd&gt;Jestis Duke / Pandora&lt;/dd&gt;&lt;/div&gt;&lt;/dl&gt;&lt;/div&gt;
+      &lt;div class=&quot;vc-pony-form&quot;&gt;&lt;label class=&quot;form-label&quot;&gt;Målsætning&lt;textarea class=&quot;form-control&quot; data-pony-field=&quot;dobby.goal&quot;&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;label class=&quot;form-label&quot;&gt;Næste vaccination&lt;input class=&quot;form-control&quot; type=&quot;date&quot; data-pony-field=&quot;dobby.nextVaccination&quot;&gt;&lt;span class=&quot;vc-countdown text-small&quot; data-countdown=&quot;dobby&quot;&gt;&lt;/span&gt;&lt;/label&gt;&lt;div class=&quot;vc-date-row&quot;&gt;&lt;label class=&quot;form-label&quot;&gt;Seneste tandlæge&lt;input class=&quot;form-control&quot; type=&quot;date&quot; data-pony-field=&quot;dobby.lastDentist&quot;&gt;&lt;/label&gt;&lt;label class=&quot;form-label&quot;&gt;Næste tandlæge&lt;input class=&quot;form-control&quot; type=&quot;date&quot; data-pony-field=&quot;dobby.nextDentist&quot;&gt;&lt;/label&gt;&lt;/div&gt;&lt;label class=&quot;form-label&quot;&gt;Mash – opskrift og mængde&lt;textarea class=&quot;form-control&quot; data-pony-field=&quot;dobby.mash&quot; placeholder=&quot;Hvad blandes sammen, hvor meget og hvor meget vand?&quot;&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;label class=&quot;form-label&quot;&gt;Foderplan og mængder&lt;textarea class=&quot;form-control&quot; data-pony-field=&quot;dobby.feed&quot; placeholder=&quot;Morgen, middag, aften og tilskud&quot;&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/div&gt;
+      &lt;details class=&quot;vc-pedigree&quot;&gt;&lt;summary&gt;Stamtavle&lt;/summary&gt;&lt;p&gt;&lt;strong&gt;Far:&lt;/strong&gt; Jestis Duke · &lt;strong&gt;mor:&lt;/strong&gt; Pandora · &lt;strong&gt;morfar:&lt;/strong&gt; Pour Amour&lt;/p&gt;&lt;/details&gt;
+    &lt;/section&gt;
+    &lt;section class=&quot;vc-pony-panel&quot; data-pony-panel=&quot;rumle&quot;&gt;
+      &lt;div class=&quot;vc-pony-profile&quot;&gt;&lt;h4&gt;Rumina Stengaard · Rumle&lt;/h4&gt;&lt;dl class=&quot;vc-pony-facts&quot;&gt;&lt;div&gt;&lt;dt&gt;Født&lt;/dt&gt;&lt;dd&gt;23. marts 2009&lt;/dd&gt;&lt;/div&gt;&lt;div&gt;&lt;dt&gt;Race / køn&lt;/dt&gt;&lt;dd&gt;Dansk Sports Pony · hoppe&lt;/dd&gt;&lt;/div&gt;&lt;div&gt;&lt;dt&gt;Højde&lt;/dt&gt;&lt;dd&gt;148 cm · kategori I&lt;/dd&gt;&lt;/div&gt;&lt;div&gt;&lt;dt&gt;Far&lt;/dt&gt;&lt;dd&gt;CE Roberto&lt;/dd&gt;&lt;/div&gt;&lt;/dl&gt;&lt;/div&gt;
+      &lt;div class=&quot;vc-pony-form&quot;&gt;&lt;label class=&quot;form-label&quot;&gt;Målsætning&lt;textarea class=&quot;form-control&quot; data-pony-field=&quot;rumle.goal&quot;&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;label class=&quot;form-label&quot;&gt;Næste vaccination&lt;input class=&quot;form-control&quot; type=&quot;date&quot; data-pony-field=&quot;rumle.nextVaccination&quot;&gt;&lt;span class=&quot;vc-countdown text-small&quot; data-countdown=&quot;rumle&quot;&gt;&lt;/span&gt;&lt;/label&gt;&lt;div class=&quot;vc-date-row&quot;&gt;&lt;label class=&quot;form-label&quot;&gt;Seneste tandlæge&lt;input class=&quot;form-control&quot; type=&quot;date&quot; data-pony-field=&quot;rumle.lastDentist&quot;&gt;&lt;/label&gt;&lt;label class=&quot;form-label&quot;&gt;Næste tandlæge&lt;input class=&quot;form-control&quot; type=&quot;date&quot; data-pony-field=&quot;rumle.nextDentist&quot;&gt;&lt;/label&gt;&lt;/div&gt;&lt;label class=&quot;form-label&quot;&gt;Mash – opskrift og mængde&lt;textarea class=&quot;form-control&quot; data-pony-field=&quot;rumle.mash&quot; placeholder=&quot;Hvad blandes sammen, hvor meget og hvor meget vand?&quot;&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;label class=&quot;form-label&quot;&gt;Foderplan og mængder&lt;textarea class=&quot;form-control&quot; data-pony-field=&quot;rumle.feed&quot; placeholder=&quot;Morgen, middag, aften og tilskud&quot;&gt;&lt;/textarea&gt;&lt;/label&gt;&lt;/div&gt;
+      &lt;details class=&quot;vc-pedigree&quot;&gt;&lt;summary&gt;Stamtavle og billede af morsiden&lt;/summary&gt;&lt;p&gt;&lt;strong&gt;Far:&lt;/strong&gt; CE Roberto · &lt;strong&gt;farfar:&lt;/strong&gt; FS Champion de Luxe · &lt;strong&gt;farmor:&lt;/strong&gt; Dresy-Fröhlich&lt;/p&gt;&lt;label class=&quot;form-label&quot;&gt;Vælg billede af Rumles morside&lt;input class=&quot;form-control&quot; id=&quot;vc-rumle-pedigree-file&quot; type=&quot;file&quot; accept=&quot;image/*&quot;&gt;&lt;/label&gt;&lt;img class=&quot;vc-pedigree-preview&quot; id=&quot;vc-rumle-pedigree-preview&quot; alt=&quot;Rumles morside i stamtavlen&quot; hidden&gt;&lt;button class=&quot;btn&quot; id=&quot;vc-rumle-pedigree-remove&quot; type=&quot;button&quot;&gt;Fjern billede&lt;/button&gt;&lt;/details&gt;
+    &lt;/section&gt;
+    &lt;p class=&quot;text-small text-muted&quot; id=&quot;vc-ponydata-meta&quot;&gt;&lt;/p&gt;&lt;div class=&quot;vc-ponydata-footer&quot;&gt;&lt;button class=&quot;btn&quot; id=&quot;vc-ponydata-cancel&quot; type=&quot;button&quot;&gt;Annuller&lt;/button&gt;&lt;button class=&quot;btn btn-primary&quot; id=&quot;vc-ponydata-save&quot; type=&quot;button&quot;&gt;Gem ponydata&lt;/button&gt;&lt;/div&gt;
   &lt;/dialog&gt;
 
   &lt;dialog id=&quot;vc-dialog&quot;&gt;
@@ -938,7 +959,15 @@ html&gt;body{padding:0}&lt;/style&gt;
       const key = &#x27;victoria-ridning-events-v1&#x27;;
       const deletedKey = &#x27;victoria-ridning-deleted-v1&#x27;;
       const userKey = &#x27;victoria-ridning-user-v1&#x27;;
+      const ponyDataKey = &#x27;victoria-ridning-ponydata-v1&#x27;;
       const databaseUrl = &#x27;https://vridekalender26-default-rtdb.europe-west1.firebasedatabase.app&#x27;;
+      const defaultPonyData = {
+        dobby:{goal:&#x27;PRI 69 %+ og B-kvalifikation. Stabil PRT, ECCO Cup-kvalifikation og udvikling mod PRM/A-ekvipage.&#x27;,nextVaccination:&#x27;&#x27;,lastDentist:&#x27;&#x27;,nextDentist:&#x27;&#x27;,mash:&#x27;&#x27;,feed:&#x27;&#x27;},
+        rumle:{goal:&#x27;&#x27;,nextVaccination:&#x27;&#x27;,lastDentist:&#x27;&#x27;,nextDentist:&#x27;&#x27;,mash:&#x27;&#x27;,feed:&#x27;&#x27;,pedigreeImage:&#x27;&#x27;},updatedAt:&#x27;&#x27;,updatedBy:&#x27;&#x27;
+      };
+      let ponyData=structuredClone(defaultPonyData);
+      let ponyDataInitial=&#x27;&#x27;;
+      try { const savedPonyData=JSON.parse(localStorage.getItem(ponyDataKey)||&#x27;null&#x27;); if(savedPonyData) ponyData={...ponyData,...savedPonyData,dobby:{...ponyData.dobby,...savedPonyData.dobby},rumle:{...ponyData.rumle,...savedPonyData.rumle}}; } catch (_) {}
       const seed = [
         {id:&#x27;s1&#x27;,date:&#x27;2026-05-16&#x27;,name:&#x27;Stævne Ballerup&#x27;,type:&#x27;competition&#x27;,place:&#x27;Ballerup&#x27;,note:&#x27;LA1&#x27;},
         {id:&#x27;s2&#x27;,date:&#x27;2026-05-17&#x27;,name:&#x27;Stævne Ballerup&#x27;,type:&#x27;competition&#x27;,place:&#x27;Ballerup&#x27;,note:&#x27;LA1&#x27;},
@@ -1013,6 +1042,10 @@ html&gt;body{padding:0}&lt;/style&gt;
       const list = root.querySelector(&#x27;#vc-list&#x27;);
       const dialog = root.querySelector(&#x27;#vc-dialog&#x27;);
       const goalsDialog = root.querySelector(&#x27;#vc-goals-dialog&#x27;);
+      const ponyDataFields = [...root.querySelectorAll(&#x27;[data-pony-field]&#x27;)];
+      const pedigreePreview = root.querySelector(&#x27;#vc-rumle-pedigree-preview&#x27;);
+      const pedigreeFile = root.querySelector(&#x27;#vc-rumle-pedigree-file&#x27;);
+      const ponyDataMeta = root.querySelector(&#x27;#vc-ponydata-meta&#x27;);
       const userSelect = root.querySelector(&#x27;#vc-user&#x27;);
       const syncStatus = root.querySelector(&#x27;#vc-sync-status&#x27;);
       const editorMeta = root.querySelector(&#x27;#vc-editor-meta&#x27;);
@@ -1034,6 +1067,12 @@ html&gt;body{padding:0}&lt;/style&gt;
       const selectedUser = () =&gt; userSelect.value;
       const requireUser = () =&gt; { if (selectedUser()) return true; userSelect.focus(); syncStatus.textContent=&#x27;Vælg dit navn først&#x27;; return false; };
       const setSyncStatus = text =&gt; { syncStatus.textContent=text; };
+      const savePonyDataLocal = () =&gt; { try { localStorage.setItem(ponyDataKey,JSON.stringify(ponyData)); } catch (_) {} };
+      const countdownText = value =&gt; { if(!value)return &#x27;Vælg en dato for at se nedtællingen.&#x27;;const target=new Date(value+&#x27;T12:00:00&#x27;),today=new Date();today.setHours(12,0,0,0);const days=Math.ceil((target-today)/86400000);return days===0?&#x27;Vaccination er i dag&#x27;:days&gt;0?`Vaccination om ${days} ${days===1?&#x27;dag&#x27;:&#x27;dage&#x27;}`:`Vaccinationsdatoen er overskredet med ${Math.abs(days)} ${Math.abs(days)===1?&#x27;dag&#x27;:&#x27;dage&#x27;}`; };
+      const updatePonyDataForm = () =&gt; { ponyDataFields.forEach(field=&gt;{const [pony,name]=field.dataset.ponyField.split(&#x27;.&#x27;);field.value=ponyData[pony]?.[name]||&#x27;&#x27;;});root.querySelectorAll(&#x27;[data-countdown]&#x27;).forEach(el=&gt;{el.textContent=countdownText(ponyData[el.dataset.countdown]?.nextVaccination);});const image=ponyData.rumle?.pedigreeImage||&#x27;&#x27;;pedigreePreview.src=image;pedigreePreview.hidden=!image;ponyDataMeta.textContent=ponyData.updatedAt?`Senest gemt af ${ponyData.updatedBy||&#x27;ukendt&#x27;} · ${new Date(ponyData.updatedAt).toLocaleString(&#x27;da-DK&#x27;)}`:&#x27;Ikke gemt endnu&#x27;; };
+      const collectPonyDataForm = () =&gt; { ponyDataFields.forEach(field=&gt;{const [pony,name]=field.dataset.ponyField.split(&#x27;.&#x27;);ponyData[pony][name]=field.value.trim();}); };
+      const showPonyTab = pony =&gt; { root.querySelectorAll(&#x27;[data-pony-tab]&#x27;).forEach(btn=&gt;btn.setAttribute(&#x27;aria-selected&#x27;,String(btn.dataset.ponyTab===pony)));root.querySelectorAll(&#x27;[data-pony-panel]&#x27;).forEach(panel=&gt;panel.classList.toggle(&#x27;is-active&#x27;,panel.dataset.ponyPanel===pony)); };
+      const resizeImage = file =&gt; new Promise((resolve,reject)=&gt;{const reader=new FileReader();reader.onerror=reject;reader.onload=()=&gt;{const image=new Image();image.onerror=reject;image.onload=()=&gt;{const max=1000,scale=Math.min(1,max/Math.max(image.width,image.height)),canvas=document.createElement(&#x27;canvas&#x27;);canvas.width=Math.round(image.width*scale);canvas.height=Math.round(image.height*scale);canvas.getContext(&#x27;2d&#x27;).drawImage(image,0,0,canvas.width,canvas.height);resolve(canvas.toDataURL(&#x27;image/jpeg&#x27;,.72));};image.src=reader.result;};reader.readAsDataURL(file);});
       const cloudRequest = async (path,options={}) =&gt; {
         const response=await fetch(`${databaseUrl}/${path}.json`,{cache:&#x27;no-store&#x27;,...options,headers:{&#x27;Content-Type&#x27;:&#x27;application/json&#x27;,...(options.headers||{})}});
         if(!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -1048,6 +1087,7 @@ html&gt;body{padding:0}&lt;/style&gt;
           const cloud=(await cloudRequest(&#x27;calendar&#x27;))||{};
           const remoteActivities=cloud.activities||{};
           const remoteDeleted=cloud.deleted||{};
+          if(cloud.ponyData){const remotePonyTime=Date.parse(cloud.ponyData.updatedAt||&#x27;&#x27;)||0,localPonyTime=Date.parse(ponyData.updatedAt||&#x27;&#x27;)||0;if(remotePonyTime&gt;=localPonyTime &amp;&amp; !goalsDialog.open){ponyData={...ponyData,...cloud.ponyData,dobby:{...ponyData.dobby,...cloud.ponyData.dobby},rumle:{...ponyData.rumle,...cloud.ponyData.rumle}};savePonyDataLocal();updatePonyDataForm();}}
           const localMap=new Map(events.map(item=&gt;[item.id,item]));
           Object.entries(remoteActivities).forEach(([id,item])=&gt;{
             if(remoteDeleted[id]) return;
@@ -1118,8 +1158,15 @@ html&gt;body{padding:0}&lt;/style&gt;
       root.querySelector(&#x27;#vc-next&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{view.setMonth(view.getMonth()+1);render();});
       root.querySelector(&#x27;#vc-today&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{view=new Date();view.setDate(1);render();});
       root.querySelector(&#x27;#vc-add&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{if(requireUser())openEditor();});
-      root.querySelector(&#x27;#vc-goals-open&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;goalsDialog.showModal());
-      root.querySelector(&#x27;#vc-goals-close&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;goalsDialog.close());
+      const cancelPonyData = () =&gt; { if(ponyDataInitial)ponyData=JSON.parse(ponyDataInitial);pedigreeFile.value=&#x27;&#x27;;updatePonyDataForm();goalsDialog.close(); };
+      root.querySelector(&#x27;#vc-goals-open&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{ponyDataInitial=JSON.stringify(ponyData);updatePonyDataForm();goalsDialog.showModal();});
+      root.querySelector(&#x27;#vc-goals-close&#x27;).addEventListener(&#x27;click&#x27;,cancelPonyData);
+      root.querySelector(&#x27;#vc-ponydata-cancel&#x27;).addEventListener(&#x27;click&#x27;,cancelPonyData);
+      root.querySelectorAll(&#x27;[data-pony-tab]&#x27;).forEach(btn=&gt;btn.addEventListener(&#x27;click&#x27;,()=&gt;showPonyTab(btn.dataset.ponyTab)));
+      ponyDataFields.filter(field=&gt;field.dataset.ponyField.endsWith(&#x27;.nextVaccination&#x27;)).forEach(field=&gt;field.addEventListener(&#x27;input&#x27;,()=&gt;{const pony=field.dataset.ponyField.split(&#x27;.&#x27;)[0];root.querySelector(`[data-countdown=&quot;${pony}&quot;]`).textContent=countdownText(field.value);}));
+      pedigreeFile.addEventListener(&#x27;change&#x27;,async ()=&gt;{const file=pedigreeFile.files?.[0];if(!file)return;ponyData.rumle.pedigreeImage=await resizeImage(file);pedigreePreview.src=ponyData.rumle.pedigreeImage;pedigreePreview.hidden=false;});
+      root.querySelector(&#x27;#vc-rumle-pedigree-remove&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{ponyData.rumle.pedigreeImage=&#x27;&#x27;;pedigreeFile.value=&#x27;&#x27;;pedigreePreview.removeAttribute(&#x27;src&#x27;);pedigreePreview.hidden=true;});
+      root.querySelector(&#x27;#vc-ponydata-save&#x27;).addEventListener(&#x27;click&#x27;,async ()=&gt;{if(!requireUser())return;collectPonyDataForm();ponyData.updatedAt=new Date().toISOString();ponyData.updatedBy=selectedUser();ponyDataInitial=JSON.stringify(ponyData);savePonyDataLocal();updatePonyDataForm();setSyncStatus(&#x27;Gemmer ponydata…&#x27;);try{await cloudRequest(&#x27;calendar/ponyData&#x27;,{method:&#x27;PUT&#x27;,body:JSON.stringify(ponyData)});setSyncStatus(&#x27;Ponydata gemt og synkroniseret&#x27;);goalsDialog.close();}catch(_){setSyncStatus(&#x27;Offline – ponydata gemt på denne enhed&#x27;);}});
       root.querySelectorAll(&#x27;.vc-filter&#x27;).forEach(x=&gt;x.addEventListener(&#x27;change&#x27;,render));
       root.querySelectorAll(&#x27;.vc-pony-filter&#x27;).forEach(x=&gt;x.addEventListener(&#x27;change&#x27;,render));
       root.addEventListener(&#x27;dblclick&#x27;,ev=&gt;{const day=ev.target.closest(&#x27;.vc-day&#x27;);if(day &amp;&amp; requireUser()){openEditor();fields.date.value=day.dataset.date;editorInitial=formState();}});
@@ -1130,6 +1177,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       root.querySelector(&#x27;#vc-save&#x27;).addEventListener(&#x27;click&#x27;,saveEditor);
       root.querySelector(&#x27;#vc-form&#x27;).addEventListener(&#x27;submit&#x27;,ev=&gt;{ev.preventDefault();saveEditor();});
       render();
+      updatePonyDataForm();
       userSelect.addEventListener(&#x27;change&#x27;,()=&gt;{try{localStorage.setItem(userKey,userSelect.value);}catch(_){}setSyncStatus(userSelect.value?`Valgt: ${userSelect.value}`:&#x27;Vælg dit navn&#x27;);});
       root.querySelector(&#x27;#vc-sync&#x27;).addEventListener(&#x27;click&#x27;,syncNow);
       window.addEventListener(&#x27;online&#x27;,syncNow);
