@@ -843,13 +843,15 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-form textarea.form-control { min-height:52px; padding-top:6px; padding-bottom:6px; }
     #victoria-calendar .vc-competition-plan[hidden] { display:none !important; }
     #victoria-calendar .vc-form h3 { margin:0 0 2px; }
-    #victoria-calendar .vc-form-head { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; position:sticky; top:0; z-index:2; padding-bottom:7px; background:var(--popover); border-bottom:1px solid var(--border); }
+    #victoria-calendar .vc-form-head { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; position:sticky; top:0; z-index:2; padding:10px 0 7px; background:var(--popover); border-bottom:1px solid var(--border); }
     #victoria-calendar .vc-top-actions { display:flex; justify-content:flex-end; gap:8px; flex-shrink:0; }
     #victoria-calendar .vc-close { min-width:54px; }
     #victoria-calendar .btn-danger { border-color:transparent; color:#fff; background:#c73535; }
     #victoria-calendar .btn-danger:not(:disabled):hover { background:#a92727; }
     #victoria-calendar .vc-delete-warning { display:none; margin:0; padding:8px 10px; border:1px solid #c73535; border-radius:8px; color:#8f2020; background:#fff0f0; font-weight:600; }
     #victoria-calendar .vc-delete-warning.is-visible { display:block; }
+    #victoria-calendar .vc-copy-notice { display:none; margin:0; padding:6px 9px; border:1px solid var(--primary); border-radius:8px; color:var(--foreground); background:var(--accent); font-size:10px; font-weight:700; }
+    #victoria-calendar .vc-copy-notice.is-visible { display:block; }
     #victoria-calendar .vc-actions { display:flex; justify-content:flex-end; gap:8px; flex-wrap:wrap; margin-top:1px; }
     #victoria-calendar .vc-delete { margin-right:auto; }
     #victoria-calendar .vc-hint { margin:0; color:var(--muted-foreground); }
@@ -882,7 +884,8 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-pedigree-preview { display:block; width:100%; max-height:280px; margin-top:7px; object-fit:contain; border-radius:var(--radius-md); }
     #victoria-calendar .vc-ponydata-footer { position:sticky; bottom:-14px; display:flex; justify-content:flex-end; gap:6px; padding:9px 0 0; background:var(--popover); }
     #victoria-calendar .vc-sync-status { margin-left:auto; color:var(--muted-foreground); }
-    #victoria-calendar .vc-editor-meta { margin:0; padding-top:2px; color:var(--muted-foreground); }
+    #victoria-calendar #vc-dialog { position:relative; }
+    #victoria-calendar .vc-editor-meta { position:absolute; top:3px; right:14px; z-index:4; max-width:72%; margin:0; overflow:hidden; color:var(--muted-foreground); font-size:8px; line-height:10px; text-align:right; text-overflow:ellipsis; white-space:nowrap; }
     @media (max-width:600px) {
       #victoria-calendar .vc-grid { display:none; }
       #victoria-calendar .vc-list { margin-top:8px; }
@@ -958,11 +961,13 @@ html&gt;body{padding:0}&lt;/style&gt;
         &lt;div&gt;&lt;h3 id=&quot;vc-dialog-title&quot;&gt;Ny aktivitet&lt;/h3&gt;&lt;p class=&quot;vc-hint text-small&quot;&gt;Tilføj en aktivitet for Rumle, Dobby eller begge.&lt;/p&gt;&lt;/div&gt;
         &lt;div class=&quot;vc-top-actions&quot;&gt;
           &lt;button class=&quot;btn btn-danger&quot; id=&quot;vc-delete&quot; type=&quot;button&quot;&gt;Slet&lt;/button&gt;
+          &lt;button class=&quot;btn&quot; id=&quot;vc-copy&quot; type=&quot;button&quot;&gt;Lav kopi&lt;/button&gt;
           &lt;button class=&quot;btn btn-primary&quot; id=&quot;vc-save&quot; type=&quot;button&quot;&gt;Gem&lt;/button&gt;
           &lt;button class=&quot;btn vc-close&quot; id=&quot;vc-close&quot; type=&quot;button&quot;&gt;Luk&lt;/button&gt;
         &lt;/div&gt;
       &lt;/div&gt;
       &lt;p class=&quot;vc-delete-warning text-small&quot; id=&quot;vc-delete-warning&quot; role=&quot;alert&quot;&gt;⚠️ Vil du virkelig slette aktiviteten? Tryk på “Slet nu” for at bekræfte.&lt;/p&gt;
+      &lt;p class=&quot;vc-copy-notice&quot; id=&quot;vc-copy-notice&quot; role=&quot;status&quot;&gt;KOPI – husk at rette dato og øvrige oplysninger før du gemmer.&lt;/p&gt;
       &lt;input type=&quot;hidden&quot; id=&quot;vc-id&quot;&gt;
       &lt;label class=&quot;form-label&quot;&gt;Type&lt;select class=&quot;form-select&quot; id=&quot;vc-type&quot;&gt;&lt;option value=&quot;competition&quot;&gt;Stævne&lt;/option&gt;&lt;option value=&quot;training&quot;&gt;Træning Morten&lt;/option&gt;&lt;option value=&quot;care&quot;&gt;Pasning&lt;/option&gt;&lt;option value=&quot;selftraining&quot;&gt;Selvtræning&lt;/option&gt;&lt;option value=&quot;off&quot;&gt;Andet&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Beskrivelse&lt;input class=&quot;form-control&quot; id=&quot;vc-name&quot; required placeholder=&quot;Fx dressurtræning&quot;&gt;&lt;/label&gt;
@@ -1075,6 +1080,8 @@ html&gt;body{padding:0}&lt;/style&gt;
       const syncStatus = root.querySelector(&#x27;#vc-sync-status&#x27;);
       const editorMeta = root.querySelector(&#x27;#vc-editor-meta&#x27;);
       const deleteButton = root.querySelector(&#x27;#vc-delete&#x27;);
+      const copyButton = root.querySelector(&#x27;#vc-copy&#x27;);
+      const copyNotice = root.querySelector(&#x27;#vc-copy-notice&#x27;);
       const deleteWarning = root.querySelector(&#x27;#vc-delete-warning&#x27;);
       let deleteArmed = false;
       const resetDelete = () =&gt; { deleteArmed=false; deleteButton.textContent=&#x27;Slet&#x27;; deleteWarning.classList.remove(&#x27;is-visible&#x27;); };
@@ -1178,12 +1185,14 @@ html&gt;body{padding:0}&lt;/style&gt;
       let editorInitial = &#x27;&#x27;;
       function openEditor(e) {
         resetDelete();
+        copyNotice.classList.remove(&#x27;is-visible&#x27;);
         root.querySelector(&#x27;#vc-form&#x27;).reset();
-        const item=e||{id:&#x27;&#x27;,name:&#x27;&#x27;,pony:&#x27;dobby&#x27;,type:&#x27;training&#x27;,status:&#x27;&#x27;,date:iso(new Date(view.getFullYear(),view.getMonth(),1)),endDate:&#x27;&#x27;,time:&#x27;&#x27;,place:&#x27;&#x27;,competitionPlan:&#x27;&#x27;,note:&#x27;&#x27;};
+        const item=e||{id:&#x27;&#x27;,name:&#x27;&#x27;,pony:&#x27;dobby&#x27;,type:&#x27;training&#x27;,status:&#x27;&#x27;,date:iso(new Date()),endDate:&#x27;&#x27;,time:&#x27;&#x27;,place:&#x27;&#x27;,competitionPlan:&#x27;&#x27;,note:&#x27;&#x27;};
         Object.keys(fields).forEach(k=&gt;fields[k].value=item[k]||&#x27;&#x27;);
         updateCompetitionFields();
         root.querySelector(&#x27;#vc-dialog-title&#x27;).textContent=e?&#x27;Rediger aktivitet&#x27;:&#x27;Ny aktivitet&#x27;;
         deleteButton.style.visibility=e?&#x27;visible&#x27;:&#x27;hidden&#x27;;
+        copyButton.style.visibility=e?&#x27;visible&#x27;:&#x27;hidden&#x27;;
         editorMeta.textContent=e &amp;&amp; (e.createdBy||e.updatedBy) ? `Oprettet af ${e.createdBy||&#x27;ukendt&#x27;}${e.updatedBy &amp;&amp; e.updatedBy!==e.createdBy ? ` · senest rettet af ${e.updatedBy}` : &#x27;&#x27;}` : &#x27;&#x27;;
         editorInitial=formState();
         dialog.showModal(); fields.name.focus();
@@ -1206,6 +1215,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       fields.type.addEventListener(&#x27;change&#x27;,updateCompetitionFields);
       root.addEventListener(&#x27;dblclick&#x27;,ev=&gt;{const day=ev.target.closest(&#x27;.vc-day&#x27;);if(day &amp;&amp; requireUser()){openEditor();fields.date.value=day.dataset.date;editorInitial=formState();}});
       root.addEventListener(&#x27;click&#x27;,ev=&gt;{const b=ev.target.closest(&#x27;.vc-event&#x27;);if(b &amp;&amp; requireUser())openEditor(events.find(e=&gt;e.id===b.dataset.id));});
+      copyButton.addEventListener(&#x27;click&#x27;,()=&gt;{const original=events.find(e=&gt;e.id===fields.id.value);if(!original)return;fields.id.value=&#x27;&#x27;;root.querySelector(&#x27;#vc-dialog-title&#x27;).textContent=&#x27;Kopi af aktivitet&#x27;;copyNotice.classList.add(&#x27;is-visible&#x27;);deleteButton.style.visibility=&#x27;hidden&#x27;;copyButton.style.visibility=&#x27;hidden&#x27;;editorMeta.textContent=`Kopieret fra aktivitet oprettet af ${original.createdBy||&#x27;ukendt&#x27;}`;editorInitial=formState();fields.date.focus();});
       deleteButton.addEventListener(&#x27;click&#x27;,async ()=&gt;{if(!requireUser())return;if(!deleteArmed){deleteArmed=true;deleteButton.textContent=&#x27;Slet nu&#x27;;deleteWarning.classList.add(&#x27;is-visible&#x27;);return;}const id=fields.id.value;if(!id)return;deletedIds.add(id);events=events.filter(e=&gt;e.id!==id);save();dialog.close();render();const tombstone={deletedAt:new Date().toISOString(),deletedBy:selectedUser()};try{await deleteCloudEvent(id,tombstone);setSyncStatus(&#x27;Slettet og synkroniseret&#x27;);}catch(_){setSyncStatus(&#x27;Offline – sletningen synkroniseres senere&#x27;);}});
       const saveEditor = async () =&gt; {if(!requireUser()||!fields.name.reportValidity()||!fields.date.reportValidity())return;const previous=events.find(e=&gt;e.id===fields.id.value);const item={};Object.keys(fields).forEach(k=&gt;item[k]=fields[k].value.trim());if(item.endDate&amp;&amp;item.endDate&lt;item.date){fields.endDate.setCustomValidity(&#x27;Slutdato skal være efter startdato&#x27;);fields.endDate.reportValidity();return;}fields.endDate.setCustomValidity(&#x27;&#x27;);const now=new Date().toISOString();item.userEdited=true;item.createdBy=previous?.createdBy||selectedUser();item.createdAt=previous?.createdAt||now;item.updatedBy=selectedUser();item.updatedAt=now;if(item.id){events=events.map(e=&gt;e.id===item.id?item:e);deletedIds.delete(item.id);}else{item.id=&#x27;e&#x27;+Date.now();events.push(item);}save();dialog.close();view=new Date(item.date+&#x27;T12:00:00&#x27;);view.setDate(1);render();setSyncStatus(&#x27;Gemmer fælles…&#x27;);try{await writeCloudEvent(item);setSyncStatus(&#x27;Gemt og synkroniseret&#x27;);}catch(_){setSyncStatus(&#x27;Offline – gemt på denne enhed&#x27;);}};
       root.querySelector(&#x27;#vc-close&#x27;).addEventListener(&#x27;click&#x27;,async ()=&gt;{if(formState()===editorInitial){dialog.close();return;}if(confirm(&#x27;Du har ændringer, som ikke er gemt. Vil du gemme dem?&#x27;))await saveEditor();else dialog.close();});
