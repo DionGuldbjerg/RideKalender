@@ -817,6 +817,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-list-hint { margin:0 0 6px; color:var(--muted-foreground); }
     #victoria-calendar #vc-list { max-height:min(68vh,720px); overflow-y:auto; overscroll-behavior:contain; scroll-behavior:smooth; border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
     #victoria-calendar .vc-list-day { display:grid; grid-template-columns:62px 1fr; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
+    #victoria-calendar .vc-list-month-separator { position:sticky; top:0; z-index:1; padding:7px 9px; border-bottom:1px solid var(--border); color:var(--foreground); background:var(--card); font-size:12px; font-weight:750; text-transform:capitalize; }
     #victoria-calendar .vc-list-date { text-align:center; }
     #victoria-calendar .vc-list-date strong { display:block; }
     #victoria-calendar .vc-list-events { display:grid; gap:6px; }
@@ -903,12 +904,6 @@ html&gt;body{padding:0}&lt;/style&gt;
     &lt;button class=&quot;btn&quot; id=&quot;vc-sync&quot; type=&quot;button&quot;&gt;Opdater nu&lt;/button&gt;
     &lt;span class=&quot;vc-sync-status text-small&quot; id=&quot;vc-sync-status&quot; aria-live=&quot;polite&quot;&gt;Forbinder…&lt;/span&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;vc-nav&quot;&gt;
-    &lt;button class=&quot;btn btn-ghost&quot; id=&quot;vc-prev&quot; type=&quot;button&quot; aria-label=&quot;Forrige måned&quot;&gt;&lt;i data-lucide=&quot;chevron-left&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/button&gt;
-    &lt;div class=&quot;vc-month&quot; id=&quot;vc-month&quot; aria-live=&quot;polite&quot;&gt;&lt;/div&gt;
-    &lt;button class=&quot;btn btn-ghost&quot; id=&quot;vc-next&quot; type=&quot;button&quot; aria-label=&quot;Næste måned&quot;&gt;&lt;i data-lucide=&quot;chevron-right&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/button&gt;
-    &lt;button class=&quot;btn&quot; id=&quot;vc-today&quot; type=&quot;button&quot;&gt;I dag&lt;/button&gt;
-  &lt;/div&gt;
   &lt;div class=&quot;viz-controls vc-filters&quot; aria-label=&quot;Filtrer aktiviteter&quot;&gt;
     &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-filter&quot; type=&quot;checkbox&quot; value=&quot;competition&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-filter-dot competition&quot;&gt;&lt;/span&gt; Stævne&lt;/span&gt;&lt;/label&gt;
     &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-filter&quot; type=&quot;checkbox&quot; value=&quot;training&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-filter-dot training&quot;&gt;&lt;/span&gt; Træning Morten&lt;/span&gt;&lt;/label&gt;
@@ -920,7 +915,13 @@ html&gt;body{padding:0}&lt;/style&gt;
     &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-pony-filter&quot; type=&quot;checkbox&quot; value=&quot;dobby&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-pony-filter-icon pony-dobby&quot; aria-hidden=&quot;true&quot;&gt;♞&lt;/span&gt; Dobby&lt;/span&gt;&lt;/label&gt;
     &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-pony-filter&quot; type=&quot;checkbox&quot; value=&quot;rumle&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-pony-filter-icon pony-rumle&quot; aria-hidden=&quot;true&quot;&gt;♞&lt;/span&gt; Rumle&lt;/span&gt;&lt;/label&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;vc-list&quot; aria-label=&quot;Aktiviteter denne måned&quot;&gt;&lt;h3&gt;Månedens aktiviteter&lt;/h3&gt;&lt;p class=&quot;vc-list-hint text-small&quot;&gt;Viser aktuelt tidspunkt først · scroll op for tidligere aktiviteter&lt;/p&gt;&lt;div id=&quot;vc-list&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+  &lt;div class=&quot;vc-nav&quot;&gt;
+    &lt;button class=&quot;btn btn-ghost&quot; id=&quot;vc-prev&quot; type=&quot;button&quot; aria-label=&quot;Forrige måned&quot;&gt;&lt;i data-lucide=&quot;chevron-left&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/button&gt;
+    &lt;div class=&quot;vc-month&quot; id=&quot;vc-month&quot; aria-live=&quot;polite&quot;&gt;&lt;/div&gt;
+    &lt;button class=&quot;btn btn-ghost&quot; id=&quot;vc-next&quot; type=&quot;button&quot; aria-label=&quot;Næste måned&quot;&gt;&lt;i data-lucide=&quot;chevron-right&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/button&gt;
+    &lt;button class=&quot;btn&quot; id=&quot;vc-today&quot; type=&quot;button&quot;&gt;I dag&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;vc-list&quot; aria-label=&quot;Aktiviteter denne måned og frem&quot;&gt;&lt;h3&gt;Månedens aktiviteter&lt;/h3&gt;&lt;p class=&quot;vc-list-hint text-small&quot;&gt;Viser aktuelt tidspunkt først · scroll op for tidligere aktiviteter og ned til de næste måneder&lt;/p&gt;&lt;div id=&quot;vc-list&quot;&gt;&lt;/div&gt;&lt;/div&gt;
   &lt;div class=&quot;vc-grid&quot; id=&quot;vc-grid&quot; role=&quot;grid&quot; aria-label=&quot;Månedskalender&quot;&gt;&lt;/div&gt;
 
   &lt;dialog id=&quot;vc-goals-dialog&quot;&gt;
@@ -1151,11 +1152,12 @@ html&gt;body{padding:0}&lt;/style&gt;
           html += `&lt;div class=&quot;vc-day${d.getMonth()!==view.getMonth()?&#x27; is-other&#x27;:&#x27;&#x27;}${ds===today?&#x27; is-today&#x27;:&#x27;&#x27;}&quot; role=&quot;gridcell&quot; data-date=&quot;${ds}&quot;&gt;&lt;div class=&quot;vc-number&quot;&gt;${d.getDate()}&lt;/div&gt;${dayEvents.map(e=&gt;eventButton(e)).join(&#x27;&#x27;)}&lt;/div&gt;`;
         }
         grid.innerHTML=html;
-        const monthStart=iso(first), monthEnd=iso(new Date(view.getFullYear(),view.getMonth()+1,0));
-        const inMonth=events.filter(e=&gt;e.date&lt;=monthEnd&amp;&amp;(e.endDate||e.date)&gt;=monthStart&amp;&amp;types.has(e.type)&amp;&amp;matchesPony(e,ponies)).sort((a,b)=&gt;(a.date+(a.time||&#x27;&#x27;)).localeCompare(b.date+(b.time||&#x27;&#x27;)));
-        list.innerHTML=inMonth.length?inMonth.map(e=&gt;{const startDate=new Date(e.date+&#x27;T12:00:00&#x27;);const end=e.endDate?new Date(e.endDate+&#x27;T12:00:00&#x27;):null;const range=end?`${startDate.getDate()}/${startDate.getMonth()+1}–${end.getDate()}/${end.getMonth()+1}`:`${startDate.getDate()}/${startDate.getMonth()+1}`;return `&lt;div class=&quot;vc-list-day&quot; data-range-end=&quot;${esc(e.endDate||e.date)}&quot;&gt;&lt;div class=&quot;vc-list-date&quot;&gt;&lt;strong&gt;${range}&lt;/strong&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;${new Intl.DateTimeFormat(&#x27;da-DK&#x27;,{weekday:&#x27;short&#x27;}).format(startDate)}&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;vc-list-events&quot;&gt;${eventButton(e,true)}&lt;/div&gt;&lt;/div&gt;`}).join(&#x27;&#x27;):&#x27;&lt;div class=&quot;vc-empty&quot;&gt;Ingen aktiviteter denne måned&lt;/div&gt;&#x27;;
+        const monthStart=iso(first),agendaEnd=iso(new Date(view.getFullYear(),view.getMonth()+12,0));
+        const agendaEvents=events.filter(e=&gt;e.date&lt;=agendaEnd&amp;&amp;(e.endDate||e.date)&gt;=monthStart&amp;&amp;types.has(e.type)&amp;&amp;matchesPony(e,ponies)).sort((a,b)=&gt;(a.date+(a.time||&#x27;&#x27;)).localeCompare(b.date+(b.time||&#x27;&#x27;)));
+        let agendaMonth=&#x27;&#x27;;
+        list.innerHTML=agendaEvents.length?agendaEvents.map(e=&gt;{const startDate=new Date(e.date+&#x27;T12:00:00&#x27;);const end=e.endDate?new Date(e.endDate+&#x27;T12:00:00&#x27;):null;const groupDate=new Date((e.date&lt;monthStart?monthStart:e.date)+&#x27;T12:00:00&#x27;),monthKey=iso(groupDate).slice(0,7);const separator=monthKey!==agendaMonth?`&lt;div class=&quot;vc-list-month-separator&quot;&gt;${new Intl.DateTimeFormat(&#x27;da-DK&#x27;,{month:&#x27;long&#x27;,year:&#x27;numeric&#x27;}).format(groupDate)}&lt;/div&gt;`:&#x27;&#x27;;agendaMonth=monthKey;const range=end?`${startDate.getDate()}/${startDate.getMonth()+1}–${end.getDate()}/${end.getMonth()+1}`:`${startDate.getDate()}/${startDate.getMonth()+1}`;return `${separator}&lt;div class=&quot;vc-list-day&quot; data-range-end=&quot;${esc(e.endDate||e.date)}&quot;&gt;&lt;div class=&quot;vc-list-date&quot;&gt;&lt;strong&gt;${range}&lt;/strong&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;${new Intl.DateTimeFormat(&#x27;da-DK&#x27;,{weekday:&#x27;short&#x27;}).format(startDate)}&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;vc-list-events&quot;&gt;${eventButton(e,true)}&lt;/div&gt;&lt;/div&gt;`}).join(&#x27;&#x27;):&#x27;&lt;div class=&quot;vc-empty&quot;&gt;Ingen aktiviteter i perioden&lt;/div&gt;&#x27;;
         const now=new Date(),isCurrentMonth=view.getFullYear()===now.getFullYear()&amp;&amp;view.getMonth()===now.getMonth();
-        if(isCurrentMonth&amp;&amp;inMonth.length){requestAnimationFrame(()=&gt;{const rows=[...list.querySelectorAll(&#x27;.vc-list-day&#x27;)];const current=rows.find(row=&gt;row.dataset.rangeEnd&gt;=today)||rows.at(-1);list.scrollTop=Math.max(0,current.offsetTop-list.offsetTop);});}else list.scrollTop=0;
+        if(isCurrentMonth&amp;&amp;agendaEvents.length){requestAnimationFrame(()=&gt;{const rows=[...list.querySelectorAll(&#x27;.vc-list-day&#x27;)];const current=rows.find(row=&gt;row.dataset.rangeEnd&gt;=today)||rows.at(-1);list.scrollTop=Math.max(0,current.offsetTop-list.offsetTop);});}else list.scrollTop=0;
       }
       const formState = () =&gt; JSON.stringify(Object.fromEntries(Object.entries(fields).map(([name,field])=&gt;[name,field.value])));
       let editorInitial = &#x27;&#x27;;
