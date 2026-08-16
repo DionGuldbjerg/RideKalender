@@ -876,6 +876,8 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-editor-meta { margin:0; padding-top:2px; color:var(--muted-foreground); }
     @media (max-width:600px) {
       #victoria-calendar .vc-grid { display:none; }
+      #victoria-calendar .vc-list { margin-top:8px; }
+      #victoria-calendar .vc-list h3, #victoria-calendar .vc-list-hint { display:none; }
       #victoria-calendar .vc-list-day { grid-template-columns:54px 1fr; gap:10px; padding:12px 0; }
       #victoria-calendar .vc-list-events { gap:7px; }
       #victoria-calendar .vc-header { align-items:flex-start; }
@@ -883,6 +885,10 @@ html&gt;body{padding:0}&lt;/style&gt;
       #victoria-calendar .vc-header-actions .vc-sync-status { text-align:left; }
       #victoria-calendar .vc-nav { width:100%; justify-content:space-between; }
       #victoria-calendar .vc-sync-status { width:100%; margin-left:0; }
+      #victoria-calendar .vc-pony-filters { gap:6px; margin-bottom:10px; }
+      #victoria-calendar .vc-pony-filters .form-check-label { min-height:32px; gap:5px; padding:4px 8px; font-size:82%; }
+      #victoria-calendar .vc-pony-filters .vc-pony-filter-icon { font-size:13px; }
+      #victoria-calendar .vc-pony-filters .form-check-label::after { padding:1px 5px; font-size:9px; }
       #victoria-calendar .vc-pony-facts, #victoria-calendar .vc-date-row { grid-template-columns:1fr; }
     }
   &lt;/style&gt;
@@ -914,7 +920,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     &lt;button class=&quot;btn btn-ghost&quot; id=&quot;vc-next&quot; type=&quot;button&quot; aria-label=&quot;Næste måned&quot;&gt;&lt;i data-lucide=&quot;chevron-right&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/button&gt;
     &lt;button class=&quot;btn&quot; id=&quot;vc-today&quot; type=&quot;button&quot;&gt;I dag&lt;/button&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;vc-list&quot; aria-label=&quot;Aktiviteter denne måned og frem&quot;&gt;&lt;h3&gt;Månedens aktiviteter&lt;/h3&gt;&lt;p class=&quot;vc-list-hint text-small&quot;&gt;Scroll op for tidligere · ned for næste måneder&lt;/p&gt;&lt;div id=&quot;vc-list&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+  &lt;div class=&quot;vc-list&quot; aria-label=&quot;Aktiviteter denne måned og frem&quot;&gt;&lt;div id=&quot;vc-list&quot;&gt;&lt;/div&gt;&lt;/div&gt;
   &lt;div class=&quot;vc-grid&quot; id=&quot;vc-grid&quot; role=&quot;grid&quot; aria-label=&quot;Månedskalender&quot;&gt;&lt;/div&gt;
 
   &lt;dialog id=&quot;vc-goals-dialog&quot;&gt;
