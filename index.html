@@ -7,8 +7,15 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data: https://vridekalender26-default-rtdb.europe-west1.firebasedatabase.app; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src 'self' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data: https://vridekalender26-default-rtdb.europe-west1.firebasedatabase.app; frame-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <title>Victoria ride- og stævnekalender</title>
+<meta name="theme-color" content="#2478d4">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Ridekalender">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
 <style>:root{color-scheme:light dark;background:light-dark(rgb(255 255 255), rgb(24 24 24))}html,body{margin:0}body{box-sizing:border-box;padding:1rem;background:inherit}iframe{display:block;width:100%;max-width:736px;height:calc(100vh - 2rem);margin:0 auto;border:0}</style>
 </head>
 <body>
@@ -881,10 +888,14 @@ html&gt;body{padding:0}&lt;/style&gt;
       #victoria-calendar .vc-list-day { grid-template-columns:54px 1fr; gap:10px; padding:12px 0; }
       #victoria-calendar .vc-list-events { gap:7px; }
       #victoria-calendar .vc-header { align-items:flex-start; }
-      #victoria-calendar .vc-header-actions { width:100%; justify-content:flex-start; }
-      #victoria-calendar .vc-header-actions .vc-sync-status { text-align:left; }
+      #victoria-calendar .vc-header-actions { display:grid; width:100%; grid-template-columns:1.15fr .9fr 1fr 1.15fr; gap:4px; }
+      #victoria-calendar .vc-header-actions .vc-user-control { min-width:0; }
+      #victoria-calendar .vc-header-actions .vc-user-control label { display:none; }
+      #victoria-calendar .vc-header-actions .vc-user-control .form-select { width:100%; min-width:0; padding:5px 22px 5px 7px; font-size:11px; }
+      #victoria-calendar .vc-header-actions &gt; .btn { min-width:0; padding:5px 5px; gap:3px; font-size:11px; white-space:nowrap; }
+      #victoria-calendar .vc-header-actions &gt; .btn svg { width:13px; height:13px; }
+      #victoria-calendar .vc-header-actions .vc-sync-status { display:none; }
       #victoria-calendar .vc-nav { width:100%; justify-content:space-between; }
-      #victoria-calendar .vc-sync-status { width:100%; margin-left:0; }
       #victoria-calendar .vc-pony-filters { gap:6px; margin-bottom:10px; }
       #victoria-calendar .vc-pony-filters .form-check-label { min-height:32px; gap:5px; padding:4px 8px; font-size:82%; }
       #victoria-calendar .vc-pony-filters .vc-pony-filter-icon { font-size:13px; }
