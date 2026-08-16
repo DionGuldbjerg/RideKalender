@@ -767,11 +767,12 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-pony-filters { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-bottom:14px; }
     #victoria-calendar .vc-pony-filters .form-check { position:relative; min-width:0; margin:0; padding:0; }
     #victoria-calendar .vc-pony-filters .vc-pony-filter { position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; }
-    #victoria-calendar .vc-pony-filters .form-check-label { display:flex; width:100%; min-height:42px; align-items:center; gap:7px; padding:8px 11px; border:1px solid color-mix(in srgb,var(--foreground) 22%,transparent); border-radius:8px; color:var(--foreground); background:color-mix(in srgb,var(--foreground) 9%,var(--background)); cursor:pointer; font-weight:650; }
+    #victoria-calendar .vc-pony-filters .form-check-label { display:flex; width:100%; min-height:38px; align-items:center; gap:6px; padding:7px 10px; border:1px solid color-mix(in srgb,var(--foreground) 22%,transparent); border-radius:8px; color:var(--foreground); background:color-mix(in srgb,var(--foreground) 9%,var(--background)); cursor:pointer; font-size:90%; font-weight:650; }
     #victoria-calendar .vc-pony-filters .form-check-label::after { content:&quot;Fra&quot;; margin-left:auto; padding:2px 7px; border-radius:999px; color:var(--muted-foreground); background:color-mix(in srgb,var(--foreground) 8%,var(--background)); font-size:10px; font-weight:700; }
     #victoria-calendar .vc-pony-filters .vc-pony-filter:checked + .form-check-label { border-color:color-mix(in srgb,var(--foreground) 42%,transparent); background:color-mix(in srgb,var(--foreground) 15%,var(--background)); }
     #victoria-calendar .vc-pony-filters .vc-pony-filter:checked + .form-check-label::after { content:&quot;✓ Til&quot;; color:var(--foreground); background:color-mix(in srgb,var(--foreground) 14%,var(--background)); }
     #victoria-calendar .vc-pony-filters .vc-pony-filter:focus-visible + .form-check-label { outline:2px solid var(--ring); outline-offset:2px; }
+    #victoria-calendar .vc-pony-filters .vc-pony-filter-icon { font-size:14px; }
     #victoria-calendar .vc-filter-dot { width:9px; height:9px; border-radius:50%; display:inline-block; flex:none; }
     #victoria-calendar .competition { background:var(--viz-series-1); }
     #victoria-calendar .training { background:var(--viz-series-2); }
@@ -915,8 +916,8 @@ html&gt;body{padding:0}&lt;/style&gt;
     &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-filter&quot; type=&quot;checkbox&quot; value=&quot;off&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-filter-dot off&quot;&gt;&lt;/span&gt; Andet&lt;/span&gt;&lt;/label&gt;
   &lt;/div&gt;
   &lt;div class=&quot;viz-controls vc-pony-filters&quot; aria-label=&quot;Filtrer ponyer&quot;&gt;
-    &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-pony-filter&quot; type=&quot;checkbox&quot; value=&quot;rumle&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-pony-filter-icon pony-rumle&quot; aria-hidden=&quot;true&quot;&gt;♞&lt;/span&gt; Rumle&lt;/span&gt;&lt;/label&gt;
     &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-pony-filter&quot; type=&quot;checkbox&quot; value=&quot;dobby&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-pony-filter-icon pony-dobby&quot; aria-hidden=&quot;true&quot;&gt;♞&lt;/span&gt; Dobby&lt;/span&gt;&lt;/label&gt;
+    &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-pony-filter&quot; type=&quot;checkbox&quot; value=&quot;rumle&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-pony-filter-icon pony-rumle&quot; aria-hidden=&quot;true&quot;&gt;♞&lt;/span&gt; Rumle&lt;/span&gt;&lt;/label&gt;
   &lt;/div&gt;
   &lt;div class=&quot;vc-list&quot; aria-label=&quot;Aktiviteter denne måned&quot;&gt;&lt;h3&gt;Månedens aktiviteter&lt;/h3&gt;&lt;p class=&quot;vc-list-hint text-small&quot;&gt;Viser aktuelt tidspunkt først · scroll op for tidligere aktiviteter&lt;/p&gt;&lt;div id=&quot;vc-list&quot;&gt;&lt;/div&gt;&lt;/div&gt;
   &lt;div class=&quot;vc-grid&quot; id=&quot;vc-grid&quot; role=&quot;grid&quot; aria-label=&quot;Månedskalender&quot;&gt;&lt;/div&gt;
@@ -957,6 +958,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       &lt;label class=&quot;form-label&quot;&gt;Slutdato &lt;span class=&quot;text-muted&quot;&gt;(valgfri)&lt;/span&gt;&lt;input class=&quot;form-control&quot; id=&quot;vc-end-date&quot; type=&quot;date&quot;&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Tid&lt;input class=&quot;form-control&quot; id=&quot;vc-time&quot; type=&quot;time&quot;&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Sted&lt;input class=&quot;form-control&quot; id=&quot;vc-place&quot; placeholder=&quot;Fx Ballerup Rideklub&quot;&gt;&lt;/label&gt;
+      &lt;label class=&quot;form-label vc-competition-plan&quot; id=&quot;vc-competition-plan-row&quot;&gt;Stævneplan og tidslinje&lt;textarea class=&quot;form-control&quot; id=&quot;vc-competition-plan&quot; rows=&quot;9&quot; placeholder=&quot;Fx:&#10;KLASSE START: PRI kl. 11:05&#10;07:45 Afgang&#10;08:05 Ankomst&#10;08:05-09:30 Klargøring&#10;10:15-10:55 Opvarmning&#10;11:05 Ridt i klassen starter&#10;Retur på Lykkesholm&quot;&gt;&lt;/textarea&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Note&lt;textarea class=&quot;form-control&quot; id=&quot;vc-note&quot; rows=&quot;2&quot; placeholder=&quot;Klasse, træner eller huskeliste&quot;&gt;&lt;/textarea&gt;&lt;/label&gt;
       &lt;p class=&quot;vc-editor-meta text-small&quot; id=&quot;vc-editor-meta&quot;&gt;&lt;/p&gt;
     &lt;/form&gt;
@@ -998,7 +1000,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       ];
       seed.forEach(item =&gt; item.pony = &#x27;dobby&#x27;);
       seed.push(
-        {id:&#x27;plan-suhrsminde&#x27;,date:&#x27;2026-08-15&#x27;,endDate:&#x27;2026-08-16&#x27;,name:&#x27;VER-Dressur for hest/pony&#x27;,type:&#x27;competition&#x27;,status:&#x27;prebooked&#x27;,pony:&#x27;dobby&#x27;,place:&#x27;Vestegnens Rideklub · Snubbekorsvej 24 B, 2630 Taastrup · Distrikt D01&#x27;,note:&#x27;C-stævne med D-klasser (C/D) · Ponyklasse PRI-PRT-PRM · PRI: første af 2 C-stævner · mål 69 %+ og B-kvalifikation · anmeldelsesfrist 9. august · DRF Prop00055936&#x27;},
+        {id:&#x27;plan-suhrsminde&#x27;,date:&#x27;2026-08-15&#x27;,endDate:&#x27;2026-08-16&#x27;,name:&#x27;VER-Dressur for hest/pony&#x27;,type:&#x27;competition&#x27;,status:&#x27;prebooked&#x27;,pony:&#x27;dobby&#x27;,place:&#x27;Vestegnens Rideklub · Snubbekorsvej 24 B, 2630 Taastrup · Distrikt D01&#x27;,competitionPlan:&#x27;KLASSE START: PRI kl. 11:05\n07:45 Afgang Roskilde\n08:05 Ankomst Lykkesholm, Kirke Såby\n08:05-09:30 Klargøring af Dobby\n09:30 Afgang Ejby\n09:55 Ankomst Vestegnens Rideklub\n10:15-10:55 Opvarmning\n10:59 Klar ved banen\n11:05 Ridt i klassen starter\n\nRetur på Lykkesholm&#x27;,note:&#x27;C-stævne med D-klasser (C/D) · Ponyklasse PRI-PRT-PRM · PRI: første af 2 C-stævner · mål 69 %+ og B-kvalifikation · anmeldelsesfrist 9. august · DRF Prop00055936&#x27;},
         {id:&#x27;plan-aug-extra&#x27;,date:&#x27;2026-08-29&#x27;,name:&#x27;Klubmesterskab&#x27;,type:&#x27;competition&#x27;,status:&#x27;prebooked&#x27;,pony:&#x27;dobby&#x27;,place:&#x27;Hvalsø&#x27;,note:&#x27;Klubmesterskab · program og praktiske oplysninger afklares&#x27;},
         {id:&#x27;plan-karlslunde&#x27;,date:&#x27;2026-09-11&#x27;,endDate:&#x27;2026-09-13&#x27;,name:&#x27;C-stævne på Sjælland&#x27;,type:&#x27;competition&#x27;,status:&#x27;prebooked&#x27;,pony:&#x27;dobby&#x27;,place:&#x27;Sjælland · stævne afklares&#x27;,note:&#x27;C · PRT · Generalprøve før ECCO Cup&#x27;},
         {id:&#x27;plan-solrod&#x27;,date:&#x27;2026-10-01&#x27;,endDate:&#x27;2026-10-04&#x27;,name:&#x27;ECCO Cup · 3. kvalifikation · Solrød ⭐&#x27;,type:&#x27;competition&#x27;,status:&#x27;prebooked&#x27;,pony:&#x27;dobby&#x27;,place:&#x27;Nordmarksvej 12, 2680 Solrød Strand&#x27;,note:&#x27;B · PRT + forhåbentlig Kür · hovedmål: vise Victoria og Dobby frem&#x27;},
@@ -1039,7 +1041,7 @@ html&gt;body{padding:0}&lt;/style&gt;
         const index = events.findIndex(existing =&gt; existing.id === item.id);
         if (index &lt; 0) { events.push(item); return; }
         const existing = events[index];
-        const editableKeys = [&#x27;date&#x27;,&#x27;endDate&#x27;,&#x27;name&#x27;,&#x27;type&#x27;,&#x27;status&#x27;,&#x27;pony&#x27;,&#x27;time&#x27;,&#x27;place&#x27;,&#x27;note&#x27;];
+        const editableKeys = [&#x27;date&#x27;,&#x27;endDate&#x27;,&#x27;name&#x27;,&#x27;type&#x27;,&#x27;status&#x27;,&#x27;pony&#x27;,&#x27;time&#x27;,&#x27;place&#x27;,&#x27;competitionPlan&#x27;,&#x27;note&#x27;];
         const matchesSeed = editableKeys.every(field =&gt; (existing[field] || &#x27;&#x27;) === (item[field] || &#x27;&#x27;));
         if (!existing.userEdited &amp;&amp; matchesSeed) events[index] = {...existing,...item};
         else if (!existing.userEdited) events[index] = {...existing,userEdited:true};
@@ -1063,7 +1065,9 @@ html&gt;body{padding:0}&lt;/style&gt;
       let deleteArmed = false;
       const resetDelete = () =&gt; { deleteArmed=false; deleteButton.textContent=&#x27;Slet&#x27;; deleteWarning.classList.remove(&#x27;is-visible&#x27;); };
       try { userSelect.value = localStorage.getItem(userKey) || &#x27;&#x27;; } catch (_) {}
-      const fields = { id:root.querySelector(&#x27;#vc-id&#x27;), name:root.querySelector(&#x27;#vc-name&#x27;), pony:root.querySelector(&#x27;#vc-pony&#x27;), type:root.querySelector(&#x27;#vc-type&#x27;), status:root.querySelector(&#x27;#vc-status&#x27;), date:root.querySelector(&#x27;#vc-date&#x27;), endDate:root.querySelector(&#x27;#vc-end-date&#x27;), time:root.querySelector(&#x27;#vc-time&#x27;), place:root.querySelector(&#x27;#vc-place&#x27;), note:root.querySelector(&#x27;#vc-note&#x27;) };
+      const fields = { id:root.querySelector(&#x27;#vc-id&#x27;), name:root.querySelector(&#x27;#vc-name&#x27;), pony:root.querySelector(&#x27;#vc-pony&#x27;), type:root.querySelector(&#x27;#vc-type&#x27;), status:root.querySelector(&#x27;#vc-status&#x27;), date:root.querySelector(&#x27;#vc-date&#x27;), endDate:root.querySelector(&#x27;#vc-end-date&#x27;), time:root.querySelector(&#x27;#vc-time&#x27;), place:root.querySelector(&#x27;#vc-place&#x27;), competitionPlan:root.querySelector(&#x27;#vc-competition-plan&#x27;), note:root.querySelector(&#x27;#vc-note&#x27;) };
+      const competitionPlanRow=root.querySelector(&#x27;#vc-competition-plan-row&#x27;);
+      const updateCompetitionFields=()=&gt;{competitionPlanRow.hidden=fields.type.value!==&#x27;competition&#x27;;};
       const iso = d =&gt; `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,&#x27;0&#x27;)}-${String(d.getDate()).padStart(2,&#x27;0&#x27;)}`;
       const ponyLabels = {rumle:&#x27;Rumle&#x27;,dobby:&#x27;Dobby&#x27;,both:&#x27;Begge&#x27;};
       const typeLabels = {competition:&#x27;STÆVNE&#x27;,training:&#x27;Træning Morten&#x27;,care:&#x27;Pasning&#x27;,selftraining:&#x27;Selvtræning&#x27;,off:&#x27;Andet&#x27;};
@@ -1157,8 +1161,9 @@ html&gt;body{padding:0}&lt;/style&gt;
       function openEditor(e) {
         resetDelete();
         root.querySelector(&#x27;#vc-form&#x27;).reset();
-        const item=e||{id:&#x27;&#x27;,name:&#x27;&#x27;,pony:&#x27;dobby&#x27;,type:&#x27;training&#x27;,status:&#x27;&#x27;,date:iso(new Date(view.getFullYear(),view.getMonth(),1)),endDate:&#x27;&#x27;,time:&#x27;&#x27;,place:&#x27;&#x27;,note:&#x27;&#x27;};
+        const item=e||{id:&#x27;&#x27;,name:&#x27;&#x27;,pony:&#x27;dobby&#x27;,type:&#x27;training&#x27;,status:&#x27;&#x27;,date:iso(new Date(view.getFullYear(),view.getMonth(),1)),endDate:&#x27;&#x27;,time:&#x27;&#x27;,place:&#x27;&#x27;,competitionPlan:&#x27;&#x27;,note:&#x27;&#x27;};
         Object.keys(fields).forEach(k=&gt;fields[k].value=item[k]||&#x27;&#x27;);
+        updateCompetitionFields();
         root.querySelector(&#x27;#vc-dialog-title&#x27;).textContent=e?&#x27;Rediger aktivitet&#x27;:&#x27;Ny aktivitet&#x27;;
         deleteButton.style.visibility=e?&#x27;visible&#x27;:&#x27;hidden&#x27;;
         editorMeta.textContent=e &amp;&amp; (e.createdBy||e.updatedBy) ? `Oprettet af ${e.createdBy||&#x27;ukendt&#x27;}${e.updatedBy &amp;&amp; e.updatedBy!==e.createdBy ? ` · senest rettet af ${e.updatedBy}` : &#x27;&#x27;}` : &#x27;&#x27;;
@@ -1180,6 +1185,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       root.querySelector(&#x27;#vc-ponydata-save&#x27;).addEventListener(&#x27;click&#x27;,async ()=&gt;{if(!requireUser())return;collectPonyDataForm();ponyData.updatedAt=new Date().toISOString();ponyData.updatedBy=selectedUser();ponyDataInitial=JSON.stringify(ponyData);savePonyDataLocal();updatePonyDataForm();setSyncStatus(&#x27;Gemmer ponydata…&#x27;);try{await cloudRequest(&#x27;calendar/ponyData&#x27;,{method:&#x27;PUT&#x27;,body:JSON.stringify(ponyData)});setSyncStatus(&#x27;Ponydata gemt og synkroniseret&#x27;);goalsDialog.close();}catch(_){setSyncStatus(&#x27;Offline – ponydata gemt på denne enhed&#x27;);}});
       root.querySelectorAll(&#x27;.vc-filter&#x27;).forEach(x=&gt;x.addEventListener(&#x27;change&#x27;,render));
       root.querySelectorAll(&#x27;.vc-pony-filter&#x27;).forEach(x=&gt;x.addEventListener(&#x27;change&#x27;,render));
+      fields.type.addEventListener(&#x27;change&#x27;,updateCompetitionFields);
       root.addEventListener(&#x27;dblclick&#x27;,ev=&gt;{const day=ev.target.closest(&#x27;.vc-day&#x27;);if(day &amp;&amp; requireUser()){openEditor();fields.date.value=day.dataset.date;editorInitial=formState();}});
       root.addEventListener(&#x27;click&#x27;,ev=&gt;{const b=ev.target.closest(&#x27;.vc-event&#x27;);if(b &amp;&amp; requireUser())openEditor(events.find(e=&gt;e.id===b.dataset.id));});
       deleteButton.addEventListener(&#x27;click&#x27;,async ()=&gt;{if(!requireUser())return;if(!deleteArmed){deleteArmed=true;deleteButton.textContent=&#x27;Slet nu&#x27;;deleteWarning.classList.add(&#x27;is-visible&#x27;);return;}const id=fields.id.value;if(!id)return;deletedIds.add(id);events=events.filter(e=&gt;e.id!==id);save();dialog.close();render();const tombstone={deletedAt:new Date().toISOString(),deletedBy:selectedUser()};try{await deleteCloudEvent(id,tombstone);setSyncStatus(&#x27;Slettet og synkroniseret&#x27;);}catch(_){setSyncStatus(&#x27;Offline – sletningen synkroniseres senere&#x27;);}});
