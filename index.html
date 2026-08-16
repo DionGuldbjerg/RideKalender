@@ -806,6 +806,8 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .pony-dobby { color:#3488e8; }
     #victoria-calendar .vc-list { display:block; margin-top:18px; }
     #victoria-calendar .vc-list h3 { margin:0 0 6px; }
+    #victoria-calendar .vc-list-hint { margin:0 0 6px; color:var(--muted-foreground); }
+    #victoria-calendar #vc-list { max-height:min(68vh,720px); overflow-y:auto; overscroll-behavior:contain; scroll-behavior:smooth; border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
     #victoria-calendar .vc-list-day { display:grid; grid-template-columns:62px 1fr; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
     #victoria-calendar .vc-list-date { text-align:center; }
     #victoria-calendar .vc-list-date strong { display:block; }
@@ -910,7 +912,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-pony-filter&quot; type=&quot;checkbox&quot; value=&quot;dobby&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-pony-filter-icon pony-dobby&quot; aria-hidden=&quot;true&quot;&gt;♞&lt;/span&gt; Dobby&lt;/span&gt;&lt;/label&gt;
   &lt;/div&gt;
   &lt;div class=&quot;vc-grid&quot; id=&quot;vc-grid&quot; role=&quot;grid&quot; aria-label=&quot;Månedskalender&quot;&gt;&lt;/div&gt;
-  &lt;div class=&quot;vc-list&quot; aria-label=&quot;Aktiviteter denne måned&quot;&gt;&lt;h3&gt;Månedens aktiviteter&lt;/h3&gt;&lt;div id=&quot;vc-list&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+  &lt;div class=&quot;vc-list&quot; aria-label=&quot;Aktiviteter denne måned&quot;&gt;&lt;h3&gt;Månedens aktiviteter&lt;/h3&gt;&lt;p class=&quot;vc-list-hint text-small&quot;&gt;Viser aktuelt tidspunkt først · scroll op for tidligere aktiviteter&lt;/p&gt;&lt;div id=&quot;vc-list&quot;&gt;&lt;/div&gt;&lt;/div&gt;
 
   &lt;dialog id=&quot;vc-goals-dialog&quot;&gt;
     &lt;div class=&quot;vc-ponydata-head&quot;&gt;&lt;div&gt;&lt;h3&gt;Ponydata&lt;/h3&gt;&lt;p class=&quot;vc-hint text-small&quot;&gt;Fælles oplysninger for Dobby og Rumle.&lt;/p&gt;&lt;/div&gt;&lt;button class=&quot;btn btn-ghost&quot; id=&quot;vc-goals-close&quot; type=&quot;button&quot; aria-label=&quot;Luk ponydata&quot;&gt;Luk&lt;/button&gt;&lt;/div&gt;
@@ -1139,7 +1141,9 @@ html&gt;body{padding:0}&lt;/style&gt;
         grid.innerHTML=html;
         const monthStart=iso(first), monthEnd=iso(new Date(view.getFullYear(),view.getMonth()+1,0));
         const inMonth=events.filter(e=&gt;e.date&lt;=monthEnd&amp;&amp;(e.endDate||e.date)&gt;=monthStart&amp;&amp;types.has(e.type)&amp;&amp;matchesPony(e,ponies)).sort((a,b)=&gt;(a.date+(a.time||&#x27;&#x27;)).localeCompare(b.date+(b.time||&#x27;&#x27;)));
-        list.innerHTML=inMonth.length?inMonth.map(e=&gt;{const startDate=new Date(e.date+&#x27;T12:00:00&#x27;);const end=e.endDate?new Date(e.endDate+&#x27;T12:00:00&#x27;):null;const range=end?`${startDate.getDate()}/${startDate.getMonth()+1}–${end.getDate()}/${end.getMonth()+1}`:`${startDate.getDate()}/${startDate.getMonth()+1}`;return `&lt;div class=&quot;vc-list-day&quot;&gt;&lt;div class=&quot;vc-list-date&quot;&gt;&lt;strong&gt;${range}&lt;/strong&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;${new Intl.DateTimeFormat(&#x27;da-DK&#x27;,{weekday:&#x27;short&#x27;}).format(startDate)}&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;vc-list-events&quot;&gt;${eventButton(e,true)}&lt;/div&gt;&lt;/div&gt;`}).join(&#x27;&#x27;):&#x27;&lt;div class=&quot;vc-empty&quot;&gt;Ingen aktiviteter denne måned&lt;/div&gt;&#x27;;
+        list.innerHTML=inMonth.length?inMonth.map(e=&gt;{const startDate=new Date(e.date+&#x27;T12:00:00&#x27;);const end=e.endDate?new Date(e.endDate+&#x27;T12:00:00&#x27;):null;const range=end?`${startDate.getDate()}/${startDate.getMonth()+1}–${end.getDate()}/${end.getMonth()+1}`:`${startDate.getDate()}/${startDate.getMonth()+1}`;return `&lt;div class=&quot;vc-list-day&quot; data-range-end=&quot;${esc(e.endDate||e.date)}&quot;&gt;&lt;div class=&quot;vc-list-date&quot;&gt;&lt;strong&gt;${range}&lt;/strong&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;${new Intl.DateTimeFormat(&#x27;da-DK&#x27;,{weekday:&#x27;short&#x27;}).format(startDate)}&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;vc-list-events&quot;&gt;${eventButton(e,true)}&lt;/div&gt;&lt;/div&gt;`}).join(&#x27;&#x27;):&#x27;&lt;div class=&quot;vc-empty&quot;&gt;Ingen aktiviteter denne måned&lt;/div&gt;&#x27;;
+        const now=new Date(),isCurrentMonth=view.getFullYear()===now.getFullYear()&amp;&amp;view.getMonth()===now.getMonth();
+        if(isCurrentMonth&amp;&amp;inMonth.length){requestAnimationFrame(()=&gt;{const rows=[...list.querySelectorAll(&#x27;.vc-list-day&#x27;)];const current=rows.find(row=&gt;row.dataset.rangeEnd&gt;=today)||rows.at(-1);list.scrollTop=Math.max(0,current.offsetTop-list.offsetTop);});}else list.scrollTop=0;
       }
       const formState = () =&gt; JSON.stringify(Object.fromEntries(Object.entries(fields).map(([name,field])=&gt;[name,field.value])));
       let editorInitial = &#x27;&#x27;;
