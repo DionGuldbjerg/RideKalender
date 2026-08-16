@@ -764,7 +764,14 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-mark { width:34px; height:34px; display:grid; place-items:center; border-radius:50%; background:color-mix(in srgb, var(--viz-series-1) 18%, transparent); color:var(--foreground); }
     #victoria-calendar .vc-nav { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
     #victoria-calendar .vc-filters { margin-bottom:10px; }
-    #victoria-calendar .vc-pony-filters { margin-bottom:14px; }
+    #victoria-calendar .vc-pony-filters { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-bottom:14px; }
+    #victoria-calendar .vc-pony-filters .form-check { position:relative; min-width:0; margin:0; padding:0; }
+    #victoria-calendar .vc-pony-filters .vc-pony-filter { position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; }
+    #victoria-calendar .vc-pony-filters .form-check-label { display:flex; width:100%; min-height:42px; align-items:center; gap:7px; padding:8px 11px; border:1px solid color-mix(in srgb,var(--foreground) 22%,transparent); border-radius:8px; color:var(--foreground); background:color-mix(in srgb,var(--foreground) 9%,var(--background)); cursor:pointer; font-weight:650; }
+    #victoria-calendar .vc-pony-filters .form-check-label::after { content:&quot;Fra&quot;; margin-left:auto; padding:2px 7px; border-radius:999px; color:var(--muted-foreground); background:color-mix(in srgb,var(--foreground) 8%,var(--background)); font-size:10px; font-weight:700; }
+    #victoria-calendar .vc-pony-filters .vc-pony-filter:checked + .form-check-label { border-color:color-mix(in srgb,var(--foreground) 42%,transparent); background:color-mix(in srgb,var(--foreground) 15%,var(--background)); }
+    #victoria-calendar .vc-pony-filters .vc-pony-filter:checked + .form-check-label::after { content:&quot;✓ Til&quot;; color:var(--foreground); background:color-mix(in srgb,var(--foreground) 14%,var(--background)); }
+    #victoria-calendar .vc-pony-filters .vc-pony-filter:focus-visible + .form-check-label { outline:2px solid var(--ring); outline-offset:2px; }
     #victoria-calendar .vc-filter-dot { width:9px; height:9px; border-radius:50%; display:inline-block; flex:none; }
     #victoria-calendar .competition { background:var(--viz-series-1); }
     #victoria-calendar .training { background:var(--viz-series-2); }
@@ -775,7 +782,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .dobby { background:var(--viz-series-5); }
     #victoria-calendar .both { background:var(--viz-series-6); }
     #victoria-calendar .vc-month { font-weight:500; min-width:148px; text-align:center; }
-    #victoria-calendar .vc-grid { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); border-top:1px solid var(--border); border-left:1px solid var(--border); }
+    #victoria-calendar .vc-grid { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); margin-top:18px; border-top:1px solid var(--border); border-left:1px solid var(--border); }
     #victoria-calendar .vc-weekday { padding:8px 5px; text-align:center; color:var(--muted-foreground); border-right:1px solid var(--border); border-bottom:1px solid var(--border); }
     #victoria-calendar .vc-day { min-height:104px; padding:7px; border-right:1px solid var(--border); border-bottom:1px solid var(--border); background:transparent; overflow:hidden; }
     #victoria-calendar .vc-day.is-other { color:var(--muted-foreground); background:color-mix(in srgb, var(--muted) 34%, transparent); }
@@ -911,8 +918,8 @@ html&gt;body{padding:0}&lt;/style&gt;
     &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-pony-filter&quot; type=&quot;checkbox&quot; value=&quot;rumle&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-pony-filter-icon pony-rumle&quot; aria-hidden=&quot;true&quot;&gt;♞&lt;/span&gt; Rumle&lt;/span&gt;&lt;/label&gt;
     &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-pony-filter&quot; type=&quot;checkbox&quot; value=&quot;dobby&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-pony-filter-icon pony-dobby&quot; aria-hidden=&quot;true&quot;&gt;♞&lt;/span&gt; Dobby&lt;/span&gt;&lt;/label&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;vc-grid&quot; id=&quot;vc-grid&quot; role=&quot;grid&quot; aria-label=&quot;Månedskalender&quot;&gt;&lt;/div&gt;
   &lt;div class=&quot;vc-list&quot; aria-label=&quot;Aktiviteter denne måned&quot;&gt;&lt;h3&gt;Månedens aktiviteter&lt;/h3&gt;&lt;p class=&quot;vc-list-hint text-small&quot;&gt;Viser aktuelt tidspunkt først · scroll op for tidligere aktiviteter&lt;/p&gt;&lt;div id=&quot;vc-list&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+  &lt;div class=&quot;vc-grid&quot; id=&quot;vc-grid&quot; role=&quot;grid&quot; aria-label=&quot;Månedskalender&quot;&gt;&lt;/div&gt;
 
   &lt;dialog id=&quot;vc-goals-dialog&quot;&gt;
     &lt;div class=&quot;vc-ponydata-head&quot;&gt;&lt;div&gt;&lt;h3&gt;Ponydata&lt;/h3&gt;&lt;p class=&quot;vc-hint text-small&quot;&gt;Fælles oplysninger for Dobby og Rumle.&lt;/p&gt;&lt;/div&gt;&lt;button class=&quot;btn btn-ghost&quot; id=&quot;vc-goals-close&quot; type=&quot;button&quot; aria-label=&quot;Luk ponydata&quot;&gt;Luk&lt;/button&gt;&lt;/div&gt;
