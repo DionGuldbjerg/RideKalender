@@ -789,6 +789,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .off { background:var(--viz-series-4); }
     #victoria-calendar .care { background:var(--viz-series-6); }
     #victoria-calendar .selftraining { background:var(--viz-series-5); }
+    #victoria-calendar .injury { background:#d93025; }
     #victoria-calendar .rumle { background:var(--viz-series-3); }
     #victoria-calendar .dobby { background:var(--viz-series-5); }
     #victoria-calendar .both { background:var(--viz-series-6); }
@@ -806,9 +807,11 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-event.type-care::before { background:var(--viz-series-6); }
     #victoria-calendar .vc-event.type-selftraining::before { background:var(--viz-series-5); }
     #victoria-calendar .vc-event.type-off::before { background:var(--viz-series-4); }
+    #victoria-calendar .vc-event.type-injury::before { background:#d93025; }
     #victoria-calendar .vc-event.status-unbooked { border-color:#dc6868; background:#fff0f0; }
     #victoria-calendar .vc-event.status-prebooked { border-color:#d5a900; background:#fff8d6; }
     #victoria-calendar .vc-event.status-confirmed { border-color:#3a9b61; background:#e8f7ed; }
+    #victoria-calendar .vc-event.type-injury { border-color:#d93025; background:#fff0f0; }
     #victoria-calendar .vc-event:hover { filter:brightness(.97); }
     #victoria-calendar .vc-event-copy { width:100%; min-width:0; display:grid; gap:2px; }
     #victoria-calendar .vc-event-type { min-width:0; overflow:hidden; font-style:normal; font-weight:700; line-height:1.15; text-overflow:ellipsis; white-space:nowrap; }
@@ -925,6 +928,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-filter&quot; type=&quot;checkbox&quot; value=&quot;care&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-filter-dot care&quot;&gt;&lt;/span&gt; Pasning&lt;/span&gt;&lt;/label&gt;
     &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-filter&quot; type=&quot;checkbox&quot; value=&quot;selftraining&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-filter-dot selftraining&quot;&gt;&lt;/span&gt; Selvtræning&lt;/span&gt;&lt;/label&gt;
     &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-filter&quot; type=&quot;checkbox&quot; value=&quot;off&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-filter-dot off&quot;&gt;&lt;/span&gt; Andet&lt;/span&gt;&lt;/label&gt;
+    &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-filter&quot; type=&quot;checkbox&quot; value=&quot;injury&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-filter-dot injury&quot;&gt;&lt;/span&gt; Skadet&lt;/span&gt;&lt;/label&gt;
   &lt;/div&gt;
   &lt;div class=&quot;viz-controls vc-pony-filters&quot; aria-label=&quot;Filtrer ponyer&quot;&gt;
     &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-pony-filter&quot; type=&quot;checkbox&quot; value=&quot;dobby&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-pony-filter-icon pony-dobby&quot; aria-hidden=&quot;true&quot;&gt;♞&lt;/span&gt; Dobby&lt;/span&gt;&lt;/label&gt;
@@ -969,7 +973,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       &lt;p class=&quot;vc-delete-warning text-small&quot; id=&quot;vc-delete-warning&quot; role=&quot;alert&quot;&gt;⚠️ Vil du virkelig slette aktiviteten? Tryk på “Slet nu” for at bekræfte.&lt;/p&gt;
       &lt;p class=&quot;vc-copy-notice&quot; id=&quot;vc-copy-notice&quot; role=&quot;status&quot;&gt;KOPI – husk at rette dato og øvrige oplysninger før du gemmer.&lt;/p&gt;
       &lt;input type=&quot;hidden&quot; id=&quot;vc-id&quot;&gt;
-      &lt;label class=&quot;form-label&quot;&gt;Type&lt;select class=&quot;form-select&quot; id=&quot;vc-type&quot;&gt;&lt;option value=&quot;competition&quot;&gt;Stævne&lt;/option&gt;&lt;option value=&quot;training&quot;&gt;Træning Morten&lt;/option&gt;&lt;option value=&quot;care&quot;&gt;Pasning&lt;/option&gt;&lt;option value=&quot;selftraining&quot;&gt;Selvtræning&lt;/option&gt;&lt;option value=&quot;off&quot;&gt;Andet&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
+      &lt;label class=&quot;form-label&quot;&gt;Type&lt;select class=&quot;form-select&quot; id=&quot;vc-type&quot;&gt;&lt;option value=&quot;competition&quot;&gt;Stævne&lt;/option&gt;&lt;option value=&quot;training&quot;&gt;Træning Morten&lt;/option&gt;&lt;option value=&quot;care&quot;&gt;Pasning&lt;/option&gt;&lt;option value=&quot;selftraining&quot;&gt;Selvtræning&lt;/option&gt;&lt;option value=&quot;injury&quot;&gt;Skadet&lt;/option&gt;&lt;option value=&quot;off&quot;&gt;Andet&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Beskrivelse&lt;input class=&quot;form-control&quot; id=&quot;vc-name&quot; required placeholder=&quot;Fx dressurtræning&quot;&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Pony&lt;select class=&quot;form-select&quot; id=&quot;vc-pony&quot;&gt;&lt;option value=&quot;dobby&quot;&gt;♞ Dobby&lt;/option&gt;&lt;option value=&quot;rumle&quot;&gt;♞ Rumle&lt;/option&gt;&lt;option value=&quot;both&quot;&gt;♞♞ Rumle + Dobby&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Status&lt;select class=&quot;form-select&quot; id=&quot;vc-status&quot;&gt;&lt;option value=&quot;&quot;&gt;Ingen status&lt;/option&gt;&lt;option value=&quot;prebooked&quot;&gt;PRE-BOOKET&lt;/option&gt;&lt;option value=&quot;confirmed&quot;&gt;Bekræftet&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
@@ -1037,11 +1041,19 @@ html&gt;body{padding:0}&lt;/style&gt;
       );
       const mortenTimes = {0:&#x27;17:00&#x27;,2:&#x27;17:30&#x27;,5:&#x27;18:30&#x27;};
       for (let d = new Date(2026,7,1); d &lt;= new Date(2026,11,31); d.setDate(d.getDate()+1)) {
-        if (mortenTimes[d.getDay()]) {
-          const date = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,&#x27;0&#x27;)}-${String(d.getDate()).padStart(2,&#x27;0&#x27;)}`;
-          if (date &gt;= &#x27;2026-10-19&#x27; &amp;&amp; date &lt;= &#x27;2026-10-23&#x27;) continue;
-          seed.push({id:`morten-${date}`,date,name:&#x27;Træning med Morten&#x27;,type:&#x27;training&#x27;,pony:&#x27;dobby&#x27;,time:mortenTimes[d.getDay()],place:&#x27;Mortens Place&#x27;,note:&#x27;45 min.&#x27;});
-        }
+        const date = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,&#x27;0&#x27;)}-${String(d.getDate()).padStart(2,&#x27;0&#x27;)}`;
+        if (date &gt;= &#x27;2026-10-19&#x27; &amp;&amp; date &lt;= &#x27;2026-10-23&#x27;) continue;
+        const time=date&lt;&#x27;2026-11-10&#x27;?mortenTimes[d.getDay()]:(date&lt;=&#x27;2026-12-23&#x27;&amp;&amp;[3,4,5].includes(d.getDay())?&#x27;18:00&#x27;:&#x27;&#x27;);
+        if(time)seed.push({id:`morten-${date}`,date,name:&#x27;Træning med Morten&#x27;,type:&#x27;training&#x27;,status:date&gt;=&#x27;2026-11-10&#x27;?&#x27;confirmed&#x27;:&#x27;&#x27;,pony:&#x27;dobby&#x27;,time,place:&#x27;Mortens Place&#x27;,note:date&gt;=&#x27;2026-11-10&#x27;?&#x27;Fast træning onsdag, torsdag og fredag frem til jul.&#x27;:&#x27;45 min.&#x27;});
+      }
+      for (let d = new Date(2026,10,16); d &lt;= new Date(2026,11,31); d.setDate(d.getDate()+7)) {
+        const date = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,&#x27;0&#x27;)}-${String(d.getDate()).padStart(2,&#x27;0&#x27;)}`;
+        seed.push({id:`selftraining-victoria-${date}`,date,name:&#x27;Selvtræning med Victoria&#x27;,type:&#x27;selftraining&#x27;,status:&#x27;confirmed&#x27;,pony:&#x27;dobby&#x27;,time:&#x27;18:00&#x27;,place:&#x27;Lykkesholm&#x27;,note:&#x27;Kl. 18.00–20.30.&#x27;});
+      }
+      seed.push({id:&#x27;rumle-injured-2026-11&#x27;,date:&#x27;2026-11-10&#x27;,endDate:&#x27;2026-11-24&#x27;,name:&#x27;Rumle er skadet&#x27;,type:&#x27;injury&#x27;,status:&#x27;confirmed&#x27;,pony:&#x27;rumle&#x27;,place:&#x27;Lykkesholm&#x27;,note:&#x27;Ingen træning frem til og med 24. november.&#x27;});
+      for (let d = new Date(2026,10,10); d &lt;= new Date(2026,11,31); d.setDate(d.getDate()+7)) {
+        const date = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,&#x27;0&#x27;)}-${String(d.getDate()).padStart(2,&#x27;0&#x27;)}`;
+        seed.push({id:`fitness-care-${date}`,date,name:&#x27;Morten muger og giver mash og medicin&#x27;,type:&#x27;care&#x27;,status:&#x27;confirmed&#x27;,pony:&#x27;both&#x27;,place:&#x27;Lykkesholm&#x27;,note:&#x27;Victoria er til fitnesstræning.&#x27;});
       }
       const normalizePonyNames = item =&gt; Object.fromEntries(Object.entries(item).map(([field,value]) =&gt; [field,typeof value === &#x27;string&#x27; ? value.replace(/Dobby\s*\/\s*Double/gi,&#x27;Dobby&#x27;).replace(/\bDouble\b/g,&#x27;Dobby&#x27;) : value]));
       let events;
@@ -1055,7 +1067,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       }
       events = events.map(item =&gt; normalizePonyNames({...item,pony:item.pony || &#x27;dobby&#x27;}));
       events = events.filter(item =&gt; ![&#x27;morten-2026-10-20&#x27;,&#x27;morten-2026-10-23&#x27;].includes(item.id));
-      seed.filter(item =&gt; item.id.startsWith(&#x27;shd&#x27;) || item.id.startsWith(&#x27;plan-&#x27;) || item.id.startsWith(&#x27;morten-&#x27;) || item.id.startsWith(&#x27;summer-&#x27;) || item.id === &#x27;barcelona-oct&#x27;).forEach(item =&gt; {
+      seed.filter(item =&gt; item.id.startsWith(&#x27;shd&#x27;) || item.id.startsWith(&#x27;plan-&#x27;) || item.id.startsWith(&#x27;morten-&#x27;) || item.id.startsWith(&#x27;fitness-care-&#x27;) || item.id.startsWith(&#x27;selftraining-victoria-&#x27;) || item.id === &#x27;rumle-injured-2026-11&#x27; || item.id.startsWith(&#x27;summer-&#x27;) || item.id === &#x27;barcelona-oct&#x27;).forEach(item =&gt; {
         if (deletedIds.has(item.id)) return;
         const index = events.findIndex(existing =&gt; existing.id === item.id);
         if (index &lt; 0) { events.push(item); return; }
@@ -1091,7 +1103,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       const updateCompetitionFields=()=&gt;{competitionPlanRow.hidden=fields.type.value!==&#x27;competition&#x27;;};
       const iso = d =&gt; `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,&#x27;0&#x27;)}-${String(d.getDate()).padStart(2,&#x27;0&#x27;)}`;
       const ponyLabels = {rumle:&#x27;Rumle&#x27;,dobby:&#x27;Dobby&#x27;,both:&#x27;Begge&#x27;};
-      const typeLabels = {competition:&#x27;STÆVNE&#x27;,training:&#x27;Træning Morten&#x27;,care:&#x27;Pasning&#x27;,selftraining:&#x27;Selvtræning&#x27;,off:&#x27;Andet&#x27;};
+      const typeLabels = {competition:&#x27;STÆVNE&#x27;,training:&#x27;Træning Morten&#x27;,care:&#x27;Pasning&#x27;,selftraining:&#x27;Selvtræning&#x27;,injury:&#x27;SKADET&#x27;,off:&#x27;Andet&#x27;};
       const statusLabels = {&#x27;&#x27;:&#x27;IKKE BOOKET&#x27;,prebooked:&#x27;PRE-BOOKET&#x27;,confirmed:&#x27;BEKRÆFTET&#x27;};
       const activeTypes = () =&gt; new Set([...root.querySelectorAll(&#x27;.vc-filter:checked&#x27;)].map(x=&gt;x.value));
       const activePonies = () =&gt; new Set([...root.querySelectorAll(&#x27;.vc-pony-filter:checked&#x27;)].map(x=&gt;x.value));
