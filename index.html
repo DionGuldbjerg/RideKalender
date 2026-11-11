@@ -805,7 +805,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-day.is-today .vc-number { background:var(--primary); color:var(--primary-foreground); }
     #victoria-calendar .vc-number { width:25px; height:25px; display:grid; place-items:center; border-radius:50%; margin-bottom:5px; }
     #victoria-calendar .vc-event { position:relative; width:100%; display:flex; align-items:flex-start; padding:10px 6px 5px; margin-top:3px; overflow:hidden; border:1px solid transparent; border-left-width:4px; border-radius:6px; color:var(--foreground); text-align:left; cursor:pointer; }
-    #victoria-calendar .vc-event::before { position:absolute; top:0; right:0; left:0; height:5px; content:&quot;&quot;; }
+    #victoria-calendar .vc-event::before { position:absolute; top:0; right:0; left:0; height:5.5px; content:&quot;&quot;; }
     #victoria-calendar .vc-event.type-competition::before { background:var(--viz-series-1); }
     #victoria-calendar .vc-event.type-training::before { background:var(--viz-series-2); }
     #victoria-calendar .vc-event.type-care::before { background:var(--viz-series-6); }
@@ -822,8 +822,13 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-event.type-injury { border-color:#d93025; background:#fff0f0; }
     #victoria-calendar .vc-event:hover { filter:brightness(.97); }
     #victoria-calendar .vc-event-copy { width:100%; min-width:0; display:grid; gap:2px; }
+    #victoria-calendar .vc-event-main { min-width:0; display:grid; gap:2px; }
     #victoria-calendar .vc-event-type { min-width:0; overflow:hidden; font-style:normal; font-weight:700; line-height:1.15; text-overflow:ellipsis; white-space:nowrap; }
     #victoria-calendar .vc-event-name { display:-webkit-box; min-width:0; min-height:2.4em; overflow:hidden; font-size:80%; font-style:italic; line-height:1.2; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-clamp:2; }
+    #victoria-calendar .vc-event-note { min-width:0; overflow:hidden; color:var(--muted-foreground); font-size:72%; font-style:italic; line-height:1.2; }
+    #victoria-calendar .vc-event-note::before { display:block; margin-bottom:2px; color:var(--foreground); content:&quot;NOTE&quot;; font-size:75%; font-style:normal; font-weight:750; letter-spacing:.08em; }
+    #victoria-calendar .vc-event-note-text { display:-webkit-box; overflow:hidden; -webkit-box-orient:vertical; -webkit-line-clamp:3; line-clamp:3; }
+    #victoria-calendar .vc-grid .vc-event-note { display:none; }
     #victoria-calendar .vc-event-bottom { min-width:0; display:grid; justify-items:start; gap:2px; overflow:hidden; }
     #victoria-calendar .vc-event-bottom .viz-badge { max-width:100%; flex:none; padding:1px 3px; font-size:7px; line-height:10px; letter-spacing:-0.1px; white-space:nowrap; }
     #victoria-calendar .status-unbooked .viz-badge { color:#8f2020; background:#ffd6d6; }
@@ -832,6 +837,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-event-pony { display:inline-flex; max-width:100%; align-items:center; gap:4px; padding:2px 5px; overflow:hidden; border:1px solid color-mix(in srgb, var(--foreground) 24%, transparent); border-radius:5px; color:var(--foreground); background:color-mix(in srgb, var(--foreground) 7%, var(--background)); font-size:10px; font-weight:650; line-height:1.1; vertical-align:middle; white-space:nowrap; }
     #victoria-calendar .vc-pony-icon, #victoria-calendar .vc-pony-filter-icon { flex:none; display:inline-grid; width:16px; height:16px; place-items:center; font-size:16px; font-weight:800; line-height:1; }
     #victoria-calendar .vc-pony-icon:not(.pony-victoria)::before, #victoria-calendar .vc-pony-filter-icon:not(.pony-victoria)::before { width:100%; height:100%; background:currentColor; content:&quot;&quot;; -webkit-mask:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='black' stroke-width='9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 59C14 29 39 13 69 18L77 7 76 31C82 43 85 53 89 65L79 76 63 72 59 57C50 57 44 52 42 44'/%3E%3Cpath d='M53 31C37 34 29 47 31 63 33 77 41 87 53 93'/%3E%3C/g%3E%3C/svg%3E&quot;) center/contain no-repeat; mask:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='black' stroke-width='9' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 59C14 29 39 13 69 18L77 7 76 31C82 43 85 53 89 65L79 76 63 72 59 57C50 57 44 52 42 44'/%3E%3Cpath d='M53 31C37 34 29 47 31 63 33 77 41 87 53 93'/%3E%3C/g%3E%3C/svg%3E&quot;) center/contain no-repeat; }
+    #victoria-calendar .vc-pony-icon.pony-victoria::before, #victoria-calendar .vc-pony-filter-icon.pony-victoria::before { width:100%; height:100%; background:currentColor; content:&quot;&quot;; -webkit-mask:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='black'%3E%3Cpath d='M20 45C20 20 34 8 50 8s30 12 30 37H20Z'/%3E%3Cpath d='M14 42h72c0 8-7 12-17 12H31c-10 0-17-4-17-12Z'/%3E%3Ccircle cx='50' cy='58' r='20'/%3E%3Cpath d='M22 98c2-19 13-29 28-29s26 10 28 29H22Z'/%3E%3C/g%3E%3Cpath d='M36 59c4 5 8 7 14 7s10-2 14-7' fill='none' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E&quot;) center/contain no-repeat; mask:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='black'%3E%3Cpath d='M20 45C20 20 34 8 50 8s30 12 30 37H20Z'/%3E%3Cpath d='M14 42h72c0 8-7 12-17 12H31c-10 0-17-4-17-12Z'/%3E%3Ccircle cx='50' cy='58' r='20'/%3E%3Cpath d='M22 98c2-19 13-29 28-29s26 10 28 29H22Z'/%3E%3C/g%3E%3C/svg%3E&quot;) center/contain no-repeat; }
     #victoria-calendar .pony-rumle { color:#f08bb4; }
     #victoria-calendar .pony-dobby { color:#3488e8; }
     #victoria-calendar .pony-victoria { color:#6f5bd3; }
@@ -847,6 +853,8 @@ html&gt;body{padding:0}&lt;/style&gt;
     #victoria-calendar .vc-list-date strong { display:block; }
     #victoria-calendar .vc-list-events { display:grid; gap:6px; }
     #victoria-calendar .vc-list .vc-event { padding:8px; margin:0; }
+    #victoria-calendar .vc-list .vc-event-copy { grid-template-columns:minmax(0,1fr) minmax(140px,1.35fr); column-gap:12px; }
+    #victoria-calendar .vc-list .vc-event-bottom { grid-column:1 / -1; }
     #victoria-calendar .vc-list .vc-event-name { min-height:2.4em; }
     #victoria-calendar .vc-empty { color:var(--muted-foreground); padding:30px 0; text-align:center; }
     #victoria-calendar dialog { color:var(--popover-foreground); background:var(--popover); border:1px solid var(--border); border-radius:12px; width:min(430px,calc(100% - 28px)); max-height:calc(100vh - 28px); padding:14px; overflow:auto; }
@@ -915,9 +923,9 @@ html&gt;body{padding:0}&lt;/style&gt;
       #victoria-calendar .vc-header-actions .vc-sync-status { display:none; }
       #victoria-calendar .vc-nav { width:100%; justify-content:space-between; }
       #victoria-calendar .vc-pony-filters { gap:6px; margin-bottom:10px; }
-      #victoria-calendar .vc-pony-filters .form-check-label { min-height:32px; gap:5px; padding:4px 8px; font-size:82%; }
-      #victoria-calendar .vc-pony-filters .vc-pony-filter-icon { font-size:13px; }
-      #victoria-calendar .vc-pony-filters .form-check-label::after { padding:1px 5px; font-size:9px; }
+      #victoria-calendar .vc-pony-filters .form-check-label { min-height:32px; gap:4px; padding:4px 6px; font-size:78%; white-space:nowrap; }
+      #victoria-calendar .vc-pony-filters .vc-pony-filter-icon { width:14px; height:14px; font-size:12px; }
+      #victoria-calendar .vc-pony-filters .form-check-label::after { flex:none; padding:1px 4px; font-size:8px; white-space:nowrap; }
       #victoria-calendar .vc-pony-facts, #victoria-calendar .vc-date-row { grid-template-columns:1fr; }
     }
   &lt;/style&gt;
@@ -945,7 +953,7 @@ html&gt;body{padding:0}&lt;/style&gt;
     &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-filter&quot; type=&quot;checkbox&quot; value=&quot;veterinarian&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-filter-dot veterinarian&quot;&gt;&lt;/span&gt; Dyrlæge&lt;/span&gt;&lt;/label&gt;
   &lt;/div&gt;
   &lt;div class=&quot;viz-controls vc-pony-filters&quot; aria-label=&quot;Filtrer ekvipage&quot;&gt;
-    &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-pony-filter&quot; type=&quot;checkbox&quot; value=&quot;victoria&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-pony-filter-icon pony-victoria&quot; aria-hidden=&quot;true&quot;&gt;●&lt;/span&gt; Victoria&lt;/span&gt;&lt;/label&gt;
+    &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-pony-filter&quot; type=&quot;checkbox&quot; value=&quot;victoria&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-pony-filter-icon pony-victoria&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt; Victoria&lt;/span&gt;&lt;/label&gt;
     &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-pony-filter&quot; type=&quot;checkbox&quot; value=&quot;dobby&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-pony-filter-icon pony-dobby&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt; Dobby&lt;/span&gt;&lt;/label&gt;
     &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input vc-pony-filter&quot; type=&quot;checkbox&quot; value=&quot;rumle&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;&lt;span class=&quot;vc-pony-filter-icon pony-rumle&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt; Rumle&lt;/span&gt;&lt;/label&gt;
   &lt;/div&gt;
@@ -990,7 +998,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       &lt;input type=&quot;hidden&quot; id=&quot;vc-id&quot;&gt;
       &lt;label class=&quot;form-label&quot;&gt;Type&lt;select class=&quot;form-select&quot; id=&quot;vc-type&quot;&gt;&lt;option value=&quot;competition&quot;&gt;Stævne&lt;/option&gt;&lt;option value=&quot;training&quot;&gt;Træning Morten&lt;/option&gt;&lt;option value=&quot;care&quot;&gt;Pasning&lt;/option&gt;&lt;option value=&quot;selftraining&quot;&gt;Selvtræning&lt;/option&gt;&lt;option value=&quot;rider&quot;&gt;Victoria / fri&lt;/option&gt;&lt;option value=&quot;injury&quot;&gt;Skadet&lt;/option&gt;&lt;option value=&quot;off&quot;&gt;Andet&lt;/option&gt;&lt;option value=&quot;farrier&quot;&gt;Smed&lt;/option&gt;&lt;option value=&quot;dentist&quot;&gt;Tandlæge&lt;/option&gt;&lt;option value=&quot;veterinarian&quot;&gt;Dyrlæge&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Beskrivelse&lt;input class=&quot;form-control&quot; id=&quot;vc-name&quot; required placeholder=&quot;Fx dressurtræning&quot;&gt;&lt;/label&gt;
-      &lt;label class=&quot;form-label&quot;&gt;Hvem gælder aktiviteten?&lt;select class=&quot;form-select&quot; id=&quot;vc-pony&quot;&gt;&lt;option value=&quot;victoria&quot;&gt;● Victoria&lt;/option&gt;&lt;option value=&quot;dobby&quot;&gt;♞ Dobby&lt;/option&gt;&lt;option value=&quot;rumle&quot;&gt;♞ Rumle&lt;/option&gt;&lt;option value=&quot;victoria-dobby&quot;&gt;●♞ Victoria + Dobby&lt;/option&gt;&lt;option value=&quot;victoria-rumle&quot;&gt;●♞ Victoria + Rumle&lt;/option&gt;&lt;option value=&quot;both&quot;&gt;♞♞ Rumle + Dobby&lt;/option&gt;&lt;option value=&quot;all&quot;&gt;●♞♞ Victoria + begge ponyer&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
+      &lt;label class=&quot;form-label&quot;&gt;Hvem gælder aktiviteten?&lt;select class=&quot;form-select&quot; id=&quot;vc-pony&quot;&gt;&lt;option value=&quot;victoria&quot;&gt;Victoria&lt;/option&gt;&lt;option value=&quot;dobby&quot;&gt;Dobby&lt;/option&gt;&lt;option value=&quot;rumle&quot;&gt;Rumle&lt;/option&gt;&lt;option value=&quot;victoria-dobby&quot;&gt;Victoria + Dobby&lt;/option&gt;&lt;option value=&quot;victoria-rumle&quot;&gt;Victoria + Rumle&lt;/option&gt;&lt;option value=&quot;both&quot;&gt;Rumle + Dobby&lt;/option&gt;&lt;option value=&quot;all&quot;&gt;Victoria + begge ponyer&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Status&lt;select class=&quot;form-select&quot; id=&quot;vc-status&quot;&gt;&lt;option value=&quot;&quot;&gt;Ingen status&lt;/option&gt;&lt;option value=&quot;prebooked&quot;&gt;PRE-BOOKET&lt;/option&gt;&lt;option value=&quot;confirmed&quot;&gt;Bekræftet&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Dato&lt;input class=&quot;form-control&quot; id=&quot;vc-date&quot; type=&quot;date&quot; required&gt;&lt;/label&gt;
       &lt;label class=&quot;form-label&quot;&gt;Slutdato &lt;span class=&quot;text-muted&quot;&gt;(valgfri)&lt;/span&gt;&lt;input class=&quot;form-control&quot; id=&quot;vc-end-date&quot; type=&quot;date&quot;&gt;&lt;/label&gt;
@@ -1063,12 +1071,12 @@ html&gt;body{padding:0}&lt;/style&gt;
       }
       for (let d = new Date(2026,10,16); d &lt;= new Date(2026,11,31); d.setDate(d.getDate()+7)) {
         const date = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,&#x27;0&#x27;)}-${String(d.getDate()).padStart(2,&#x27;0&#x27;)}`;
-        seed.push({id:`selftraining-victoria-${date}`,date,name:&#x27;Selvtræning med Victoria&#x27;,type:&#x27;selftraining&#x27;,status:&#x27;confirmed&#x27;,pony:&#x27;dobby&#x27;,time:&#x27;18:00&#x27;,place:&#x27;Lykkesholm&#x27;,note:&#x27;Kl. 18.00–20.30.&#x27;});
+        seed.push({id:`selftraining-victoria-${date}`,date,name:&#x27;Selvtræning med Victoria&#x27;,type:&#x27;selftraining&#x27;,status:&#x27;confirmed&#x27;,pony:&#x27;dobby&#x27;,time:&#x27;18:00&#x27;,place:&#x27;Mortens Place&#x27;,note:&#x27;Kl. 18.00–20.30.&#x27;});
       }
-      seed.push({id:&#x27;rumle-injured-2026-11&#x27;,date:&#x27;2026-11-10&#x27;,endDate:&#x27;2026-11-24&#x27;,name:&#x27;Rumle er skadet&#x27;,type:&#x27;injury&#x27;,status:&#x27;confirmed&#x27;,pony:&#x27;rumle&#x27;,place:&#x27;Lykkesholm&#x27;,note:&#x27;Ingen træning frem til og med 24. november.&#x27;});
+      seed.push({id:&#x27;rumle-injured-2026-11&#x27;,date:&#x27;2026-11-10&#x27;,endDate:&#x27;2026-11-24&#x27;,name:&#x27;Rumle er skadet&#x27;,type:&#x27;injury&#x27;,status:&#x27;confirmed&#x27;,pony:&#x27;rumle&#x27;,place:&#x27;Mortens Place&#x27;,note:&#x27;Ingen træning frem til og med 24. november.&#x27;});
       for (let d = new Date(2026,10,10); d &lt;= new Date(2026,11,31); d.setDate(d.getDate()+7)) {
         const date = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,&#x27;0&#x27;)}-${String(d.getDate()).padStart(2,&#x27;0&#x27;)}`;
-        seed.push({id:`fitness-care-${date}`,date,name:&#x27;Morten muger og giver mash og medicin&#x27;,type:&#x27;care&#x27;,status:&#x27;confirmed&#x27;,pony:&#x27;both&#x27;,place:&#x27;Lykkesholm&#x27;,note:&#x27;Victoria er til fitnesstræning.&#x27;});
+        seed.push({id:`fitness-care-${date}`,date,name:&#x27;Morten muger og giver mash og medicin&#x27;,type:&#x27;care&#x27;,status:&#x27;confirmed&#x27;,pony:&#x27;both&#x27;,place:&#x27;Mortens Place&#x27;,note:&#x27;Victoria er til fitnesstræning.&#x27;});
       }
       const normalizePonyNames = item =&gt; Object.fromEntries(Object.entries(item).map(([field,value]) =&gt; [field,typeof value === &#x27;string&#x27; ? value.replace(/Dobby\s*\/\s*Double/gi,&#x27;Dobby&#x27;).replace(/\bDouble\b/g,&#x27;Dobby&#x27;) : value]));
       let events;
@@ -1092,6 +1100,9 @@ html&gt;body{padding:0}&lt;/style&gt;
         if (!existing.userEdited &amp;&amp; matchesSeed) events[index] = {...existing,...item};
         else if (!existing.userEdited) events[index] = {...existing,userEdited:true};
       });
+      const usesCurrentStableLocation = item =&gt; item.id === &#x27;rumle-injured-2026-11&#x27; || item.id.startsWith(&#x27;fitness-care-&#x27;) || item.id.startsWith(&#x27;selftraining-victoria-&#x27;);
+      const migrateCurrentStableLocations = items =&gt; items.map(item =&gt; usesCurrentStableLocation(item) &amp;&amp; item.place !== &#x27;Mortens Place&#x27; ? {...item,place:&#x27;Mortens Place&#x27;,updatedAt:new Date().toISOString(),updatedBy:&#x27;Dion&#x27;} : item);
+      events = migrateCurrentStableLocations(events);
       let view = new Date();
       view.setDate(1);
       const month = root.querySelector(&#x27;#vc-month&#x27;);
@@ -1160,10 +1171,10 @@ html&gt;body{padding:0}&lt;/style&gt;
             if(!local || remoteTime&gt;=localTime) localMap.set(id,{...item,id});
           });
           Object.keys(remoteDeleted).forEach(id=&gt;{localMap.delete(id);deletedIds.add(id);});
-          events=[...localMap.values()];
+          events=migrateCurrentStableLocations([...localMap.values()]);
           save(); render();
           const additions={};
-          events.forEach(item=&gt;{if(!remoteActivities[item.id] &amp;&amp; !remoteDeleted[item.id]) additions[item.id]=item;});
+          events.forEach(item=&gt;{const remote=remoteActivities[item.id];const localTime=Date.parse(item.updatedAt||item.createdAt||&#x27;&#x27;)||0;const remoteTime=Date.parse(remote?.updatedAt||remote?.createdAt||&#x27;&#x27;)||0;if((!remote || localTime&gt;remoteTime) &amp;&amp; !remoteDeleted[item.id]) additions[item.id]=item;});
           const deletions={};
           deletedIds.forEach(id=&gt;{if(!remoteDeleted[id]) deletions[id]={deletedAt:new Date().toISOString(),deletedBy:selectedUser()||&#x27;Ukendt&#x27;};});
           if(Object.keys(additions).length || Object.keys(deletions).length) {
@@ -1179,9 +1190,11 @@ html&gt;body{padding:0}&lt;/style&gt;
       const eventButton = e =&gt; {
         const statusKey=e.status||&#x27;unbooked&#x27;;
         const status = `&lt;span class=&quot;viz-badge&quot;&gt;${statusLabels[e.status||&#x27;&#x27;]}&lt;/span&gt;`;
-        const ponyIcons=participants(e.pony).map(person=&gt;person===&#x27;victoria&#x27;?&#x27;&lt;span class=&quot;vc-pony-icon pony-victoria&quot; aria-hidden=&quot;true&quot;&gt;●&lt;/span&gt;&#x27;:`&lt;span class=&quot;vc-pony-icon pony-${esc(person)}&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;`).join(&#x27;&#x27;);
+        const ponyIcons=participants(e.pony).map(person=&gt;`&lt;span class=&quot;vc-pony-icon pony-${esc(person)}&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;`).join(&#x27;&#x27;);
         const startTime=e.time ? ` · ${esc(e.time)}` : &#x27;&#x27;;
-        return `&lt;button type=&quot;button&quot; class=&quot;vc-event type-${esc(e.type)} status-${statusKey}&quot; data-id=&quot;${esc(e.id)}&quot; aria-label=&quot;Rediger ${esc(e.name)}&quot; title=&quot;${esc(e.name)} · ${esc(ponyLabels[e.pony])} · ${esc(statusLabels[e.status||&#x27;&#x27;])}&quot;&gt;&lt;span class=&quot;vc-event-copy&quot;&gt;&lt;span class=&quot;vc-event-type&quot;&gt;${esc(typeLabels[e.type]||&#x27;Andet&#x27;)}${startTime}&lt;/span&gt;&lt;span class=&quot;vc-event-name&quot;&gt;${esc(e.name)}&lt;/span&gt;&lt;span class=&quot;vc-event-bottom&quot;&gt;${status}&lt;span class=&quot;vc-event-pony&quot;&gt;${ponyIcons}${esc(ponyLabels[e.pony])}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/button&gt;`;
+        const note=e.note ? `&lt;span class=&quot;vc-event-note&quot;&gt;&lt;span class=&quot;vc-event-note-text&quot;&gt;${esc(e.note)}&lt;/span&gt;&lt;/span&gt;` : &#x27;&#x27;;
+        const fullText=[e.name,e.note,ponyLabels[e.pony],statusLabels[e.status||&#x27;&#x27;]].filter(Boolean).join(&#x27; · &#x27;);
+        return `&lt;button type=&quot;button&quot; class=&quot;vc-event type-${esc(e.type)} status-${statusKey}&quot; data-id=&quot;${esc(e.id)}&quot; aria-label=&quot;Rediger ${esc(e.name)}&quot; title=&quot;${esc(fullText)}&quot;&gt;&lt;span class=&quot;vc-event-copy&quot;&gt;&lt;span class=&quot;vc-event-main&quot;&gt;&lt;span class=&quot;vc-event-type&quot;&gt;${esc(typeLabels[e.type]||&#x27;Andet&#x27;)}${startTime}&lt;/span&gt;&lt;span class=&quot;vc-event-name&quot;&gt;${esc(e.name)}&lt;/span&gt;&lt;/span&gt;${note}&lt;span class=&quot;vc-event-bottom&quot;&gt;${status}&lt;span class=&quot;vc-event-pony&quot;&gt;${ponyIcons}${esc(ponyLabels[e.pony])}&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/button&gt;`;
       };
       const monthFormatter = new Intl.DateTimeFormat(&#x27;da-DK&#x27;,{month:&#x27;long&#x27;,year:&#x27;numeric&#x27;});
       const showMonth = value =&gt; { const [year,number]=value.split(&#x27;-&#x27;).map(Number); view=new Date(year,number-1,1); month.textContent=monthFormatter.format(view); };
